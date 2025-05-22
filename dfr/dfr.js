@@ -1,6 +1,657 @@
 const CACHE_NAME = 'field-report-v4'; // 🔁 bump this for every update
 
-let listData = {};
+const listData = {
+
+
+clients: [
+    "Enbridge",
+    "TC Energy",
+    "Pembina",
+    "FortisBC",
+    "ATCO"
+  ],
+
+  clientProjectNumbers: [
+    "CWP-406",
+    "CWP-407"
+  ],
+
+  projectNames: [
+    "CWP-406",
+    "CWP-407"
+  ],
+
+  weather: [
+    "Sunny",
+    "Partly Cloudy",
+    "Overcast",
+    "Light Rain",
+    "Heavy Rain",
+    "Moderate Rain",
+    "Fog",
+    "Windy",
+    "Hail",
+    "Light Snow",
+    "Moderate Snow",
+    "Heavy Snow",
+    "Thunderstorms"
+  ],
+
+  projectNumbers: [
+    "10441",
+    "11210",
+    "11211",
+    "11212",
+    "11213",
+    "11214",
+    "11215",
+    "11256",
+    "11257",
+    "11258",
+    "11259",
+    "5938",
+    "5940",
+    "6017",
+    "6501",
+    "6502",
+    "6503",
+    "7003",
+    "7005",
+    "7007",
+    "7009",
+    "7010",
+    "Pending CR",
+    "All Digs - Abrasives",
+    "All Digs - Coating",
+    "All Digs - Rock Guard",
+    "All - Small Tools & Consumables",
+    "All Digs - Pre Planning",
+    "All Digs - Composite Repair"
+  ],
+
+  manpower: [
+"Aaron Swan",
+"Abdi Jama",
+"Adam King",
+"Adrienne Laporte",
+"Aileena Keith",
+"Aileena Marie",
+"Alexandra Klimchuk ",
+"Alicia Swan",
+"Andre Godel",
+"Annette Swan",
+"Barry Thompson",
+"Bernard Hughes",
+"Blaine Squires",
+"Blair Smith",
+"Brady Loring",
+"Brenagan Augier",
+"Brent Kelly",
+"Brian Miller",
+"Brittany Rabbitt",
+"Caitlyn Macaulay",
+"Cam Fossum",
+"Cameron Gilmore",
+"Cayde McMullin",
+"Carson Bischoff",
+"Carson James",
+"Chad Henderson",
+"Chris Perron",
+"Christy Hamilton",
+"Cloud Diablo",
+"Cody Shindle",
+"Colton Amlin",
+"Cory Pelkman (D&L)",
+"Craig Erickson",
+"Craig Welsman",
+"Damon Keith",
+"Dan Therrien",
+"Daniel Pearo",
+"Danielle Nelson",
+"Darren Donley",
+"Darryl Meade (GPS)",
+"David Guild",
+"Del James",
+"Derek Seward",
+"Derek Swan",
+"Derick Bogar",
+"Derwood Smith",
+"Devan McLean",
+"Devon McCoy",
+"Dion Lahoda",
+"Dwayne Walkden",
+"Dylan Reid",
+"Emerson Beaudet",
+"Emily Gilbert",
+"Erik Bergstrom",
+"Ethan Long",
+"Gabe Quigley",
+"Gage Pierobon",
+"Gary Gushue",
+"Geoffrey McLeod",
+"Grant Mercer",
+"Greg Matthiessen",
+"Gregory MacMillan",
+"Haden Nordick",
+"Iven Davidson",
+"Izzy Heath",
+"Jacob Zevola",
+"James Leach",
+"Jason Korotash",
+"Jason Stephenson",
+"Jason VanVeen",
+"Jeffery Harriman",
+"Jen Chubb",
+"Jeremy Fossum",
+"Jeremy Nellis",
+"Jody Bauer",
+"John Quigley",
+"Jordan Robinson (Norwest)",
+"Jordan Romano",
+"Joseph Vilac",
+"Josh Kennedy (Norwest)",
+"Josh Lugossy",
+"Josh Lyons",
+"Josh Schuett",
+"Justin Kato",
+"Kam Anthony",
+"Kari Smith",
+"Kelly Debert",
+"Kenver New",
+"Kevin Boyce",
+"Kevin Ross ",
+"Kurtis Hagen",
+"Kyle Larder",
+"Lauren Smith",
+"Liam Dan",
+"Lincoln Wood",
+"Linda Gelazus",
+"Linda Hamel",
+"Lorinda Downey",
+"Lou Maslin",
+"Lucas Hall",
+"Luke Carriou",
+"Marc Trudel",
+"Marco Van Delden",
+"Mark Wilson",
+"Matthew Jones",
+"Matthew Neilsen",
+"Melissa Medwid",
+"Michael Bruno",
+"Michael Martin",
+"Michael Mclelan",
+"Mike Cobban",
+"Miles Sushelnitski",
+"Mitch Wilton",
+"Mladen Jovic",
+"Moin Padaniya",
+"Nate Glenn",
+"Nathan Stewart",
+"Nicole Golos",
+"Noah Stiles",
+"Nolan Conroy",
+"Patrick Hampson",
+"Quinton Tutin",
+"Reed Golos",
+"Richard Dalrymple",
+"Rick Flegel",
+"River Block",
+"Rod McLaren",
+"Rutika Patel",
+"Ryan Bernicky",
+"Sam Kisser",
+"Samantha Stevenson",
+"Sandra Quigley",
+"Sarah Booth",
+"Sarah Simkin",
+"Scott Medley ",
+"Sean Menzel",
+"Shane Ayers",
+"Shane Jackson",
+"Shea McNeil",
+"Sheldon Traun",
+"Simon Ramsey",
+"Stacey Glanville",
+"Stefanie Cox",
+"Stephanie Henderson",
+"Sterling Nimco",
+"Steven Misumi",
+"Taylor Hegberg",
+"Theodore Uqhart",
+"Theressa Bartee",
+"Thomas Gregory",
+"Tim Mason",
+"Trent Morrison",
+"Trent Zevola",
+"Trevor Dewey",
+"Tristan Vigliotti",
+"Troy Connett",
+"Ty Stokes",
+"Tyler Brown",
+"Tyler Lothian",
+"William (Bill) Erskine",
+"Wilson Liang",
+"Wyatt Williams"
+  ],
+
+  classification: [
+"Admin",
+"Coating Technician/Spotter",
+"Construction Manager",
+"Steep Slope Operator",
+"Equipment Operator 2",
+"Fitter",
+"Foreman",
+"Labourer",
+"Labourer 3",
+"Lead Hand",
+"Mechanic w/ Service Truck",
+"Medic",
+"Millwright",
+"NACE 2",
+"Project Control",
+"Project Coordinator",
+"Project Director",
+"Project Manager",
+"QA/QC",
+"Safety Coordinator",
+"Safety Lead",
+"Safety Manager",
+"Sandblaster",
+"Scheduler",
+"Senior Project Manager",
+"Skilled Labourer",
+"Superintendent",
+"Steep Slope Supervisor",
+"Welder 1",
+"Welder 2",
+"Welder Helper",
+"Welder Helper/Fire Watch",
+"Welder Helper/Fire Watch (Hot Pay)",
+"Truck Driver (Teamster)",
+"Equipment Operator 1",
+"Supervisor"
+  ],
+
+   equipment: [
+"01-10 - Chevrolet Silverado 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-23 - Dodge Ram3500 (Trucks - Crew) (Trucks - Crew)",
+"01-27 - GMC Sierra 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-34 - GMC Sierra 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-35 - GMC Sierra 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-36 - GMC Sierra 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-37 - GMC Sierra 1500 (Trucks - Crew) (Trucks - Crew)",
+"01-38 - GMC Sierra 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-39 - GMC Sierra 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-41 - GMC Sierra 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-42 - GMC Sierra 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-44 - GMC Sierra 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-45 - GMC Sierra 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-49 - GMC Sierra 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-50 - GMC Sierra 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-51 - Chevrolet Silverado 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-52 - GMC Sierra 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-54 - Chevrolet Silverado 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-55 - Chevrolet Silverado 3500 (Trucks - Crew) (Trucks - Crew)",
+"CT-001 - Dion Lahoda Truck (Trucks - Crew) (Trucks - Crew)",
+"01-58 - Chevrolet Silverado 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-69 - Chev 1500 (Trucks - Crew) (Trucks - Crew)",
+"01-70 - GMC Sierra 3500 (Trucks - Crew) (Trucks - Crew)",
+"CT-005 - Adam King Truck (Trucks - Crew) (Trucks - Crew)",
+"01-71 - Chevrolet Silverado 1500 (Trucks - Crew) (Trucks - Crew)",
+"CT-006 - Sean Menzel Truck (Trucks - Crew) (Trucks - Crew)",
+"CT-007 - Dave Mallon Truck (Trucks - Crew) (Trucks - Crew)",
+"01-72 - Chevrolet Silverado 3500 (Trucks - Crew) (Trucks - Crew)",
+"CT-008 - Mike Martin Truck (Trucks - Crew) (Trucks - Crew)",
+"CT-009 - Dwayne Walkden Truck (Trucks - Crew) (Trucks - Crew)",
+"01-73 - Chevrolet Silverado 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-74 - Chevrolet Silverado 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-75 - Chevrolet Silverado 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-76 - Ford Transit Van (Trucks - Crew) (Trucks - Crew)",
+"01-77 - Ford Transit Van (Trucks - Crew) (Trucks - Crew)",
+"01-28 - GMC Sierra 3500-Flat Deck(Trucks - Crew) (Trucks - Crew)",
+"01-30 - GMC Sierra 3500-Flat Deck (Trucks - Crew) (Trucks - Crew)",
+"01-31 - Chevrolet Silverado 3500 (Trucks-Crew) (Trucks - Crew)",
+"01-43 - GMC Sierra 3500 (Trucks - Crew) (Trucks - Crew)",
+"CT-011 - Mladen Jovic (Trucks - Crew) (Trucks - Crew)",
+"01-78 - Chevrolet Silverado 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-79 - Chevrolet Silverado 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-80 - Chevrolet Silverado 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-81 - Chevrolet Silverado 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-83 - Chevrolet Silverado 3500 (Trucks - Crew) (Trucks - Crew)",
+"01-82 - Chevrolet Silverado 3500 (Trucks - Crew) (Trucks - Crew)",
+"CT-002 - Del James (Crew - Truck) (Trucks - Crew)",
+"CT-003 - Craig Welsman (Trucks - Crew) (Trucks - Crew)",
+"CT-004 - Craig Erickson - QA/QC Coordinator (Trucks - Crew) (Trucks - Crew)",
+"CT-010 - Justin Kato Truck (Trucks - Crew) (Trucks - Crew)",
+"01-46 - Chevrolet Silverado 3500 (Trucks - Medic) (Trucks - Medic (Enbridge))",
+"01-57 - Chevrolet Silverado 3500 (Trucks - Medic) (Trucks - Medic (Enbridge))",
+"01-71 - Chevrolet 1500 (Trucks-Manager) (Trucks - Manager)",
+"01-66 - Ford F150 (Trucks - Manager) (Trucks - Manager)",
+"01-68 - Ford F150 (Trucks - Manager) (Trucks - Manager)",
+"01-59 - Ford F150 (Trucks - Manager) (Trucks - Manager)",
+"01-53 - Chevrolet 1500 (Trucks-Manager) (Trucks - Manager)",
+"02-05 - Dodge 5500 (Sandblast Truck) (Trucks - Sandblast)",
+"02-14 - Ford F550 (Sandblast Truck) (Trucks - Sandblast)",
+"02-15 - Ford F550 (Sandblast Truck) (Trucks - Sandblast)",
+"02-16R - Ford F550 (Sandblast Truck) (Trucks - Sandblast)",
+"02-08 - Ford F550 (Flatdecks) (Trucks - Flatdecks)",
+"02-09 - Ford F550 (Flatdecks) (Trucks - Flatdecks)",
+"02-14 - Ford F550 (Flatdeck) (Trucks - Flatdecks)",
+"02-15 - Ford F550 (Flatdeck) (Trucks - Flatdecks)",
+"02-12(AWS) - Ford F450 (Flatdeck) (Trucks - Flatdecks)",
+"02-07 - Dodge 5500 Service/Mechanic Truck (Trucks - Service/Mechanic)",
+"02-13 - Ford F-550 Service/Mechanic Truck (Trucks - Service/Mechanic)",
+"03-32 - Kenworth T-800 (Tractors (Trailers Included)) (Trucks 03 - Tractors (Trailers Included))",
+"03-38 - Kenworth T-800 (Tractors (Trailers Included)) (Trucks 03 - Tractors (Trailers Included))",
+"03-31 - Peterbuilt Flatdeck (Crane Truck) (Trucks 03 - Picker Trucks 6T)",
+"03-35 - Ford F750 ( Water (Fire/Wash) (Trucks 03 - Water (Fire/Wash))",
+"03-36 - Ford F750 (Fire/Wash) (Trucks 03 - Water (Fire/Wash))",
+"04-01 - Snake River 12' Dump Trailer ( T/A Dump) (Trailers - T/A Dump)",
+"04-10 - Snake River 12' Dump Trailer ( T/A Dump) (Trailers - T/A Dump)",
+"04-08 - Snake River 12' Dump Trailer ( T/A Dump) (Trailers - T/A Dump)",
+"04-47 - Snake River 12' Dump Trailer ( T/A Dump) (Trailers - T/A Dump)",
+"04-48 - Snake River 12' Dump Trailer ( T/A Dump) (Trailers - T/A Dump)",
+"04-04 - Snake River 10' Dump Trailer S/A Dump (Trailers - S/A Dump)",
+"04-06 - Snake River 10' Dump Trailer S/A Dump (Trailers - S/A Dump)",
+"04-12 - Snake River 8' Dump Trailer S/A Dump (Trailers - S/A Dump)",
+"04-05 - Fire Trailer 1025Gal w/ Fire, Pump, Hose & Tools (Trailers - Fire Response)",
+"04-11 - Fire Trailer 1025Gal w/ Fire, Pump, Hose & Tools (Trailers - Fire Response)",
+"04-15 - Fire Trailer 1025Gal w/ Fire, Pump, Hose & Tools (Trailers - Fire Response)",
+"04-50 - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-51 - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-52R - Fire Trailer 1000 Gal (Trailers - Fire Response)",
+"04-53R - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-54R - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-55R - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-56R - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-57R - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-58R - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-59R - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-60R - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-62R - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-61R - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-64R - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-65R - Fire Trailer 1000 Gal (Trailers - Fire Response)",
+"04-66R - Fire Trailer 1000 Gal (Trailers - Fire Response)",
+"04-71R - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-72R - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-73R - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-74R - Fire Trailer 500Gal w/ Fire Pump, Hose and Tools (Trailers - Fire Response)",
+"04-75R - Fire Trailer 1000 Gal (Trailers - Fire Response)",
+"04-77R - Fire Trailer 1000 Gal (Trailers - Fire Response)",
+"06-2001 - Honda EB2200 Generator (Generators (Gas 2000 Watt))",
+"06-2002 - Honda EB2200 Generator (Generators (Gas 2000 Watt))",
+"06-2003 - Honda EB2200 Generator (Generators (Gas 2000 Watt))",
+"06-2004 - Honda EB2200 Generator (Generators (Gas 2000 Watt))",
+"06-2005 - Honda EB2200 Generator (Generators (Gas 2000 Watt))",
+"06-2006 - Honda EB2200 Generator (Generators (Gas 2000 Watt))",
+"06-2007 - Honda EB2200 Generator (Generators (Gas 2000 Watt))",
+"06-3001 - Honda EU3000 Generator (Generators (Gas 3000 Watt))",
+"06-3002 - Honda EM3500 Generator (Generators (Gas 3000 Watt))",
+"06-3003 - Honda EM3800 Generator (Generators (Gas 3000 Watt))",
+"06-3004 - Honda EM3800 Generator (Generators (Gas 3000 Watt))",
+"04-07 - PJ Flat Deck Trailer (Trailers - T/A Flatdeck)",
+"04-49 - Double A 20' Flatdeck Trailer (Trailers - T/A Flatdeck)",
+"04-42(AWS) - Double A 20' Flat Deck (Trailers - T/A Flatdeck)",
+"04-65R - Canada Trailers Flat Deck (Trailers - T/A Flatdeck)",
+"04-09 - T/A Gooseneck Flatdeck Trailer (Trailers - T/A Gooseneck)",
+"04-34 - T/A Gooseneck Flatdeck Trailer (Trailers - T/A Gooseneck)",
+"04-44(AWS) - 20' Big Tex Gooseneck (Trailers - T/A Gooseneck)",
+"04-27 - 22ft Office Trailer (Trailers - Office 22')",
+"04-13 - 22ft Office Trailer (Trailers - Office 22')",
+"04-67R - 22' Office Trailer (Trailers - Office 22')",
+"04-68R - 22' Office Trailer (Trailers - Office 22')",
+"04-22 - Enclosed Trailer (Trailers - T/A Enclosed)",
+"04-38 - T/A Enclosed 20' Trailer (Trailers - T/A Enclosed)",
+"04-43(AWS) - T/A Enclosed Trailer (Trailers - T/A Enclosed)",
+"04-45(AWS) - T/A Enclosed Trailer (Trailers - T/A Enclosed)",
+"04-52 - T/A Enclosed Trailer (Trailers - T/A Enclosed)",
+"04-53 - T/A Enclosed Trailer (Trailers - T/A Enclosed)",
+"04-54 - T/A Enclosed Trailer (Trailers - T/A Enclosed)",
+"04-76R - T/A Enclosed Trailer (Trailers - T/A Enclosed)",
+"04-36 - 53ft Tool/Office Trailer (Trailers - Tool Crib)",
+"04-37 - 53ft Tool/Office Trailer (Trailers - Tool Crib)",
+"05-06 - IngersolRand XP375 (Compressors) (Compressors (375cfm) Towable)",
+"05-09 - IngersolRand XP375 (Compressors) (Compressors (375cfm) Towable)",
+"05-11 - Doosan 375 (Compressors) (Compressors (375cfm) Towable)",
+"05-12 - Doosan 375 (Compressors) (Compressors (375cfm) Towable)",
+"05-18 - Doosan 375 (Compressors) (Compressors (375cfm) Towable)",
+"05-10 - Doosan P425 (Compressors (425cfm) Towable)",
+"05-15 - Sullair 260 (Compressors) (Compressors (250/260/300cfm) SKID Mount)",
+"05-16 - Sullair 260 (Compressors) (Compressors (250/260/300cfm) SKID Mount)",
+"05-17 - Atlas Copco 300 (Compressors) (Compressors (250/260/300cfm) SKID Mount)",
+"06-02 - Allmond ML20 (Lightplant) (Lightplant/Powerstations (20kw))",
+"06-03 - Allmond ML20 (Lightplant) (Lightplant/Powerstations (20kw))",
+"06-07 - Doosan L20 (Lightplant) (Lightplant/Powerstations (20kw))",
+"06-08 - Doosan L20 (Lightplant) (Lightplant/Powerstations (20kw))",
+"06-12 - Magnum MLT5200 (Lightplant) (Lightplant/Powerstations (20kw))",
+"06-13 - Magnum MLT5200 (Lightplant) (Lightplant/Powerstations (20kw))",
+"06-14 - Magnum MLT5200 (Lightplant) (Lightplant/Powerstations (20kw))",
+"06-16 - Magnum MLT5200 (Lightplant) (Lightplant/Powerstations (20kw))",
+"06-04 - Vermeer BC1000 Wood Chipper (Wood Chippers)",
+"06-09 - Allmond 8kw (Lightplant/Powerstations (8kw))",
+"06-10 - Allmond 8kw (Lightplant/Powerstations (8kw))",
+"06-11 - Allmond 8kw (Lightplant/Powerstations (8kw))",
+"06-06 - Doosan 6KW LSWKU (Lightplant/Powerstations (8kw))",
+"06-24 - Generac 6kw (Lightplant/Powerstations (8kw))",
+"06-25 - Generac 6kw (Lightplant/Powerstations (8kw))",
+"06-26 - Generac 6kw (Lightplant/Powerstations (8kw))",
+"06-27 - Generac 6kw (Lightplant/Powerstations (8kw))",
+"06-15 - Hi Power Multi Phase HRJW 115 T6 - 115KW Generator (Generators (90-115kw))",
+"06-17 - Wacker G25 20kw (Generators (20-25kw))",
+"06-01 - Mangum 20kw (Generators (20-25kw))",
+"06-22 - Multiquip Whisperwatt 25kw (Generators (20-25kw))",
+"06-21 - Atlas Copco 25Kw (Generators (20-25kw))",
+"06-05 - Mcelrath/Vermeer V500LE-HD HydroVac (HydroVac Units)",
+"17-01 - Volvo PL3005D Pipe Layers (Pipelayers)",
+"17-02 - Volvo PL3005E Pipe Layers (Pipelayers)",
+"17-03 - Volvo PL3005E Pipe Layers (Pipelayers)",
+"17-04 - Caterpillar 583K (Pipelayers)",
+"17-05 - Caterpillar 583K (Pipelayers)",
+"07-19 - John Deere 50D Excavator (Excavators - 50 Sized (2k-20k lbs))",
+"07-38 - John Deere 60G Excavator (Excavators - 50 Sized (2k-20k lbs))",
+"07-20 - Hitachi 250LC-5 Excavator (Excavators - 240/245/250 Sized (51k-59k lbs))",
+"07-22 - John Deere 250G Excavator (Excavators - 240/245/250 Sized (51k-59k lbs))",
+"07-26 - Hitachi 250LC-5N Excavator (Excavators - 240/245/250 Sized (51k-59k lbs))",
+"07-27 - John Deere 250G-LC Excavator (Excavators - 240/245/250 Sized (51k-59k lbs))",
+"07-28 - John Deere 250G-LC Excavator (Excavators - 240/245/250 Sized (51k-59k lbs))",
+"07-24 - Hitachi 245 LC Excavator (Excavators - 240/245/250 Sized (51k-59k lbs))",
+"07-17 - John Deere 240D Excavator (Excavators - 240/245/250 Sized (51k-59k lbs))",
+"07-18 - Hitachi ZX240LC-3 Excavator (Excavators - 240/245/250 Sized (51k-59k lbs))",
+"07-34 - John Deere 250G-LC Excavator (Excavators - 240/245/250 Sized (51k-59k lbs))",
+"07-40 - John Deere 245P Excavator (Excavators - 240/245/250 Sized (51k-59k lbs))",
+"07-42 - Hitachi ZX250-6 Excavator (Excavators - 240/245/250 Sized (51k-59k lbs))",
+"08-04 - Caterpiller D6N LGP Bulldozer (Bulldozer (M) 130-190 FWHP)",
+"08-10 - Caterpiller D6N LGP Bulldozer (Bulldozer (M) 130-190 FWHP)",
+"08-06 - Doosan DL200TC Loaders (Loaders - Wheeled (2.5 cu yd))",
+"08-09 - Bobcat T870 Loaders (Tracked Skid Steer)",
+"08-13 - Bobcat T870 Loaders (Tracked Skid Steer)",
+"08-01 - Bobcat T320 Loaders (Tracked Skid Steer)",
+"08-15 - Bobcat S250 Loaders (Tracked Skid Steer)",
+"08-16 - Bobcat T870 Loaders (Tracked Skid Steer)",
+"08-17 - Bobcat T870 Loaders (Tracked Skid Steer)",
+"08-18R - Bobcat T770 Loader (Tracked Skid Steer)",
+"08-11 - Caterpiller D3KLGP Bulldozer (Bulldozer (Sm) 75-97 FWHP)",
+"08-12 - Morooka MST800VD Tracked Carrier/Dumpers (Tracked Carrier/Dumpers)",
+"09-01 - Sandblasting skid unit w/ Air cooler, dryer, breather (Blasting - Sand Units)",
+"09-02 - Sandblasting skid unit w/ Air cooler, dryer, breather (Blasting - Sand Units)",
+"09-03 - Sandblasting skid unit w/ Air cooler, dryer, breather (Blasting - Sand Units)",
+"09-04 - Sandblasting skid unit w/ Air cooler, dryer, breather (Blasting - Sand Units)",
+"09-05 - Sandblasting skid unit w/ Air cooler, dryer, breather (Blasting - Sand Units)",
+"09-06 - Sandblasting skid unit w/ Air cooler, dryer, breather (Blasting - Sand Units)",
+"09-07 - Sandblasting skid unit w/ Air cooler, dryer, breather (Blasting - Sand Units)",
+"09-08 - Sandblasting skid unit w/ Air cooler, dryer, breather (Blasting - Sand Units)",
+"09-18 - Karcher Dry Ice Blaster (Blasting - Ice Units)",
+"10-01 - Volvo A25E 6x6 Off Highway Articulating Trucks (Off Highway Articulating Trucks (30T))",
+"10-02 - Volvo A25E 6x6 Off Highway Articulating Trucks (Off Highway Articulating Trucks (30T))",
+"10-03R - Volvo A30F (Off Highway Articulating Trucks (30T))",
+"11-04 - BOMAG BT 65/4 Compactors - Jumping Jacks (Compactors - Jumping Jacks)",
+"11-05 - BOMAG BT 65/4 Compactors - Jumping Jacks (Compactors - Jumping Jacks)",
+"11-01 - Ammann AVH 5020 E Plate Tampers (Compactors - Plate Tampers 1000lb)",
+"11-07 - Ammann Rammax 1575 Trench Rollers (Compactors - Trench/Drum Roller 3000lb)",
+"97-3000 - Rock Drill (Pneumatic Tools - Drill/Benchers)",
+"97-1000 - Jackhammer 90lb (Pneumatic Tools - Jack Hammers)",
+"13-01 - Wacker Neuson HI110 HD D Heaters Diesel (Heaters Diesel (Sm))",
+"13-02 - Wacker Neuson HI110 HD D Heaters Diesel (Heaters Diesel (Sm))",
+"13-03 - Wacker Neuson HI110 HD D Heaters Diesel (Heaters Diesel (Sm))",
+"13-04 - Wacker Neuson HI110 HD D Heaters Diesel (Heaters Diesel (Sm))",
+"13-07 - Ground Heaters Arctic Cub 200 Heaters Diesel (Heaters Diesel (Sm))",
+"13-06 - Frost Fighter IDF350-II Heaters Diesel (Heaters Diesel (Lg))",
+"13-08 - Frost Fighter IDF350-II Heaters Diesel (Heaters Diesel (Lg))",
+"13-09 - Frost Fighter IDF350-II Heaters Diesel (Heaters Diesel (Lg))",
+"13-10 - Frost Fighter IDF350-II Heaters Diesel (Heaters Diesel (Lg))",
+"13-11 - Frost Fighter IDF350-II Heaters Diesel (Heaters Diesel (Lg))",
+"13-12 - Frost Fighter IDF350-II Heaters Diesel (Heaters Diesel (Lg))",
+"13-13 - Frost Fighter IDF350-II Heaters Diesel (Heaters Diesel (Lg))",
+"13-05 - Wacker Neuson Arctic Bear XHD Heater (Heater Diesel (XL) Towable)",
+"24-01 - BE 2\" Water Pump (Pump - 2\" Trash (Gas))",
+"24-02 - BE 2\" Water Pump (Pump - 2\" Trash (Gas))",
+"24-03 - BE 2\" Water Pump (Pump - 2\" Trash (Gas))",
+"24-04 - BE 2\" Water Pump (Pump - 2\" Trash (Gas))",
+"24-05 - Honda 2\" Trash Pump (Pump - 2\" Trash (Gas))",
+"24-12 - Honda 2\" High Pressure Pump (Pump - 2\" Trash (Gas))",
+"24-13 - Honda 2\" High Pressure Pump (Pump - 2\" Trash (Gas))",
+"24-14 - Seeyes 2\" High Pressure Pump (Pump - 2\" Trash (Gas))",
+"24-15 - Seeyes 2\" High Pressure Pump (Pump - 2\" Trash (Gas))",
+"24-16 - Honda 2\" High Pressure Pump (Pump - 2\" Trash (Gas))",
+"24-17 - Honda 2\" High Pressure Pump (Pump - 2\" Trash (Gas))",
+"24-18 - Honda 2\" High Pressure Pump (Pump - 2\" Trash (Gas))",
+"24-19 - BE 2\" High Pressure Pump (Pump - 2\" Trash (Gas))",
+"14-3000 - Honda 3\" Trash Pump (Pump - 3\" Trash (Gas))",
+"14-4000 - Honda 4\" Trash Pump (Pump - 4\" Trash (Gas))",
+"14-4500 - 4\" Submersible Electric (Pump - 4\" Submersible (Electric))",
+"14-3500 - 3\" Pneumatic Trash Pump (Pump - 3\" Trash (Pneumatic))",
+"14-4099 - 4\" Discharge Hose (50') (Discharge Hose 4\")",
+"14-6099 - 6\" Discharge Hose (50') (Discharge Hose 6\")",
+"15-06 - Honda SXS UTV's (UTV's - Gas)",
+"15-07 - Honda SXS UTV's (UTV's - Gas)",
+"15-08 - Argo 950 Bigfoot UTV's (UTV's - Gas)",
+"15-10R - Polaris Ranger 1000 (UTV's - Gas)",
+"15-11R - Polaris Ranger 1000 (UTV's - Gas)",
+"15-13R - Polaris 1000 (UTV's - Gas)",
+"15-14R - Can-Am Defender 1000 (UTV's - Gas)",
+"15-15R - Can-Am Defender 1000 (UTV's - Gas)",
+"09-17 - Black Max Dust Suppression System (Blasting - Dust Suppressors)",
+"92-01 - Radiodetection RD7000+ Line Locators (Line Locators/Survey/Grade Equipment)",
+"92-02 - Radiodetection RD7000+ Line Locators (Line Locators/Survey/Grade Equipment)",
+"92-03 - Trimble LL300N Line Locator (Line Locators/Survey/Grade Equipment)",
+"92-04 - Stabila LAR 350 Line Locator (Line Locators/Survey/Grade Equipment)",
+"92-05 - Conventional Builders Level - Line Locator (Line Locators/Survey/Grade Equipment)",
+"91-01 - Sala 8514459 Fall Arrest Equipment (Safety Equip - Fall Arrest)",
+"69-07 - Tysea Excavator Mat Grapple (Attachments - Hydraulic)",
+"69-08 - Tysea Excavator Mat Grapple (Attachments - Hydraulic)",
+"66-02 - VanEd Hyd Breaker RB22G (Attachments - Hydraulic)",
+"01-57 ETV - Code 3 ETV Unit (Medic Unit) (Trucks - Attachments)",
+"01-46 ETV - Code 3 ETV Unit (Medic Unit) (Trucks - Attachments)",
+"01-27 PLOW/SANDER - Front Mount Plow & Slide-In Sander Assy (Trucks - Attachments)",
+"41-1000 - Wooden Access Mats (Site - Mats Access (8'x14'))",
+"41-2000 - Wooden Swamp Mats (Site - Mats Swamp (4'x20'x12\"))",
+"42-1000 - Road Plates (Site - Road Plate (8'x10'x1\"))",
+"40-1000 - 6'x8' Site Fencing Panel (Site - Fencing Panels (M))",
+"60-10 - Lifting Adapter (Excavator) (Attachments - Excavator)",
+"60-01 - Lifting Adaptor (Excavator) (Attachments - Excavator)",
+"60-02 - Lifting Adapter (Excavator) (Attachments - Excavator)",
+"60-03 - Lifting Adaptor (Excavator) (Attachments - Excavator)",
+"60-04 - Lifting Adaptor (Excavator) (Attachments - Excavator)",
+"60-05 - Lifting Adaptor (Excavator) (Attachments - Excavator)",
+"60-06 - Lifting Adaptor (Excavator) (Attachments - Excavator)",
+"60-07 - Lifting Adaptor (Excavator) (Attachments - Excavator)",
+"60-08 - Lifting Adaptor (Excavator) (Attachments - Excavator)",
+"60-11 - Lifting Adapter (Excavator) (Attachments - Excavator)",
+"60-12 - Lifting Adapter (Excavator) (Attachments - Excavator)",
+"60-13 - Lifting Adapter (Excavator) (Attachments - Excavator)",
+"60-14 - Lifting Adapter (Excavator) (Attachments - Excavator)",
+"95-01 - Coating Inspection Kit #1 (Coating Inspection Kits)",
+"95-02 - Coating Inspection Kit #2 (Coating Inspection Kits)",
+"95-03 - Coating Inspection Kit #3 (Coating Inspection Kits)",
+"95-04 - AWS QC Coating Kit (Coating Inspection Kits)",
+"95-05 - AWS Welding QC Kit (Coating Inspection Kits)",
+"94-04 - SPY 785 Holiday Detector (Monitor/Detection Equip - Holiday Detectors)",
+"94-07 - SPY 785 Holiday Detector (Monitor/Detection Equip - Holiday Detectors)",
+"94-08 - SPY 785 Holiday Detector (Monitor/Detection Equip - Holiday Detectors)",
+"94-09 - DeFelsko Positest LPD Holiday Detector (Monitor/Detection Equip - Holiday Detectors)",
+"43-03 - 20' Wood Bridge (Site - Bridge 20')",
+"43-02 - 30' Wood Bridge (Site - Bridge 30')",
+"43-01 - 60' Steel bridge (Site - Bridge 60')",
+"46-1000 - Portable Stair Section 5’ c/w Handrails (Site - Access Stairs)",
+"46-1001 - Portable Stair Section 5' c/w Handrails (Site - Access Stairs)",
+"46-1002 - Portable Stair Section 5' c/w Handrails (Site - Access Stairs)",
+"46-1003 - Portable Stair Section 5' c/w Handrails (Site - Access Stairs)",
+"46-1004 - Portable Stair Section 5' c/w Handrails (Site - Access Stairs)",
+"46-1005 - Portable Stair Section 5' c/w Handrails (Site - Access Stairs)",
+"46-1006 - Portable Stair Section 5' c/w Handrails (Site - Access Stairs)",
+"46-1007 - Portable Stair Section 5' c/w Handrails (Site - Access Stairs)",
+"46-1008 - Portable Stair Section 5' c/w Handrails (Site - Access Stairs)",
+"46-1009 - Portable Stair Section 5' c/w Handrails (Site - Access Stairs)",
+"46-1010 - Portable Stair Section 5' c/w Handrails (Site - Access Stairs)",
+"46-1011 - Portable Stair Section 15' c/w Handrails (Site - Access Stairs)",
+"46-1012 - Portable Stair Section 15' c/w Handrails (Site - Access Stairs)",
+"46-1013 - Portable Stair Section 15' c/w Handrails (Site - Access Stairs)",
+"46-1014 - Portable Stair Section 15' c/w Handrails (Site - Access Stairs)",
+"46-1015 - Portable Stair Section 15' c/w Handrails (Site - Access Stairs)",
+"46-1016 - Portable Stair Section 15' c/w Handrails (Site - Access Stairs)",
+"94-01 - Gas Monitor MX4 (Monitor/Detection Equip - Gas Detectors)",
+"94-02 - MX4 Gas Detector (Monitor/Detection Equip - Gas Detectors)",
+"94-03 - Gas Monitor (Monitor/Detection Equip - Gas Detectors)",
+"04-39 - Triple Stall Washroom Trailer (Trailers - Washroom)",
+"04-40 - Triple Stall Washroom Trailer (Trailers - Washroom)",
+"04-69R - Washroom Trailer (Trailers - Washroom)",
+"07-30 - John Deere 350G Excavator (Excavators - 330/345/350 Sized (68k-88k lbs))",
+"07-33 - John Deere 350G Excavator (Excavators - 330/345/350 Sized (68k-88k lbs))",
+"07-35 - John Deere 350G Excavator (Excavators - 330/345/350 Sized (68k-88k lbs))",
+"07-36 - John Deere 350G Excavator (Excavators - 330/345/350 Sized (68k-88k lbs))",
+"07-37 - John Deere 350G Excavator (Excavators - 330/345/350 Sized (68k-88k lbs))",
+"04-41 - Gerrys Booster (Trailers - Boosters)",
+"4-14 - Mobile Coating Trailer w. comp, gen (Trailers - Mobile Coating)",
+"09-20 - Blast & Recovery Unit (Blasting & Recovery Units)",
+"70-02 - Flange Alignment Pins – 600# Rating – up to 24” (Pipe - Welding Equipment)",
+"70-03 - Pipe Line-Up Clamps – up to 24” (Pipe - Welding Equipment)",
+"70-04 - Pipe Line-Up Clamps – up to 24” (Pipe - Welding Equipment)",
+"71-01 - 2” – 24” Pipe Cutter (Pipe - Cutting & Beveling Equipment)",
+"71-02 - Pipe Threader (Pipe - Cutting & Beveling Equipment)",
+"71-03 - Cold Cutter – up to 4” (Pipe - Cutting & Beveling Equipment)",
+"71-04 - Beveling Bands c/w Torches, Crawler - to 30” (Pipe - Cutting & Beveling Equipment)",
+"71-05 - Beveling Bands c/w Torches, Crawler - 30\" (Pipe - Cutting & Beveling Equipment)",
+"73-01 - De- Mag (Auto De Gauss) * (Pipe - Mag & Preheat Equipment)",
+"73-02 - Auto Degauss Standard Unit – (Pipe - Mag & Preheat Equipment)",
+"74-01 - Fabrication Roller (Pipe - Handling & Lifting Equipment)",
+"74-02 - Pipe Turner (Pipe - Handling & Lifting Equipment)",
+"96-15 - Stealth 2 278/1869 ft/lbs Hytorc Tools (Hydraulic Tools - Hytorc Tools / Ratchet Links)",
+"96-16 - Stealth 2 278/1869 ft/lbs Hytorc Tools (Hydraulic Tools - Hytorc Tools / Ratchet Links)",
+"96-17 - Stealth 4 604/4020 ft/lbs Hytorc Tools (Hydraulic Tools - Hytorc Tools / Ratchet Links)",
+"96-18 - Stealth 4 604/4020 ft/lbs Hytorc Tools (Hydraulic Tools - Hytorc Tools / Ratchet Links)",
+"98-01A - B Rad 1500 Rad Torque & Socket (Electric - Torqueing Tools)",
+"07-39 - Doosan DX490 Excavator (Excavator- 470/490 Sized (105K-115K))",
+"07-41 - Hitachi ZX490-6 (Excavator- 470/490 Sized (105K-115K))",
+"08-14 - Rayco C100 Mulcher (Mulchers)",
+"99-01 - Starlink (Starlink)",
+"03-39 - Mack 12T Picker (Trucks 03 - Picker Truck 12T)",
+"91-05 - Hand Held Radio (Safety Equip - Radio)",
+"91-06 - Hand Held Radio (Safety Equip - Radio)",
+"91-07 - Hand Held Radio (Safety Equip - Radio)",
+"91-08 - Hand Held Radio (Safety Equip - Radio)",
+"02-10 - Dodge 5500 Crane Truck (Trucks- Picker/Service)",
+"02-11 - Ford F550 Crane Truck (Trucks- Picker/Service)",
+"02-07 - Dodge 5500 Service/Mechanic Truck (Trucks- Picker/Service)",
+"02-13 - Ford F-550 Service/Mechanic Truck (Trucks- Picker/Service)",
+"04-01 - Snake River 12' Dump Trailer (Tandem Axle Utility/Dump Trailer) (Trailers - T/A Dump)",
+"04-08 - Snake River 12' Dump Trailer (Tandem Axle Utility/Dump Trailer) (Trailers - T/A Dump)",
+"04-10 - Snake River 12' Dump Trailer (Tandem Axle Utility/Dump Trailer) (Trailers - T/A Dump)",
+"04-47 - Snake River 12' Dump Trailer (Tandem Axle Utility/Dump Trailer) (Trailers - T/A Dump)",
+"04-48 - Snake River 12' Dump Trailer (Tandem Axle Utility/Dump Trailer) (Trailers - T/A Dump)",
+"16-01 - Caterpillar DP45 10000lb (Forklift)",
+"70-05 - De-Mag (Auto De Gausscon) (Welding Equipment - Demag)",
+"CT-012 - Richard Dalrymple - crew truck"
+ ],
+
+  UofM: [
+  "Daily",
+  "Hourly",
+  "Each"
+ ]
+}
+
 
 const unitIdMap = {
   "Labor, Equipment & Supplies Mobilization (After Base Mileage) ": "2.2.1.1",
@@ -423,67 +1074,64 @@ const activityMap = {
   };
   
   function loadLists() {
-  return fetch("/data/dropdownlists.json")
-    .then(res => res.json())
-    .then(data => {
-      console.log("✅ Dropdown list data:", data);
+  return new Promise(resolve => {
+    // Directly use listData
+    populateSelect("projectNameSelect", listData.projectNames);
+    populateSelect("clientSelect", listData.clients);
+    populateSelect("locationSelect", listData.locations); // <-- If this is missing, see note below!
+    populateSelect("weatherSelect", listData.weather);
+    populateSelect("clientProjectNumberSelect", listData.clientProjectNumbers);
+    populateSelect("projectNumberSelect", listData.projectNumbers);
 
-      listData = data;
-      populateSelect("projectNameSelect", data.projectNames);
-      populateSelect("clientSelect", data.clients);
-      populateSelect("locationSelect", data.locations);
-      populateSelect("weatherSelect", data.weather);
-      populateSelect("clientProjectNumberSelect", data.clientProjectNumbers);
-      populateSelect("projectNumberSelect", data.projectNumbers);
-
-      document.querySelectorAll(".manpowerSelect").forEach(select => {
-        populateSelectElement(select, data.manpower);
-      });
-
-      document.querySelectorAll(".classificationSelect").forEach(select => {
-        populateSelectElement(select, data.classification);
-      });
-
-      document.querySelectorAll(".equipmentSelect").forEach(select => {
-        populateSelectElement(select, data.equipment);
-      });
-
-      document.querySelectorAll(".UofMSelect").forEach(select => {
-        populateSelectElement(select, data.UofM);
-      });
-
-      document.querySelectorAll(".unitUsedSelect").forEach(select => {
-        populateSelectElement(select, data.UnitsUsedList);
-      });
-
-      populateCostCodes(data.costCodes);
-      attachCostCodeListeners();
-      linkTopToBottomCostCodesWithOverride();
-      attachEquipmentRowListeners();
-      attachSubcontractorRowListeners();
-      attachUnitIdListeners();
-
-      // ✅ Make all <select> elements searchable using Tom Select
-document.querySelectorAll('select').forEach(select => {
-  new TomSelect(select, {
-    create: false,
-    sortField: {
-      field: "text",
-      direction: "asc"
-    },
-    placeholder: "Select...",
-    render: {
-      item: function(data, escape) {
-        // ✅✅✅ NEW: render placeholder properly for PDF + UI
-        return data.text ? `<div>${escape(data.text)}</div>` : "";
-      }
-    }
-  });
-});
-
-
+    document.querySelectorAll(".manpowerSelect").forEach(select => {
+      populateSelectElement(select, listData.manpower);
     });
+
+    document.querySelectorAll(".classificationSelect").forEach(select => {
+      populateSelectElement(select, listData.classification);
+    });
+
+    document.querySelectorAll(".equipmentSelect").forEach(select => {
+      populateSelectElement(select, listData.equipment);
+    });
+
+    document.querySelectorAll(".UofMSelect").forEach(select => {
+      populateSelectElement(select, listData.UofM);
+    });
+
+    document.querySelectorAll(".unitUsedSelect").forEach(select => {
+      populateSelectElement(select, listData.UnitsUsedList);
+    });
+
+    populateCostCodes(listData.costCodes);
+    attachCostCodeListeners();
+    linkTopToBottomCostCodesWithOverride();
+    attachEquipmentRowListeners();
+    attachSubcontractorRowListeners();
+    attachUnitIdListeners();
+
+    // Tom Select setup for all <select> elements
+    document.querySelectorAll('select').forEach(select => {
+      new TomSelect(select, {
+        maxOptions: false,
+        create: false,
+        sortField: {
+          field: "text",
+          direction: "asc"
+        },
+        placeholder: "Select...",
+        render: {
+          item: function(data, escape) {
+            return data.text ? `<div>${escape(data.text)}</div>` : "";
+          }
+        }
+      });
+    });
+
+    resolve();
+  });
 }
+
 
       // Optional: debug client selection
       //document.getElementById("clientSelect").addEventListener("change", function () {
@@ -493,6 +1141,9 @@ document.querySelectorAll('select').forEach(select => {
      // .catch(err => console.error("Failed to load dropdown lists", err));
     //  }
   
+    console.log('Cost codes to populate:', listData.costCodes);
+
+listData.costCodes = Object.keys(activityMap).sort();
 
 function populateCostCodes(list) {
   const sortedList = [...list].sort((a, b) => a.localeCompare(b));
@@ -727,6 +1378,9 @@ function linkTopToBottomCostCodesWithOverride() {
     }
   }
 }
+
+listData.UnitsUsedList = Object.keys(unitIdMap); // Or .sort() if you want it alphabetical
+
 
 function attachUnitIdListeners() {
     document.querySelectorAll(".unitUsedSelect").forEach((unitSelect, index) => {
