@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>OMH Form Portal</title>
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+  <div class="landing-container">
+    <h1>OMH Form Portal</h1>
+    <button onclick="location.href='dfr/dfr.html'">📝 Daily Field Report</button>
+    <button onclick="location.href='tm/tm.html'">🧾 T&M Report</button>
+    <hr />
+    <button onclick="generateTMfromDFR()">🔄 Generate T&M From Daily Field Report (Not Working Yet)</button>
+  </div>
+
+  <script>
+    function generateTMfromDFR() {
+      // Optionally load last saved DFR from localStorage
+      const cached = localStorage.getItem("autosavedDFR");
+      if (!cached) {
+        alert("No Daily Field Report found to convert.");
+        return;
+      }
+
+      localStorage.setItem("tempDFRData", cached); // make it accessible to tm.html
+      window.location.href = 'tm/tm.html';
+    }
+  </script>
+</body>
+</html>

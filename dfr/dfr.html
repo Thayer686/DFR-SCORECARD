@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=2550, initial-scale=0.3, minimum-scale=0.2, maximum-scale=5, user-scalable=yes">
+
+  <!-- Full-screen web app behavior -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- App name & icon -->
+  <meta name="apple-mobile-web-app-title" content="OMH Daily Field Report">
+  <meta name="application-name" content="OMH Daily Field Report">
+
+  <!-- Description / optional metadata -->
+  <meta name="description" content="OMH Daily Field Report">
+  <meta name="keywords" content="OMH, Daily Field Report, Construction, Project Management">
+
+  <title>Daily Field Report</title>
+  <link rel="stylesheet" href="dfr.css" />
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#1e3a5f" />
+  
+</head>
+
+<body>
+    
+    <div class="pwa-wrapper">
+    <div class="canvas">
+      <div class="header-bar">
+        <img src="../assets/images/OMH Logo.png" alt="OMH Logo" class="logo" />
+        <h1 class="title">DAILY FIELD REPORT</h1>
+      </div>
+  <!-- Header Table -->
+      <table class="header-table">
+  <!--ROW 1-->
+  <tr>
+    <th>Date:</th>
+    <td><input type="date" id="date1"/></td>
+    <th>Project Name:</th>
+    <td>
+      <select id="projectNameSelect" name="projectName">
+        <option value="">Select...</option>
+      </select>
+    </td>
+    <th>Report #:</th>
+    <td><input type="text" id="report1" /></td>
+  </tr>
+
+  <!--ROW 2-->
+  <tr>
+    <th>Client:</th>
+    <td>
+      <select id="clientSelect" name="client">
+        <option value="">Select...</option>
+      </select>
+    </td>
+    <th>Project Location:</th>
+    <td>
+      <input type="text" id="locationSelect" name="projectLocation"/>
+    </td>
+   
+    <th>Weather:</th>
+    <td>
+      <select id="weatherSelect" name="weather">
+        <option value="">Select...</option>
+      </select>
+    </td>
+  </tr>
+
+  <!--ROW 3-->
+  <tr>
+    <th>Client Project Number:</th>
+    <td>
+      <select id="clientProjectNumberSelect" name="clientProjectNumber">
+        <option value="">Select...</option>
+      </select>
+    </td>
+    <th>Project Number:</th>
+    <td>
+      <select id="projectNumberSelect" name="projectNumber">
+        <option value="">Select...</option>
+      </select>
+    </td>
+    <th>Temperature:</th>
+    <td><input type="text" id="temperature1"/></td>
+  </tr>
+
+   <!--ROW 4-->
+  <tr>
+    <th>Client Inspection:</th>
+    <td><input type="text" id="clientInspection"/></td>
+    <th>OMH Supervisor:</th>
+    <td><input type="text" id="omhsupervisor" /></td>
+    <th>Site Conditions:</th>
+    <td><input type="text" id="siteconditions" /></td>
+  </tr>
+</table>
+
+<!--Cost Code Table-->
+     
+<table class="costcode-table" style="width: 100%; table-layout: fixed;">
+  <colgroup>
+    <col style="width: 567.5px;"> <!-- Label column: Cost Code / Activity -->
+    <col style="width: 193.5px;"> <!-- costCode1 / activity1 -->
+    <col style="width: 190px;"> <!-- costCode2 -->
+    <col style="width: 193px;"> <!-- costCode3 -->
+    <col style="width: 194px;"> <!-- costCode4 -->
+    <col style="width: 195px;"> <!-- costCode5 -->
+    <col style="width: 193.5px;"> <!-- costCode6 -->
+    <col style="width: auto;">  <!-- remaining space or padding -->
+  </colgroup>
+
+  <!-- Row 1: Cost Codes -->
+  <tr>
+    <td style="height: 60px; background-color: #edf1dc; text-align: right;"><strong>Cost Code:</strong></td>
+    <td style="background-color: #dbe5f1;"><select id="costCode1"></select></td>
+    <td style="background-color: #dbe5f1;"><select id="costCode2"></select></td>
+    <td style="background-color: #dbe5f1;"><select id="costCode3"></select></td>
+    <td style="background-color: #dbe5f1;"><select id="costCode4"></select></td>
+    <td style="background-color: #dbe5f1;"><select id="costCode5"></select></td>
+    <td style="background-color: #dbe5f1;"><select id="costCode6"></select></td>
+    <td style="background-color: #edf1dc;"></td>
+  </tr>
+
+  <!-- Row 2: Activities -->
+  <tr>
+    <td style="height: 60px; background-color: #edf1dc; text-align: right;"><strong>Activity:</strong></td>
+    <td style="background-color: #dbe5f1;"><input type="text" id="activity1" readonly /></td>
+    <td style="background-color: #dbe5f1;"><input type="text" id="activity2" readonly /></td>
+    <td style="background-color: #dbe5f1;"><input type="text" id="activity3" readonly /></td>
+    <td style="background-color: #dbe5f1;"><input type="text" id="activity4" readonly /></td>
+    <td style="background-color: #dbe5f1;"><input type="text" id="activity5" readonly /></td>
+    <td style="background-color: #dbe5f1;"><input type="text" id="activity6" readonly /></td>
+    <td style="background-color: #edf1dc;"></td>
+  </tr>
+</table>
+
+<!-- Manpower Table -->
+<table style="width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 14px;">
+  <colgroup>
+    <col style="width: 75px;">   <!-- Manpower -->
+    <col style="width: 75px;">   <!-- Classification -->
+    <col style="width: 23.5px;">   <!-- Total -->
+    <col style="width: 25px;">   <!-- LOA -->
+    <col style="width: 67.8px;"> <!-- Hour 1 -->
+    <col style="width: 66px;">   <!-- Hour 2 -->
+    <col style="width: 67.8px;"> <!-- Hour 3 -->
+    <col style="width: 67.8px;"> <!-- Hour 4 -->
+    <col style="width: 67.8px;"> <!-- Hour 5 -->
+    <col style="width: 67.8px;"> <!-- Hour 6 -->
+    <col style="width: 266.5px;">   <!-- Notes -->
+  </colgroup>
+
+  <!-- Header Row -->
+  <tr style="background-color: #dbe5f1; text-align: center;">
+    <th>Manpower</th>
+    <th>Classification</th>
+    <th class="centered-header">Total</th>
+    <th class="centered-header loa-header">LOA</th>
+    <th class="centered-header" colspan="6">Manpower Hours</th>
+    <th class="centered-header">Notes</th>
+
+  </tr>
+  
+  <!-- Input Row 1 -->
+  <tr class="manpower-row">
+    <td><select class="manpowerSelect" id="manpowerselect1"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect1"><option>Select...</option></select></td>
+    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
+    <td class="center-checkbox"><input type="checkbox" id="checkbox1"/></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="notes1"/></td>
+  </tr>
+<!-- Input Row 2 -->
+<tr class="manpower-row">
+    <td><select class="manpowerSelect" id="manpowerselect2"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect2"><option>Select...</option></select></td>
+    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
+    <td class="center-checkbox"><input type="checkbox" id="checkbox2"/></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="notes2"/></td>
+  </tr>
+<!-- Input Row 3 -->
+<tr class="manpower-row">
+    <td><select class="manpowerSelect" id="manpowerselect3"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect3"><option>Select...</option></select></td>
+    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
+    <td class="center-checkbox"><input type="checkbox" id="checkbox3"/></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="notes3"/></td>
+  </tr>
+<!-- Input Row 4 -->
+<tr class="manpower-row">
+    <td><select class="manpowerSelect" id="manpowerselect4"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect4"><option>Select...</option></select></td>
+    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
+    <td class="center-checkbox"><input type="checkbox" id="checkbox4"/></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="notes4"/></td>
+  </tr>
+<!-- Input Row 5 -->
+<tr class="manpower-row">
+    <td><select class="manpowerSelect" id="manpowerselect5"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect5"><option>Select...</option></select></td>
+    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
+    <td class="center-checkbox"><input type="checkbox" id="checkbox5"/></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="notes5"/></td>
+    <tr class="manpower-row">
+<!-- Input Row 6 -->
+<tr class="manpower-row">
+    <td><select class="manpowerSelect" id="manpowerselect6"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect6"><option>Select...</option></select></td>
+    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
+    <td class="center-checkbox"><input type="checkbox" id="checkbox6"/></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="notes6"/></td>
+  </tr>
+<!-- Input Row 7 -->
+<tr class="manpower-row">
+    <td><select class="manpowerSelect" id="manpowerselect7"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect7"><option>Select...</option></select></td>
+    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
+    <td class="center-checkbox"><input type="checkbox" id="checkbox7"/></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="notes7"/></td>
+  </tr>
+<!-- Input Row 8 -->
+<tr class="manpower-row">
+    <td><select class="manpowerSelect" id="manpowerselect8"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect8"><option>Select...</option></select></td>
+    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
+    <td class="center-checkbox"><input type="checkbox" id="checkbox8"/></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="notes8"/></td>
+  </tr>
+<!-- Input Row 9 -->
+<tr class="manpower-row">
+    <td><select class="manpowerSelect" id="manpowerselect9"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect9"><option>Select...</option></select></td>
+    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
+    <td class="center-checkbox"><input type="checkbox" id="checkbox9"/></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="notes9"/></td>
+  </tr>
+<!-- Input Row 10 -->
+<tr class="manpower-row">
+    <td><select class="manpowerSelect" id="manpowerselect10"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect10"><option>Select...</option></select></td>
+    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
+    <td class="center-checkbox"><input type="checkbox" id="checkbox10"/></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="notes10"/></td>
+  </tr>
+<!-- Input Row 11 -->
+<tr class="manpower-row">
+    <td><select class="manpowerSelect" id="manpowerselect11"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect11"><option>Select...</option></select></td>
+    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
+    <td class="center-checkbox"><input type="checkbox" id="checkbox11"/></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="notes11"/></td>
+  </tr>
+<!-- Input Row 12 -->
+<tr class="manpower-row">
+   <td><select class="manpowerSelect" id="manpowerselect12"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect12"><option>Select...</option></select></td>
+    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
+    <td class="center-checkbox"><input type="checkbox" id="checkbox12"/></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="notes12"/></td>
+  </tr>
+<!-- Input Row 13 -->
+<tr class="manpower-row">
+    <td><select class="manpowerSelect" id="manpowerselect13"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect13"><option>Select...</option></select></td>
+    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
+    <td class="center-checkbox"><input type="checkbox" id="checkbox13"/></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="notes13"/></td>
+    <tr class="manpower-row">
+<!-- Input Row 14 -->
+<tr class="manpower-row">
+   <td><select class="manpowerSelect" id="manpowerselect14"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect14"><option>Select...</option></select></td>
+    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
+    <td class="center-checkbox"><input type="checkbox" id="checkbox14"/></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="notes14"/></td>
+  </tr>
+<!-- Input Row 15 -->
+<tr class="manpower-row">
+    <td><select class="manpowerSelect" id="manpowerselect15"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect15"><option>Select...</option></select></td>
+    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
+    <td class="center-checkbox"><input type="checkbox" id="checkbox15"/></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="notes15"/></td>
+  </tr>
+
+  <tr>
+  <td colspan="11" style="text-align: center;">
+  <button id="addManpowerRowBtn" class="action-btn">➕ Add Manpower Row</button>
+
+</td>
+
+</tr>
+
+</table>
+
+<!-- Totals / Equipment Table -->
+<table class="equipment-table" style="width: 100%; table-layout: fixed;">
+  <colgroup>
+    <col style="width: 197px;"> <!-- Total Hours -->
+    <col style="width: 30px;"> <!-- Total Hours value -->
+    <col style="width: 35px;"> <!-- Cost Code label -->
+    <col style="width: 89px;"> <!-- Cost Code 1 -->
+    <col style="width: 87px;"> <!-- Cost Code 2 -->
+    <col style="width: 89px;"> <!-- Cost Code 3 -->
+    <col style="width: 90px;"> <!-- Cost Code 4 -->
+    <col style="width: 89px;"> <!-- Cost Code 5 -->
+    <col style="width: 89px;"> <!-- Cost Code 6 -->
+    <col style="width: 100px;"> <!-- PO -->
+    <col style="width: 250px;"> <!-- Notes -->
+  </colgroup>
+
+  <!-- Row 1: Totals and Cost Code Selects -->
+  <tr>
+    <td style="height: 60px; background-color: #edf1dc; text-align: right;"><strong>Total Hours:</strong></td>
+    <td style="background-color: #dbe5f1;"><input type="text" id="grandTotalHours" class="grand-total-hours" readonly /></td>
+    <td style="background-color: #edf1dc; text-align: center;"><strong>Cost Code:</strong></td>
+    <td style="background-color: #dbe5f1;"><select id="costCode7"></select></td>
+    <td style="background-color: #dbe5f1;"><select id="costCode8"></select></td>
+    <td style="background-color: #dbe5f1;"><select id="costCode9"></select></td>
+    <td style="background-color: #dbe5f1;"><select id="costCode10"></select></td>
+    <td style="background-color: #dbe5f1;"><select id="costCode11"></select></td>
+    <td style="background-color: #dbe5f1;"><select id="costCode12"></select></td>
+
+    <td rowspan="2" style="background-color: #edf1dc; text-align: center;"><strong>PO (if equipment is rented)</strong></td>
+    <td rowspan="2" style="background-color: #edf1dc; text-align: center;"><strong>Notes</strong></td>
+  </tr>
+
+  <!-- Row 2: Equipment Info and U of M -->
+  <tr>
+    <td style="height: 60px; background-color: #edf1dc; text-align: center;"><strong>Equipment OMH</strong></td>
+    <td style="background-color: #dbe5f1;"></td>
+    <td style="background-color: #edf1dc; text-align: center;"><strong>U of M</strong></td>
+    <th class="centered-header" colspan="6">Equipment Hours</th>
+  </tr>
+
+  <!--Row 1-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect1"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm1"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po1"/></td>
+    <td><input type="text" id="notes16"/></td>
+  </tr>
+  <!--Row 2-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect2"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm2"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po2"/></td>
+    <td><input type="text" id="notes17"/></td>
+  </tr>
+  <!--Row 3-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect3"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm3"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po3"/></td>
+    <td><input type="text" id="notes18"/></td>
+  </tr>
+  <!--Row 4-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect4"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm4"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po4"/></td>
+    <td><input type="text" id="notes19"/></td>
+  </tr>
+  <!--Row 5-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect5"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm5"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po5"/></td>
+    <td><input type="text" id="notes20"/></td>
+  </tr>
+  <!--Row 6-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect6"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm6"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po6"/></td>
+    <td><input type="text" id="notes21"/></td>
+  </tr>
+    <!--Row 7-->
+    <tr class="equipment-row">
+      <td><select class="equipmentSelect" id="equipmentselect7"><option>Select...</option></select></td>
+      <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+      <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm7"><option>Select...</option></select></td>
+      <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+      <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+      <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+      <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+      <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+      <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+      <td><input type="text" id="po7"/></td>
+    <td><input type="text" id="notes22"/></td>
+    </tr>
+  <!--Row 8-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect8"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm8"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po8"/></td>
+    <td><input type="text" id="notes23"/></td>
+  </tr>
+  <!--Row 9-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect9"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm9"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po9"/></td>
+    <td><input type="text" id="notes24"/></td>
+  </tr>
+  <!--Row 10-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect10"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm10"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po10"/></td>
+    <td><input type="text" id="notes25"/></td>
+  </tr>
+  <!--Row 11-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect11"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm11"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po11"/></td>
+    <td><input type="text" id="notes26"/></td>
+  </tr>
+  <!--Row 12-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect12"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm12"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po12"/></td>
+    <td><input type="text" id="notes27"/></td>
+  </tr>
+  <!--Row 13-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect13"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm13"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po13"/></td>
+    <td><input type="text" id="notes28"/></td>
+  </tr>
+  <!--Row 14-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect14"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm14"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po14"/></td>
+    <td><input type="text" id="notes29"/></td>
+  </tr>
+  <!--Row 15-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect15"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm15"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po15"/></td>
+    <td><input type="text" id="notes30"/></td>
+  </tr>
+
+  <tr>
+  <td colspan="11" style="text-align: center;">
+  <button id="addEquipmentRowBtn" class="action-btn">➕ Add Equipment Row</button>
+
+</td>
+
+</tr>
+
+</table>
+
+<!--Subcontractor Table-->
+
+<table class="subcontractor-table" style="width: 100%; table-layout: fixed;">
+  <colgroup>
+    <col style="width: 197px;">
+    <col style="width: 30px;">
+    <col style="width: 35px;">
+    <col style="width: 89px;">
+    <col style="width: 87px;">
+    <col style="width: 89px;">
+    <col style="width: 90px;">
+    <col style="width: 89px;">
+    <col style="width: 89px;">
+    <col style="width: 100px;">
+    <col style="width: 80px;">
+    <col style="width: 50px;">
+    <col style="width: 120px;">
+  </colgroup>
+
+  <!-- Header Row -->
+    <tr>
+      <td style="height: 60px; background-color: #edf1dc; text-align: right;"><strong>Total Hours:</strong></td>
+      <td style="background-color: #dbe5f1;"><input type="text" id="equipmentGrandTotal" class="grand-total-hours" readonly /></td>
+      <td style="background-color: #edf1dc; text-align: center;"><strong>Cost Code:</strong></td>
+      <td style="background-color: #dbe5f1;"><select id="subcostCode1"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="subcostCode2"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="subcostCode3"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="subcostCode4"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="subcostCode5"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="subcostCode6"></select></td>
+
+      <td rowspan="2" style="background-color: #edf1dc; text-align: center;"><strong>Services</strong></td>
+      <td rowspan="2" style="background-color: #edf1dc; text-align: center;"><strong>Site Rep</strong></td>
+      <td rowspan="2" style="background-color: #edf1dc; text-align: center;"><strong>PO#</strong></td>
+      <td rowspan="2" style="background-color: #edf1dc; text-align: center;"><strong>Notes</strong></td>
+    </tr>
+
+  <!-- Label Row -->
+  <tr>
+    <td style="height: 60px; background-color: #edf1dc; text-align: center;"><strong>Subcontractor</strong></td>
+    <td style="background-color: #dbe5f1;"></td>
+    <td style="background-color: #edf1dc; text-align: center;"><strong>U of M</strong></td>
+    <th class="centered-header" colspan="6">Subcontractor Hours</th>
+  </tr>
+
+  <!-- Input Rows 1-->
+  <tr class="subcontractor-row">
+    <td><input type="text" class="subcontractorName-input" id="subcontractor1"/></td>
+    <td><input type="number" class="subs-total sub-total-field" value="0.00" readonly /></td>
+    <td><select class="UofMSelect uofm-select" id="uofm16"><option>Select...</option></select></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="services1"/></td>
+    <td><input type="text" id="siterep1"/></td>
+    <td><input type="text" id="PO#1"/></td>
+    <td><input type="text" id="notes31"/></td>
+  </tr>
+
+  <!-- Input Rows 2-->
+  <tr class="subcontractor-row">
+    <td><input type="text" class="subcontractorName-input" id="subcontractor2"/></td>
+    <td><input type="number" class="subs-total sub-total-field" value="0.00" readonly /></td>
+    <td><select class="UofMSelect uofm-select" id="uofm17"><option>Select...</option></select></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="services2"/></td>
+    <td><input type="text" id="siterep2"/></td>
+    <td><input type="text" id="PO#2"/></td>
+    <td><input type="text" id="notes32"/></td>
+  </tr>
+
+  <!-- Input Rows 3-->
+  <tr class="subcontractor-row">
+    <td><input type="text" class="subcontractorName-input" id="subcontractor3"/></td>
+    <td><input type="number" class="subs-total sub-total-field" value="0.00" readonly /></td>
+    <td><select class="UofMSelect uofm-select" id="uofm18"><option>Select...</option></select></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="services3"/></td>
+    <td><input type="text" id="siterep3"/></td>
+    <td><input type="text" id="PO#3"/></td>
+    <td><input type="text" id="notes33"/></td>
+  </tr>
+
+  <!-- Input Rows 4-->
+  <tr class="subcontractor-row">
+    <td><input type="text" class="subcontractorName-input" id="subcontractor4"/></td>
+    <td><input type="number" class="subs-total sub-total-field" value="0.00" readonly /></td>
+    <td><select class="UofMSelect uofm-select" id="uofm19"><option>Select...</option></select></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="services4"/></td>
+    <td><input type="text" id="siterep4"/></td>
+    <td><input type="text" id="PO#4"/></td>
+    <td><input type="text" id="notes34"/></td>
+  </tr>
+
+  <!-- Input Rows 5-->
+  <tr class="subcontractor-row">
+    <td><input type="text" class="subcontractorName-input" id="subcontractor5"/></td>
+    <td><input type="number" class="subs-total sub-total-field" value="0.00" readonly /></td>
+    <td><select class="UofMSelect uofm-select" id="uofm20"><option>Select...</option></select></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td class="sub-hour-cell"><input type="number" class="sub-hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="services5"/></td>
+    <td><input type="text" id="siterep5"/></td>
+    <td><input type="text" id="PO#5"/></td>
+    <td><input type="text" id="notes35"/></td>
+  </tr>
+
+  <tr>
+  <td colspan="13" style="text-align: center; padding: 10px;">
+    <button id="addSubcontractorRowBtn" class="action-btn">➕ Add Subcontractor Row</button>
+  
+  </td>
+  </tr>
+ 
+</table>
+
+<!-- Units Table-->
+<table class="Units-table" style="width: 100%; table-layout: fixed;">
+  <colgroup>
+    <col style="width: 94px;">
+    <col style="width: 74px;">
+    <col style="width: 42px;">
+    <col style="width: 338px;">
+  </colgroup>
+
+  <!-- Header Row -->
+  <tr>
+    <td style="background-color: #edf1dc; text-align: center;"><strong>Units Used</strong></td>
+    <td style="background-color: #edf1dc; text-align: center;"><strong>Unit ID</strong></td>
+    <td style="background-color: #edf1dc; text-align: center;"><strong># of Units</strong></td>
+    <td style="background-color: #edf1dc; text-align: center;"><strong>Notes (ie. Measurements, etc.)</strong></td>
+  </tr>
+
+  <!-- Input Row -->
+  <tr>
+    <td><select class="unitUsedSelect" id="unitsused"><option>Select...</option></select></td>
+    <td><input type="text" class="unitIdInput" id="UnitID1" readonly /></td>
+
+    <td><input type="text" id="noofunits"/></td>
+    <td><input type="text" id="notes40"/></td>
+  </tr>
+
+  <tr>
+    <td><select class="unitUsedSelect"><option>Select...</option></select></td>
+    <td><input type="text" class="unitIdInput" readonly /></td>
+
+    <td><input type="text" id="noofunits1" /></td>
+    <td><input type="text" id="notes36"/></td>
+  </tr>
+
+  <tr>
+    <td><select class="unitUsedSelect"><option>Select...</option></select></td>
+    <td><input type="text" class="unitIdInput" readonly /></td>
+
+    <td><input type="text" id="noofunits2" /></td>
+    <td><input type="text" id="notes37"/></td>
+  </tr>
+
+  <tr>
+    <td><select class="unitUsedSelect"><option>Select...</option></select></td>
+    <td><input type="text" class="unitIdInput" readonly /></td>
+
+    <td><input type="text" id="noofunits3" /></td>
+    <td><input type="text" id="notes38"/></td>
+  </tr>
+
+  <tr>
+    <td><select class="unitUsedSelect"><option>Select...</option></select></td>
+    <td><input type="text" class="unitIdInput" readonly /></td>
+
+    <td><input type="text" id="noofunits4" /></td>
+    <td><input type="text" id="notes39"/></td>
+  </tr>
+</table>
+
+<!-- Daily Notes Table -->
+<table class="daily-notes-table" style="width: 100%; table-layout: fixed; margin-top: 20px;">
+  <colgroup>
+    <col style="width: 50%;">
+    <col style="width: 50%;">
+  </colgroup>
+
+  <tr>
+    <th style="background-color: #edf1dc; text-align: center; padding: 10px;"><strong>Completed Today</strong></th>
+    <th style="background-color: #edf1dc; text-align: center; padding: 10px;"><strong>Planned for Tomorrow</strong></th>
+  </tr>
+
+  <tr>
+    <td><textarea class="notes-input" placeholder="What was completed today..." id="completedtoday"></textarea></td>
+    <td><textarea class="notes-input" placeholder="What is planned for tomorrow..." id="plannedfortommorow"></textarea></td>
+  </tr>
+</table>
+
+<!-- 🔥 NEW PHOTO TABLE -->
+<!-- 🔁 Replace .photo-grid with this table-based layout -->
+ <table class="photo-table" style="width: 100%; table-layout: fixed; border-collapse: collapse; margin-top: 20px;">
+  <thead>
+    <tr>
+      <th colspan="2" style="background-color: #d0dfe8; text-align: center; font-size: 16px; padding: 12px;">
+        📷 Field Photos
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <div class="photo-wrapper">
+          <div class="photo-cell" data-index="0"></div>
+          <input type="text" class="photo-description" id="photoDesc0" placeholder="Photo 1 caption" />
+        </div>
+      </td>
+      <td>
+        <div class="photo-wrapper">
+          <div class="photo-cell" data-index="1"></div>
+          <input type="text" class="photo-description" id="photoDesc1" placeholder="Photo 2 caption" />
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="photo-wrapper">
+          <div class="photo-cell" data-index="2"></div>
+          <input type="text" class="photo-description" id="photoDesc2" placeholder="Photo 3 caption" />
+        </div>
+      </td>
+      <td>
+        <div class="photo-wrapper">
+          <div class="photo-cell" data-index="3"></div>
+          <input type="text" class="photo-description" id="photoDesc3" placeholder="Photo 4 caption" />
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="photo-wrapper">
+          <div class="photo-cell" data-index="4"></div>
+          <input type="text" class="photo-description" id="photoDesc4" placeholder="Photo 5 caption" />
+        </div>
+      </td>
+      <td>
+        <div class="photo-wrapper">
+          <div class="photo-cell" data-index="5"></div>
+          <input type="text" class="photo-description" id="photoDesc5" placeholder="Photo 6 caption" />
+        </div>
+      </td>
+    </tr>
+  </tbody>
+
+<!-- Footer Notice and Signature Row -->
+<table style="width: 100%; border-collapse: collapse; margin-top: 20px;" border="1">
+  <tr>
+    <td colspan="4" style="font-size: 12px; padding: 6px;">
+      <strong>****This is a field document, subject to review by OMH management</strong>
+    </td>
+  </tr>
+  <tr>
+    <td style="background-color: #c5d9f1; text-align: center; width: 20%;">
+      Client Representative<br>and Position:
+    </td>
+    <td style="background-color: #dbe5f1; width: 30%; ">
+      <input type="text" id="clientRepPosition" placeholder="Enter name and title..." />
+    </td>
+    
+    <td style="background-color: #c5d9f1; text-align: center; width: 15%;">Signature:</td>
+    <!-- Signature Field -->
+<td style="background-color: #dbe5f1; width: 35%;">
+  <div class="signature-area">
+    <textarea class="text-entry" style="display: none;"></textarea>
+    <canvas class="signature-canvas" style="display: none;"></canvas>
+    <div class="signature-controls" style="display: none;">
+      <button type="button" class="done-signature">✅ Done</button>
+      <button type="button" class="cancel-signature">❌ Cancel</button>
+    </div>
+    <button type="button" class="toggle-signature">✍️ Sign</button>
+  </div>
+  
+</td>
+  </tr>
+</table>
+
+<!-- Save, Load, Export, Reset Buttons -->
+<div class="button-bar">
+  <div class="button-left">
+    <button id="saveFormBtn" class="action-btn">💾 Save Form</button>
+    <button id="loadFormBtn" class="action-btn">📂 Load Form</button>
+    <input type="file" id="loadInput" style="display: none;" accept=".json">
+  </div>
+
+  <div class="button-center-wrap">
+    <button id="exportPdfBtn" class="action-btn export-btn">🧾 Export to PDF</button>
+    <button id="emailPdfBtn" class="action-btn email-btn">📧 Email</button>
+  </div>
+
+  <div class="button-right">
+    <button id="resetFormBtn" class="action-btn reset-btn">♻️ Reset Form</button>
+  </div>
+</div>
+
+
+<!-- Optional: Service worker registration -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg))
+        .catch(err => console.log('Service Worker registration failed:', err));
+    });
+  }
+</script>
+
+<!-- ✅ Load html2canvas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<!-- ✅ Load jsPDF (legacy build that works directly) -->
+<script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+<script>
+  const { jsPDF } = window.jspdf;
+  console.log("jsPDF loaded?", typeof jsPDF); // should now log: function
+</script>
+
+<!-- ✅ Tom Select CSS -->
+<link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet" />
+
+<!-- ✅ Tom Select JS -->
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+
+
+<!-- ✅ Your custom script (must come AFTER the libraries above) -->
+<script src="dfr.js"></script>
+
+
+</body>
+</html>
+  
