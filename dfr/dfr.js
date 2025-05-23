@@ -1133,16 +1133,6 @@ const activityMap = {
 }
 
 
-      // Optional: debug client selection
-      //document.getElementById("clientSelect").addEventListener("change", function () {
-      //  console.log("Selected client:", this.value);
-      // });
-      // })
-     // .catch(err => console.error("Failed to load dropdown lists", err));
-    //  }
-  
-    console.log('Cost codes to populate:', listData.costCodes);
-
 listData.costCodes = Object.keys(activityMap).sort();
 
 function populateCostCodes(list) {
@@ -1417,35 +1407,52 @@ function attachUnitIdListeners() {
           const file = input.files[0];
           if (file) {
             const reader = new FileReader();
-            reader.onload = e => {
-              const img = document.createElement("img");
-              img.src = e.target.result;
-            
-              const removeBtn = document.createElement("button");
-              removeBtn.textContent = "✖";
-              removeBtn.className = "remove-btn";
-            
-              removeBtn.addEventListener("click", event => {
-                event.stopPropagation();
-                cell.classList.remove("has-image");
-                cell.innerHTML = "";
-              });
-            
-              cell.innerHTML = "";
-              cell.classList.add("has-image");
-              cell.appendChild(img);
-              cell.appendChild(removeBtn);
-            
-              // ✅ Add download link (to download image to ipad)
-             // const backupLink = document.createElement("a");
-             // backupLink.href = e.target.result;
-             // backupLink.download = `photo_${Date.now()}.jpg`;
-             // backupLink.textContent = "📥 Tap to save to device";
-             // backupLink.className = "photo-download-link";
-             // cell.appendChild(backupLink);
-              };
-            
-            reader.readAsDataURL(file);
+           reader.onload = e => {
+  const img = new Image();
+  img.onload = function() {
+    const maxDim = 800;
+    let width = img.width;
+    let height = img.height;
+    if (width > maxDim || height > maxDim) {
+      if (width > height) {
+        height = Math.round(height * (maxDim / width));
+        width = maxDim;
+      } else {
+        width = Math.round(width * (maxDim / height));
+        height = maxDim;
+      }
+    }
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, width, height);
+
+    const resizedDataUrl = canvas.toDataURL("image/jpeg", 0.8);
+
+    const previewImg = document.createElement("img");
+    previewImg.src = resizedDataUrl;
+
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "✖";
+    removeBtn.className = "remove-btn";
+    removeBtn.addEventListener("click", event => {
+      event.stopPropagation();
+      cell.classList.remove("has-image");
+      cell.innerHTML = "";
+      autoSaveFormToCache();
+    });
+
+    cell.innerHTML = "";
+    cell.classList.add("has-image");
+    cell.appendChild(previewImg);
+    cell.appendChild(removeBtn);
+
+    autoSaveFormToCache();
+  };
+  img.src = e.target.result;
+};
+reader.readAsDataURL(file);
           }
         };
     
@@ -1533,6 +1540,10 @@ function attachUnitIdListeners() {
           canvas.ontouchstart = null;
           canvas.ontouchmove = null;
           canvas.ontouchend = null;
+
+           // 🔥 AUTOSAVE after signature is completed
+    autoSaveFormToCache();
+
         } else {
           canvas.style.display = "none";
         }
@@ -1599,7 +1610,7 @@ document.querySelectorAll(".photo-description").forEach((input, index) => {
   // alert("✅ Form data logged to console for debug.\nOpen DevTools (F12 > Console) to view it.");
 
 
-  const today = new Date();
+const today = new Date();
 const dd = String(today.getDate()).padStart(2, '0');
 const mm = String(today.getMonth() + 1).padStart(2, '0');
 const yyyy = today.getFullYear();
@@ -1621,9 +1632,147 @@ if (!filename) return;
   a.click();
 }
 
+function addManualManpowerRowsForRestore(data) {
+  if (!Array.isArray(data.manualManpowerRows)) return;
+
+  for (let i = 0; i < data.manualManpowerRows.length; i++) {
+    document.getElementById("addManpowerRowBtn")?.click();
+  }
+}
+
+
+
+function addManualEquipmentRowsForRestore(data) {
+  const count = Object.keys(data)
+    .filter(key => /^equipmentselect\d+$/.test(key) && parseInt(key.replace('equipmentselect','')) >= 16)
+    .filter(key => data[key]?.trim() !== "").length;
+
+  for (let i = 0; i < count; i++) {
+    document.getElementById("addEquipmentRowBtn").click();
+  }
+}
+
+
+function addManualSubcontractorRowsForRestore(data) {
+  const ids = Object.keys(data)
+    .filter(id => /^subcontractor\d+$/.test(id) && parseInt(id.replace('subcontractor','')) >= 16);
+  for (let i = 0; i < ids.length; i++) {
+    document.getElementById("addSubcontractorRowBtn").click();
+  }
+}
+
+
 // --- Restore Function ---
 function restoreForm(data) {
+  function restoreForm(data) {
+
+  addManualManpowerRowsForRestore(data);
+
+  // ✅ RESTORE VALUES for each manually added manpower row
+  const manualRows = document.querySelectorAll(".manpower-row.manual-row");
+
+if (data.manualManpowerRows && data.manualManpowerRows.length && manualRows.length) {
+  data.manualManpowerRows.forEach((rowData, idx) => {
+    const row = manualRows[idx];
+    if (!row) return;
+
+    const mp = row.querySelector('input[id^="manpowerselect"]');
+    const cl = row.querySelector('input[id^="classificationselect"]');
+    const loa = row.querySelector('input[type="checkbox"]');
+    const notes = row.querySelector('.manual-notes-input');
+    const hourInputs = row.querySelectorAll('.hour-input');
+
+    if (mp) mp.value = rowData.manpower || "";
+    if (cl) cl.value = rowData.classification || "";
+    if (loa) loa.checked = !!rowData.loa;
+    if (notes) notes.value = rowData.notes || "";
+
+    rowData.hours?.forEach((val, i) => {
+      if (hourInputs[i]) hourInputs[i].value = val || "";
+    });
+  });
+}}
+
+
+
+  //addManualEquipmentRowsForRestore(data);
+  addManualSubcontractorRowsForRestore(data);
+  
+
+  // 🔁 Continue with rest of your restoreForm logic...
+  document.querySelectorAll("input, select, textarea").forEach(el => {
+    if (el.id && data.hasOwnProperty(el.id)) {
+      if (el.type === "checkbox") {
+        el.checked = data[el.id];
+      } else {
+        el.value = data[el.id];
+      }
+    }
+  });
+
+  
+
+  // (Any custom restore logic here, e.g., for Tom Select dro
+
+
+
+// 🔥 RESTORE: Manual Equipment Rows
+if (data.manualEquipmentRows && data.manualEquipmentRows.length) {
+  data.manualEquipmentRows.forEach(() => {
+    document.getElementById("addEquipmentRowBtn").click();
+  });
+
+  const manualEquipRows = document.querySelectorAll(".equipment-row.manual-row");
+
+  data.manualEquipmentRows.forEach((rowData, idx) => {
+    const row = manualEquipRows[idx];
+    if (!row) return;
+
+    const equipment = row.querySelector("input[id^='equipmentselect']");
+    const total = row.querySelector(".equipment-total");
+    const uofm = row.querySelector("input[id^='uofm']");
+    const po = row.querySelector("input[id^='po']");
+    const notes = row.querySelector("input[id^='notesEquip']");
+    const hourInputs = row.querySelectorAll(".hour-input");
+
+    if (equipment) equipment.value = rowData.equipment || "";
+    if (total) total.value = rowData.total || "";
+    if (uofm) uofm.value = rowData.uofm || "";
+    if (po) po.value = rowData.po || "";
+    if (notes) notes.value = rowData.notes || "";
+
+    rowData.hours?.forEach((val, i) => {
+      if (hourInputs[i]) hourInputs[i].value = val || "";
+    });
+  });
+}
+
+
+// 🔥 RESTORE: Manual Subcontractor Rows
+if (data.manualSubRows && data.manualSubRows.length) {
+  data.manualSubRows.forEach(() => {
+    document.getElementById("addSubcontractorRowBtn").click();
+  });
+  const manualSubRows = document.querySelectorAll(".subcontractor-row.manual-row");
+  data.manualSubRows.forEach((rowData, idx) => {
+    const row = manualSubRows[idx];
+    if (row) {
+      row.querySelector("input.subcontractorName-input").value = rowData.name;
+      row.querySelector(".sub-total-field").value = rowData.total;
+      row.querySelector("select.UofMSelect").value = rowData.uofm;
+      row.querySelectorAll(".sub-hour-input").forEach((input, i) => {
+        input.value = rowData.hours[i] || "";
+      });
+      row.querySelector("input[id^='services']").value = rowData.services || "";
+      row.querySelector("input[id^='siterep']").value = rowData.siterep || "";
+      row.querySelector("input[id^='PO#']").value = rowData.po || "";
+      row.querySelector("input[id^='notes3']").value = rowData.notes || "";
+    }
+  });
+}
+
   Object.keys(data).forEach(id => {
+
     if (["photos", "manpowerHours", "equipmentHours", "subcontractorHours"].includes(id)) return;
     const el = document.getElementById(id);
     if (el) {
@@ -1682,6 +1831,9 @@ data.subcontractorHours?.forEach((val, i) => {
           event.stopPropagation();
           cell.classList.remove("has-image");
           cell.innerHTML = "";
+
+          // 🔥 AUTOSAVE after photo is removed
+  autoSaveFormToCache();
         });
 
         cell.innerHTML = "";
@@ -1705,6 +1857,11 @@ document.querySelectorAll(".signature-canvas").forEach((canvas, index) => {
   const key = `signatureCanvas${index}`;
   const base64 = data[key];
   if (base64) {
+
+    // 🔥 Ensure correct canvas size before restoring
+    canvas.width = canvas.offsetWidth || 400;
+    canvas.height = canvas.offsetHeight || 120;
+
     const ctx = canvas.getContext("2d");
     const img = new Image();
     img.onload = () => {
@@ -1726,12 +1883,15 @@ document.querySelectorAll(".signature-canvas").forEach((canvas, index) => {
 // --- Autosave Logic ---
 function autoSaveFormToCache() {
   const data = {};
-
-  document.querySelectorAll("input, textarea, select").forEach(el => {
+  document.querySelectorAll("input, select, textarea").forEach(el => {
     if (el.id) {
-      data[el.id] = el.type === "checkbox" ? el.checked : el.value;
+      if (el.type === "checkbox") data[el.id] = el.checked;
+      else data[el.id] = el.value;
     }
   });
+  localStorage.setItem("autosavedDFR", JSON.stringify(data));
+  sessionStorage.setItem("autosavedDFR", JSON.stringify(data));
+
 
 // 🔥 Save signature canvases for autosave
 document.querySelectorAll(".signature-canvas").forEach((canvas, index) => {
@@ -1766,7 +1926,57 @@ document.querySelectorAll(".photo-description").forEach((input, index) => {
   data.equipmentHours = Array.from(document.querySelectorAll(".equip-hour-cell input")).map(i => i.value);
   data.subcontractorHours = Array.from(document.querySelectorAll(".sub-hour-cell input")).map(i => i.value);
 
-  const jsonData = JSON.stringify(data);
+  // 🔥 NEW: Save Manual Manpower Rows
+data.manualManpowerRows = [];
+document.querySelectorAll(".manpower-row.manual-row").forEach(row => {
+  data.manualManpowerRows.push({
+    manpower: row.querySelector("input[id^='manpowerselect']")?.value || "",
+    classification: row.querySelector("input[id^='classificationselect']")?.value || "",
+    loa: row.querySelector("input[type='checkbox']")?.checked || false,
+    hours: Array.from(row.querySelectorAll(".hour-input")).map(input => input.value || ""),
+    notes: row.querySelector(".manual-notes-input")?.value || ""
+
+  });
+});
+
+// 🔥 NEW: Save Manual Equipment Rows
+data.manualEquipmentRows = [];
+document.querySelectorAll(".equipment-row.manual-row").forEach(row => {
+  data.manualEquipmentRows.push({
+    equipment: row.querySelector("input[id^='equipmentselect']")?.value || "",
+    total: row.querySelector(".equipment-total")?.value || "",
+    uofm: row.querySelector("select.UofMSelect")?.value || "",
+
+    hours: Array.from(row.querySelectorAll(".hour-input")).map(input => input.value || ""),
+    po: row.querySelector("input[id^='po']")?.value || "",
+    notes: row.querySelector("input[id^='notesEquip']")?.value || ""
+  });
+});
+
+// 🔥 NEW: Save Manual Subcontractor Rows
+data.manualSubRows = [];
+document.querySelectorAll(".subcontractor-row.manual-row").forEach(row => {
+  data.manualSubRows.push({
+    name: row.querySelector("input.subcontractorName-input")?.value || "",
+    total: row.querySelector(".sub-total-field")?.value || "",
+    uofm: row.querySelector("select.UofMSelect")?.value || "",
+    hours: Array.from(row.querySelectorAll(".sub-hour-input")).map(input => input.value || ""),
+    services: row.querySelector("input[id^='services']")?.value || "",
+    siterep: row.querySelector("input[id^='siterep']")?.value || "",
+    po: row.querySelector("input[id^='PO#']")?.value || "",
+    notes: row.querySelector("input[id^='notes3']")?.value || ""
+  });
+});
+
+console.log("🧠 AUTOSAVE Snapshot", {
+  notesFromManual: data.manualManpowerRows?.map(r => r.notes),
+  full: data.manualManpowerRows
+});
+
+
+
+
+const jsonData = JSON.stringify(data);
 localStorage.setItem("autosavedDFR", jsonData);
 sessionStorage.setItem("autosavedDFR", jsonData);
 
@@ -1799,6 +2009,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadLists().then(() => {
     attachAutosaveListeners();
 
+
     // ✅ Save
     document.getElementById("saveFormBtn")?.addEventListener("click", saveForm);
 
@@ -1820,11 +2031,17 @@ document.addEventListener("DOMContentLoaded", () => {
 if (cached) {
   try {
     const data = JSON.parse(cached);
-    requestAnimationFrame(() => restoreForm(data));
+    requestAnimationFrame(() => {
+      restoreForm(data);
+
+      // 🔥 Immediately re-cache the fully restored form to ensure images/signature persist on double reload
+      autoSaveFormToCache();
+    });
   } catch (err) {
     console.warn("⚠️ Failed to restore autosaved form:", err);
   }
 }
+
 
   });
 });
@@ -1833,24 +2050,24 @@ document.getElementById("resetFormBtn")?.addEventListener("click", () => {
   const confirmReset = confirm("Are you sure you want to clear the form and reset everything?");
   if (!confirmReset) return;
 
-  // Clear all input, textarea, select fields
+  // 🔥 Remove cache first for speed
+  localStorage.removeItem("autosavedDFR");
+  sessionStorage.removeItem("autosavedDFR");
+
+  // Clear all input, textarea, select fields (no extra events)
   document.querySelectorAll("input, textarea, select").forEach(el => {
     if (el.type === "checkbox") {
       el.checked = false;
     } else {
       el.value = "";
     }
-    el.dispatchEvent(new Event("input", { bubbles: true }));
-    el.dispatchEvent(new Event("change", { bubbles: true }));
+  });
 
-    // ✅ Clear Tom Select values
-document.querySelectorAll("select").forEach(select => {
-  if (select.tomselect) {
-    select.tomselect.clear();  // Clears the visible value
-  }
-});
-
-
+  // Clear Tom Select visible values
+  document.querySelectorAll("select").forEach(select => {
+    if (select.tomselect) {
+      select.tomselect.clear();
+    }
   });
 
   // Clear dynamic totals
@@ -1858,34 +2075,37 @@ document.querySelectorAll("select").forEach(select => {
     input.value = "";
   });
 
-  // Clear photo cells
+  // Clear all photo cells and file inputs
   document.querySelectorAll(".photo-cell").forEach(cell => {
     cell.classList.remove("has-image");
     cell.innerHTML = "";
+    const fileInput = cell.querySelector("input[type='file']");
+    if (fileInput) fileInput.value = "";
+  });
+  // Also clear any photo captions/desc fields if you use them:
+  document.querySelectorAll(".photo-caption-input").forEach(input => input.value = "");
+
+  // Remove all manual/dynamic rows (if you use .manual-row class)
+  document.querySelectorAll(".manual-row").forEach(row => row.remove());
+
+  // Clear signature canvases
+  document.querySelectorAll(".signature-canvas").forEach(canvas => {
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.style.display = "none";
   });
 
-  // Clear local storage autosave
-  localStorage.removeItem("autosavedDFR");
-
-  // 🔥 Clear signature canvases
-    document.querySelectorAll(".signature-canvas").forEach(canvas => {
-      const ctx = canvas.getContext("2d");
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      canvas.style.display = "none";
-    });
-  
-  // 🔥 Reset signature areas back to text entry
-    document.querySelectorAll(".signature-area").forEach(area => {
-      const textarea = area.querySelector(".text-entry");
-      const controls = area.querySelector(".signature-controls");
-  
-      if (textarea) textarea.style.display = "block";
-      if (controls) controls.style.display = "none";
-    });
-  
+  // Reset signature areas back to text entry
+  document.querySelectorAll(".signature-area").forEach(area => {
+    const textarea = area.querySelector(".text-entry");
+    const controls = area.querySelector(".signature-controls");
+    if (textarea) textarea.style.display = "block";
+    if (controls) controls.style.display = "none";
+  });
 
   alert("🧼 Form reset and autosave cache cleared.");
 });
+
 
 // --- PDF Export ---
 document.getElementById("exportPdfBtn")?.addEventListener("click", async () => {
@@ -1997,6 +2217,14 @@ let extraManpowerCount = 15;
 document.getElementById("addManpowerRowBtn")?.addEventListener("click", () => {
   extraManpowerCount++;
 
+  function addManualManpowerRowsForRestore(data) {
+  const manualKeys = Object.keys(data)
+    .filter(key => /^notes\d+$/.test(key) && +key.replace("notes","") > 15);
+  manualKeys.forEach(() => {
+    document.getElementById("addManpowerRowBtn")?.click();
+  });
+}
+
   const row = document.createElement("tr");
   row.classList.add("manpower-row", "manual-row");
 
@@ -2007,8 +2235,8 @@ document.getElementById("addManpowerRowBtn")?.addEventListener("click", () => {
     <td class="center-checkbox"><input type="checkbox" id="checkbox${extraManpowerCount}" /></td>
     ${[...Array(6)].map(() => `<td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>`).join("")}
     <td style="position: relative;">
-      <input type="text" id="notes${extraManpowerCount}" style="padding-right: 30px;" />
-      <button class="remove-btn" title="Remove Row" style="position: absolute; top: 4px; right: 4px;">🗑</button>
+    <input type="text" id="notes${extraManpowerCount}" class="manual-notes-input" style="padding-right: 30px;" />
+    <button class="remove-btn" title="Remove Row" style="position: absolute; top: 4px; right: 4px;">🗑</button>
     </td>
   `;
 
@@ -2021,6 +2249,7 @@ document.getElementById("addManpowerRowBtn")?.addEventListener("click", () => {
   row.querySelector(".remove-btn")?.addEventListener("click", () => {
     row.remove();
     updateGrandTotalHours();
+    autoSaveFormToCache();
   });
 
   // ✅ Recalculate totals for new row
@@ -2043,6 +2272,13 @@ document.getElementById("addManpowerRowBtn")?.addEventListener("click", () => {
       if (!isNaN(val)) input.value = val.toFixed(2);
     });
   });
+
+  // 🔥 Attach autosave to all new fields in this row:
+row.querySelectorAll("input, textarea, select").forEach(el => {
+  el.addEventListener("input", autoSaveFormToCache);
+  el.addEventListener("change", autoSaveFormToCache);
+});
+  autoSaveFormToCache();
 });
 
 
@@ -2058,7 +2294,13 @@ document.getElementById("addEquipmentRowBtn")?.addEventListener("click", () => {
   row.innerHTML = `
     <td><input type="text" id="equipmentselect${extraEquipCount}" /></td>
     <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
-    <td><input type="text" id="uofm${extraEquipCount}" /></td>
+    <td>
+  <select class="UofMSelect" id="uofm${extraEquipCount}">
+    <option>Select...</option>
+    ${listData.UofM?.map(unit => `<option value="${unit}">${unit}</option>`).join("")}
+  </select>
+</td>
+
     ${[...Array(6)].map(() => `<td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>`).join("")}
     <td><input type="text" id="po${extraEquipCount}" /></td>
     <td style="position: relative;">
@@ -2071,6 +2313,15 @@ document.getElementById("addEquipmentRowBtn")?.addEventListener("click", () => {
   if (addRowTr && addRowTr.parentNode) {
     addRowTr.parentNode.insertBefore(row, addRowTr);
   }
+
+  const newUofM = row.querySelector("select.UofMSelect");
+if (newUofM) {
+  new TomSelect(newUofM, {
+    create: false,
+    sortField: { field: "text", direction: "asc" }
+  });
+}
+
 
   // ✅ Attach remove logic to the embedded button
   row.querySelector(".remove-btn")?.addEventListener("click", () => {
@@ -2098,6 +2349,14 @@ document.getElementById("addEquipmentRowBtn")?.addEventListener("click", () => {
       if (!isNaN(val)) input.value = val.toFixed(2);
     });
   });
+
+    // 🔥 Attach autosave to all new fields in this row:
+row.querySelectorAll("input, textarea, select").forEach(el => {
+  el.addEventListener("input", autoSaveFormToCache);
+  el.addEventListener("change", autoSaveFormToCache);
+});
+
+autoSaveFormToCache();
 });
 
 
@@ -2175,6 +2434,14 @@ row.querySelector(".remove-btn")?.addEventListener("click", () => {
       if (!isNaN(val)) input.value = val.toFixed(2);
     });
   });
+
+    // 🔥 Attach autosave to all new fields in this row:
+row.querySelectorAll("input, textarea, select").forEach(el => {
+  el.addEventListener("input", autoSaveFormToCache);
+  el.addEventListener("change", autoSaveFormToCache);
+});
+
+  autoSaveFormToCache();
 });
 
  
