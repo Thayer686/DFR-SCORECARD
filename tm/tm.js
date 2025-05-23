@@ -16,7 +16,8 @@ function getCachedRowCount(prefix) {
   for (const key in data) {
     if (key.startsWith(prefix)) {
       const match = key.match(/\d+$/);
-      if (match) {
+      const val = data[key];
+      if (match && val && val !== "") {
         const num = parseInt(match[0]);
         if (num > count) count = num;
       }
@@ -24,6 +25,7 @@ function getCachedRowCount(prefix) {
   }
   return Math.max(count, 5);
 }
+
 
 function wrapCell(content, center = false) {
   const td = document.createElement("td");
@@ -102,49 +104,6 @@ function addScopeRow() {
   row.appendChild(wrapCell(commentInput));
 
   scopeBody.appendChild(row);
-}
-
-function addCrewRow() {
-  crewRowCount++;
-  const row = document.createElement("tr");
-
-  const classSelect = createDropdown(classifications);
-  classSelect.id = `crewClass${crewRowCount}`;
-
-  const nameSelect = createDropdown(manpower);
-  nameSelect.id = `crewName${crewRowCount}`;
-
-  const unitCell = document.createElement("td");
-  unitCell.textContent = "Hours";
-
-  const totalInput = document.createElement("input");
-  totalInput.type = "number";
-  totalInput.step = "0.5";
-  totalInput.min = "0";
-  totalInput.style.width = "70px";
-  totalInput.id = `crewTotal${crewRowCount}`;
-
-  const loaCheckbox = document.createElement("input");
-  loaCheckbox.type = "checkbox";
-  loaCheckbox.id = `crewLoa${crewRowCount}`;
-
-  const truckCheckbox = document.createElement("input");
-  truckCheckbox.type = "checkbox";
-  truckCheckbox.id = `crewTruck${crewRowCount}`;
-
-  const notesInput = document.createElement("input");
-  notesInput.type = "text";
-  notesInput.id = `crewNotes${crewRowCount}`;
-
-  row.appendChild(wrapCell(classSelect));
-  row.appendChild(wrapCell(nameSelect));
-  row.appendChild(unitCell);
-  row.appendChild(wrapCell(totalInput));
-  row.appendChild(wrapCell(loaCheckbox, true));
-  row.appendChild(wrapCell(truckCheckbox, true));
-  row.appendChild(wrapCell(notesInput));
-
-  crewBody.appendChild(row);
 }
 
 function addEquipmentRow() {
@@ -756,8 +715,6 @@ function handleAutosave() {
 }
 // 🔥 NEW CODE END
 
-
-
   window.addEventListener("load", () => {
   // 🔹 1. Setup Signature Canvases
   setupSignatureCanvas("contractorSig");
@@ -771,12 +728,6 @@ function handleAutosave() {
   const maxScope = Math.max(getCachedRowCount("scopeId"), 5);
   const maxCrew = Math.max(getCachedRowCount("crewClass"), 5);
   const maxEquip = Math.max(getCachedRowCount("equipmentUnit"), 5);
-
-
-  // After creating the required number of rows:
-  for (let i = 0; i < maxScope; i++) addScopeRow();
-  for (let i = 0; i < maxCrew; i++) addCrewRow();
-  for (let i = 0; i < maxEquip; i++) addEquipmentRow();
 
   // ✅ Now apply the cached data
   if (data) {
@@ -792,100 +743,71 @@ for (let i = 1; i <= scopeRowCount; i++) {
   }
 }
 
-
-
-  // --- Scope Section ---
-  const scopeBody = document.getElementById("scopeBody");
- 
-
-  const addScopeRowBtn = document.getElementById("addScopeRow");
-  const removeScopeRowBtn = document.getElementById("removeScopeRow");
-
-  removeScopeRowBtn.addEventListener("click", () => {
-    const rows = scopeBody.querySelectorAll("tr");
-    if (rows.length > 5) {
-      rows[rows.length - 1].remove();
-    } else {
-      alert("At least 5 scope rows must remain.");
-    }
-  });
-
-  function addScopeRow() {
-  const row = document.createElement("tr");
-  scopeRowCount++;
-
-  const idInput = document.createElement("input");
-  idInput.type = "text";
-  idInput.readOnly = true;
-  idInput.id = `scopeId${scopeRowCount}`;
-
-  const descSelect = document.createElement("select");
-  descSelect.id = `scopeDesc${scopeRowCount}`;
-  const defaultOption = document.createElement("option");
-  defaultOption.value = "";
-  defaultOption.textContent = "Select...";
-  descSelect.appendChild(defaultOption);
-  scopeItems.forEach(opt => {
-    const option = document.createElement("option");
-    option.value = opt.desc;
-    option.textContent = opt.desc;
-    descSelect.appendChild(option);
-  });
-
-  const unitCell = document.createElement("td");
-  unitCell.id = `scopeUnit${scopeRowCount}`;
-  unitCell.textContent = "";
-
-  const unitsInput = document.createElement("input");
-  unitsInput.type = "number";
-  unitsInput.step = "0.10";
-  unitsInput.min = "0";
-  unitsInput.style.width = "70px";
-  unitsInput.id = `scopeQty${scopeRowCount}`;
-
-  const commentInput = document.createElement("input");
-  commentInput.type = "text";
-  commentInput.id = `scopeComment${scopeRowCount}`;
-
-  descSelect.addEventListener("change", () => {
-    const selected = scopeItems.find(s => s.desc === descSelect.value);
-    if (selected) {
-      idInput.value = selected.id;
-      unitCell.textContent = selected.unit;
-    } else {
-      idInput.value = "";
-      unitCell.textContent = "";
-    }
-  });
-
-  row.appendChild(wrapCell(idInput));
-  row.appendChild(wrapCell(descSelect));
-  row.appendChild(unitCell);
-  row.appendChild(wrapCell(unitsInput));
-  row.appendChild(wrapCell(commentInput));
-  scopeBody.appendChild(row);
-}
-
-
   // --- Crew Section ---
   const crewBody = document.getElementById("crewBody");
   
+  // --- Equipment Section ---
+  const equipmentBody = document.getElementById("equipmentBody");
 
-  const addCrewRowBtn = document.getElementById("addCrewRow");
-  const removeCrewRowBtn = document.getElementById("removeCrewRow");
 
-  addCrewRowBtn.addEventListener("click", () => {
-    addCrewRow();
-  });
+function wrapCell(element) {
+  const td = document.createElement("td");
+  td.appendChild(element);
+  return td;
+}
 
-  removeCrewRowBtn.addEventListener("click", () => {
-    const rows = crewBody.querySelectorAll("tr");
-    if (rows.length > 5) {
-      rows[rows.length - 1].remove();
-    } else {
-      alert("At least 5 crew rows must remain.");
+function getCachedRowCount(prefix) {
+  const saved = localStorage.getItem("tm_autosave");
+  if (!saved) return 5;
+
+  const data = JSON.parse(saved);
+  let maxIndex = 0;
+  for (const key in data) {
+    if (key.startsWith(prefix) && data[key] !== "") {
+      const match = key.match(/\d+$/);
+      if (match) {
+        const index = parseInt(match[0]);
+        if (index > maxIndex) maxIndex = index;
+      }
     }
-  });
+  }
+  return Math.max(maxIndex, 5);
+}
+
+
+  // 🔹 4. Attach all button handlers
+  document.getElementById("addScopeRow")?.addEventListener("click", addScopeRow);
+  document.getElementById("removeScopeRow")?.addEventListener("click", removeScopeRow);
+
+  document.getElementById("addCrewRow")?.addEventListener("click", addCrewRow);
+  document.getElementById("removeCrewRow")?.addEventListener("click", removeCrewRow);
+
+  document.getElementById("addEquipmentBtn")?.addEventListener("click", addEquipmentRow);
+  //document.getElementById("removeEquipmentBtn")?.addEventListener("click", removeEquipmentRow);
+});
+
+  // --- Helpers ---
+  function wrapCell(content, center = false) {
+    const td = document.createElement("td");
+    if (center) td.style.textAlign = "center";
+    td.appendChild(content);
+    return td;
+  }
+
+  function createDropdown(options) {
+    const select = document.createElement("select");
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Select...";
+    select.appendChild(defaultOption);
+    options.forEach(opt => {
+      const option = document.createElement("option");
+      option.value = opt;
+      option.textContent = opt;
+      select.appendChild(option);
+    });
+    return select;
+  }
 
   function addCrewRow() {
   crewRowCount++;
@@ -928,17 +850,6 @@ for (let i = 1; i <= scopeRowCount; i++) {
   row.appendChild(wrapCell(notesInput));
 
   crewBody.appendChild(row);
-}
-
-
-  // --- Equipment Section ---
-  const equipmentBody = document.getElementById("equipmentBody");
-
-
-function wrapCell(element) {
-  const td = document.createElement("td");
-  td.appendChild(element);
-  return td;
 }
 
 function addEquipmentRow() {
@@ -999,77 +910,6 @@ function addEquipmentRow() {
 
   equipmentBody.appendChild(row);
 }
-
-
-function removeEquipmentRow() {
-  if (equipmentRowCount > 0) {
-    equipmentBody.removeChild(equipmentBody.lastElementChild);
-    equipmentRowCount--;
-  }
-}
-
-function getCachedRowCount(prefix) {
-  const saved = localStorage.getItem("tm_autosave");
-  if (!saved) return 5;
-
-  const data = JSON.parse(saved);
-  let count = 0;
-  for (const key in data) {
-    if (key.startsWith(prefix)) {
-      const match = key.match(/\d+$/);
-      if (match) {
-        const num = parseInt(match[0]);
-        if (num > count) count = num;
-      }
-    }
-  }
-  return Math.max(count, 5);
-}
-
-
-
-
-  // 🔹 4. Attach all button handlers
-  document.getElementById("addScopeRow")?.addEventListener("click", addScopeRow);
-  document.getElementById("removeScopeRow")?.addEventListener("click", removeScopeRow);
-
-  document.getElementById("addCrewRow")?.addEventListener("click", addCrewRow);
-  document.getElementById("removeCrewRow")?.addEventListener("click", removeCrewRow);
-
-  document.getElementById("addEquipmentBtn")?.addEventListener("click", addEquipmentRow);
-  document.getElementById("removeEquipmentBtn")?.addEventListener("click", removeEquipmentRow);
-});
-
-
-
-
-
-
-  // --- Helpers ---
-  function wrapCell(content, center = false) {
-    const td = document.createElement("td");
-    if (center) td.style.textAlign = "center";
-    td.appendChild(content);
-    return td;
-  }
-
-  function createDropdown(options) {
-    const select = document.createElement("select");
-    const defaultOption = document.createElement("option");
-    defaultOption.value = "";
-    defaultOption.textContent = "Select...";
-    select.appendChild(defaultOption);
-    options.forEach(opt => {
-      const option = document.createElement("option");
-      option.value = opt;
-      option.textContent = opt;
-      select.appendChild(option);
-    });
-    return select;
-  }
-
-
-
 
 function setupSignatureCanvas(canvasId, doResize = false) {
   const canvas = document.getElementById(canvasId);
@@ -1162,57 +1002,109 @@ function clearSignature(canvasId) {
 
 function getFormData() {
   const data = {};
-  const elements = document.querySelectorAll("input, select, textarea");
 
-  elements.forEach(el => {
+  // 🔥 Manually walk and evaluate each row (not based on rowCount vars)
+  document.querySelectorAll("input, select, textarea").forEach(el => {
+    const id = el.id;
+    if (!id) return;
+
+    // 🔥 Skip blank Scope rows
+    if (/^scope(Id|Desc|Qty|Comment)\d+$/.test(id)) {
+      const i = id.match(/\d+$/)[0];
+      const desc = document.getElementById(`scopeDesc${i}`)?.value || "";
+      const qty = document.getElementById(`scopeQty${i}`)?.value || "";
+      const comment = document.getElementById(`scopeComment${i}`)?.value || "";
+      if (!desc && !qty && !comment) return;
+    }
+
+    // 🔥 Skip blank Crew rows
+    if (/^crew(Class|Name|Total|Notes|Loa|Truck)\d+$/.test(id)) {
+      const i = id.match(/\d+$/)[0];
+      const name = document.getElementById(`crewName${i}`)?.value || "";
+      const total = document.getElementById(`crewTotal${i}`)?.value || "";
+      const notes = document.getElementById(`crewNotes${i}`)?.value || "";
+      if (!name && !total && !notes) return;
+    }
+
+    // 🔥 Skip blank Equipment rows
+    if (/^equipment(Unit|Desc|UnitType|Total|Notes)\d+$/.test(id)) {
+      const i = id.match(/\d+$/)[0];
+      const unit = document.getElementById(`equipmentUnit${i}`)?.value || "";
+      const total = document.getElementById(`equipmentTotal${i}`)?.value || "";
+      const notes = document.getElementById(`equipmentNotes${i}`)?.value || "";
+      if (!unit && !total && !notes) return;
+    }
+
+    // Save value
     if (el.type === "checkbox") {
-      data[el.id] = el.checked;
+      data[id] = el.checked;
     } else if (el.type === "radio") {
       if (el.checked) data[el.name] = el.value;
     } else {
-      data[el.id] = el.value;
+      data[id] = el.value;
     }
   });
 
-["contractorSig", "clientSig"].forEach(id => {
-  const canvas = document.getElementById(id);
-  if (!canvas) return;
+  // ✅ Save scope unit label text
+  document.querySelectorAll("[id^='scopeUnit']").forEach(cell => {
+    const id = cell.id;
+    const text = cell.textContent.trim();
+    if (text !== "") {
+      data[id] = text;
+    }
+  });
 
-  const blank = document.createElement("canvas");
-  blank.width = canvas.width;
-  blank.height = canvas.height;
+  // ✅ Save signatures
+  ["contractorSig", "clientSig"].forEach(id => {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
 
-  if (canvas.toDataURL() !== blank.toDataURL()) {
-    data[id] = canvas.toDataURL("image/png");
-  }
-});
+    const blank = document.createElement("canvas");
+    blank.width = canvas.width;
+    blank.height = canvas.height;
 
-
-
-  // Save text content from unit cells
-  const scopeRows = document.querySelectorAll("#scopeBody tr");
-for (let i = 1; i <= scopeRows.length; i++) {
-  const unitCell = document.getElementById(`scopeUnit${i}`);
-  if (unitCell) {
-    data[`scopeUnit${i}`] = unitCell.textContent;
-  }
-}
-
+    if (canvas.toDataURL() !== blank.toDataURL()) {
+      data[id] = canvas.toDataURL("image/png");
+    }
+  });
 
   return data;
 }
 
+
+
 function setFormData(data) {
+  // 🔥 1. Clear all current rows
+  scopeBody.innerHTML = "";
+  crewBody.innerHTML = "";
+  equipmentBody.innerHTML = "";
+  scopeRowCount = 0;
+  crewRowCount = 0;
+  equipmentRowCount = 0;
+
+  // 🔥 2. Determine how many rows are needed from the data
+  const maxScope = Math.max(
+    ...Object.keys(data).filter(k => /^scope(Id|Desc|Qty|Comment)\d+$/.test(k)).map(k => parseInt(k.match(/\d+$/)[0]) || 0),
+    5
+  );
+
+  const maxCrew = Math.max(
+    ...Object.keys(data).filter(k => /^crew(Class|Name|Total|Notes|Loa|Truck)\d+$/.test(k)).map(k => parseInt(k.match(/\d+$/)[0]) || 0),
+    5
+  );
+
+  const maxEquip = Math.max(
+    ...Object.keys(data).filter(k => /^equipment(Unit|Desc|UnitType|Total|Notes)\d+$/.test(k)).map(k => parseInt(k.match(/\d+$/)[0]) || 0),
+    5
+  );
+
+  // 🔥 3. Add rows before applying values
+  while (scopeRowCount < maxScope) addScopeRow();
+  while (crewRowCount < maxCrew) addCrewRow();
+  while (equipmentRowCount < maxEquip) addEquipmentRow();
+
+  // ✅ 4. Now populate fields
   const elements = document.querySelectorAll("input, select, textarea");
-  // 🔧 Ensure enough rows are created before applying values
-const maxScope = Math.max(...Object.keys(data).filter(k => k.startsWith("scopeId")).map(k => parseInt(k.match(/\d+$/)[0] || 0)));
-const maxCrew = Math.max(...Object.keys(data).filter(k => k.startsWith("crewClass")).map(k => parseInt(k.match(/\d+$/)[0] || 0)));
-const maxEquip = Math.max(...Object.keys(data).filter(k => k.startsWith("equipmentUnit")).map(k => parseInt(k.match(/\d+$/)[0] || 0)));
-
-while (scopeRowCount < maxScope) addScopeRow();
-while (crewRowCount < maxCrew) addCrewRow();
-while (equipmentRowCount < maxEquip) addEquipmentRow();
-
 
   elements.forEach(el => {
     if (el.id && data.hasOwnProperty(el.id)) {
@@ -1224,40 +1116,34 @@ while (equipmentRowCount < maxEquip) addEquipmentRow();
     }
   });
 
-  // Restore unit cells
-  const scopeRows = document.querySelectorAll("#scopeBody tr");
-  for (let i = 1; i <= scopeRows.length; i++) {
+  // ✅ 5. Restore unit label cells
+  for (let i = 1; i <= maxScope; i++) {
     const unitCell = document.getElementById(`scopeUnit${i}`);
     if (unitCell && data[`scopeUnit${i}`]) {
       unitCell.textContent = data[`scopeUnit${i}`];
     }
   }
 
-    // Restore signature canvases
+  // ✅ 6. Restore signatures
   ["contractorSig", "clientSig"].forEach(id => {
-  if (data[id]) {
-    const canvas = document.getElementById(id);
-    const ctx = canvas.getContext("2d");
+    if (data[id]) {
+      const canvas = document.getElementById(id);
+      const ctx = canvas.getContext("2d");
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
 
-    // 🔥 NEW: Resize canvas before restoring signature image
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
-    ctx.lineWidth = 2;
-    ctx.lineJoin = "round";
-    ctx.lineCap = "round";
-
-    const img = new Image();
-    img.onload = function () {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    };
-    img.src = data[id];
-  }
-});
-
-
+      const img = new Image();
+      img.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      };
+      img.src = data[id];
+    }
+  });
 }
+
+
 
 
 // Save Form to JSON file
@@ -1362,6 +1248,8 @@ document.getElementById("exportPdfBtn")?.addEventListener("click", async () => {
     alert("Export failed: .canvas not found.");
     return;
   }
+
+  
 
   // 🔍 Get date from form
   const formDate = document.getElementById("tmDate")?.value || "unknown-date";

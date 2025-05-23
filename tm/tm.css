@@ -85,16 +85,12 @@ input[type="number"],
 input[type="date"],
 select,
 textarea {
-  font-size: 12px;         /* readable size */
-  line-height: 1.4;        /* 🔥 give vertical breathing room */
-  height: 30px;            /* 🔥 MUST be tall enough to avoid clipping */
-  padding: 5px 6px;
-  text-align: left;
+  font-size: 12px;
+  line-height: 1.6;           /* 🔧 Increase line-height */
+  height: 34px;               /* 🔧 Slightly taller input */
+  padding: 6px 8px;           /* 🔧 Adjust padding */
   box-sizing: border-box;
 }
-
-
-
 
 input[type="number"] {
   text-align: center;
@@ -367,6 +363,61 @@ textarea {
   padding: 8px 14px;
   font-size: 14px;
 }
+
+/* 🔥 TEMPORARY: Improve PDF layout for export */
+.pdf-export input,
+.pdf-export select,
+.pdf-export textarea {
+  font-size: 10px !important;
+  height: auto !important;
+  padding: 2px 4px !important;
+  white-space: normal !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+
+/* Ensure table layout holds up */
+.pdf-export table {
+  table-layout: fixed;
+  word-wrap: break-word;
+}
+
+.tm-container.pdf-export {
+  /* Don't touch height, display, visibility, or layout */
+  outline: 2px dashed red; /* debug aid */
+}
+
+select[id^="equipmentUnitType"] {
+  width: 80px;        /* adjust as needed */
+  text-align: center;
+}
+
+select {
+  font-size: 12px;
+  line-height: 1.6;     /* helps vertically center text */
+  height: 34px;         /* matches text input height */
+  padding: 4px 8px;     /* better spacing inside */
+  box-sizing: border-box;
+  appearance: none;     /* consistent rendering across browsers */
+  background-color: #fff;
+}
+
+#contractorDate,
+#clientDate,
+#tmDate {
+  font-size: 12px;
+  line-height: normal;
+  height: 34px;
+  padding: 6px 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  appearance: none; /* optional for consistent rendering across browsers */
+}
+
+
+
+
 
 
 

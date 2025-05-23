@@ -226,6 +226,7 @@ clients: [
 "Trevor Dewey",
 "Tristan Vigliotti",
 "Troy Connett",
+"Tyler Anderson",
 "Ty Stokes",
 "Tyler Brown",
 "Tyler Lothian",
