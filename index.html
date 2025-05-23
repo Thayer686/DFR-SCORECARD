@@ -3,27 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <title>OMH Form Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ✅ PWA Meta -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1e3a5f" />
+
+  <!-- ✅ Manifest -->
+  <link rel="manifest" href="manifest.json" />
+
   <link rel="stylesheet" href="index.css" />
 </head>
 <body>
-  <div class="landing-container">
-    <h1>OMH Form Portal</h1>
-    <button onclick="location.href='dfr/dfr.html'">📝 Daily Field Report</button>
-    <button onclick="location.href='tm/tm.html'">🧾 T&M Report</button>
-    <hr />
-    <button onclick="generateTMfromDFR()">🔄 Generate T&M From Daily Field Report (Not Working Yet)</button>
+  <div class="pwa-wrapper"> <!-- ✅ Wrap everything in here -->
+    <div class="landing-container">
+      <h1>OMH Form Portal</h1>
+      <button onclick="location.href='dfr/dfr.html'">📝 Daily Field Report</button>
+      <button onclick="location.href='tm/tm.html'">🧾 T&M Report</button>
+      <hr />
+      <button onclick="generateTMfromDFR()">🔄 Generate T&M From Daily Field Report (Not Working Yet)</button>
+    </div>
   </div>
 
   <script>
     function generateTMfromDFR() {
-      // Optionally load last saved DFR from localStorage
       const cached = localStorage.getItem("autosavedDFR");
       if (!cached) {
         alert("No Daily Field Report found to convert.");
         return;
       }
-
-      localStorage.setItem("tempDFRData", cached); // make it accessible to tm.html
+      localStorage.setItem("tempDFRData", cached);
       window.location.href = 'tm/tm.html';
     }
   </script>

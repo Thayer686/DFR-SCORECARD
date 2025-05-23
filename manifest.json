@@ -1,8 +1,8 @@
 {
   "name": "OMH Daily Field Report",
   "short_name": "Field Report",
-  "scope": "/",
-  "start_url": "./index.html",
+  "scope": "/DFR2.0/",
+  "start_url": "/DFR2.0/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1e3a5f",
