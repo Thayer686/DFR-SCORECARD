@@ -1,10 +1,20 @@
-const CACHE_NAME = 'field-report-v3'; // 🔁 bump this for every update
+const CACHE_NAME = 'field-report-v1'; // 🔁 bump this for every update
 
 const urlsToCache = [
+
   'index.html',
-  'style.css',
-  'script.js',
+  'index.css',
+  'index.js',
   'manifest.json',
+  'dfr/dfr.js',
+  'dfr/dfr.css',
+  'dfr/dfr.html',
+  'dfr/dfr.js.map',
+  'tm/tm.js',
+  'tm/tm.css',
+  'tm/tm.html',
+  'tm/tm.js.map',
+  'tm/tm.html.map',
   'assets/icons/icon-192.png',
   'assets/icons/icon-512.png',
   // add other assets
