@@ -1,7 +1,6 @@
-const CACHE_NAME = 'field-report-v1'; // 🔁 bump this for every update
+const CACHE_NAME = 'field-report-v6'; // 🔁 bump this for every update
 
 const urlsToCache = [
-
   'index.html',
   'index.css',
   'index.js',
@@ -16,39 +15,37 @@ const urlsToCache = [
   'tm/tm.js.map',
   'tm/tm.html.map',
   'assets/icons/icon-192.png',
-  'assets/icons/icon-512.png',
-  // add other assets
+  'assets/icons/icon-512.png'
 ];
 
-// Install event – Cache files
+// ✅ Install event
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(urlsToCache);
-    })
+    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
-  self.skipWaiting(); // ⏩ activates this version immediately
+  self.skipWaiting();
 });
 
-// Activate event – Clean old caches
+// ✅ Activate event
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(cacheNames =>
-      Promise.all(
-        cacheNames
-          .filter(name => name !== CACHE_NAME)
-          .map(name => caches.delete(name))
-      )
+    caches.keys().then(keys =>
+      Promise.all(keys.map(key => key !== CACHE_NAME && caches.delete(key)))
     )
   );
-  self.clients.claim(); // 📢 claim control of all clients immediately
+  self.clients.claim();
 });
 
-// Fetch event – Respond from cache or network
+// ✅ Fetch event
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
+    caches.match(event.request).then(response => response || fetch(event.request))
   );
+});
+
+// 🔁 Listen for skipWaiting trigger from client
+self.addEventListener('message', event => {
+  if (event.data === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
