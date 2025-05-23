@@ -2445,7 +2445,7 @@ row.querySelectorAll("input, textarea, select").forEach(el => {
 });
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js').then(registration => {
+  navigator.serviceWorker.register('../service-worker.js').then(registration => {
     registration.onupdatefound = () => {
       const newWorker = registration.installing;
       newWorker.onstatechange = () => {
