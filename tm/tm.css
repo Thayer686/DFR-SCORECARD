@@ -358,7 +358,7 @@ textarea {
   max-width: 1224px;      /* 1224pt = 17 inches wide */
   margin: 0 auto;
   background: white;
-  padding: 30px;          /* you can reduce this if it still adds too much margin */
+  padding: 10px;          /* you can reduce this if it still adds too much margin */
 }
 #backButtonBar button {
   background-color: #e0f7fa;
