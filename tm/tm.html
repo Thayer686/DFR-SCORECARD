@@ -19,6 +19,7 @@
 
 </head>
 <body>
+  
   <div class="pwa-wrapper"> <!-- ✅ This should wrap everything -->
     <div class="canvas">
       <div class="tm-container">
@@ -158,6 +159,23 @@
 
   </div> <!-- ✅ close .canvas -->
 </div>
+
+<div id="backButtonBar" style="
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 9999;
+">
+  <button onclick="goBackToPortal()" class="action-btn">⬅️ Back to Portal</button>
+</div>
+
+<script>
+  function goBackToPortal() {
+    if (confirm("Are you sure you want to return to the portal? Unsaved changes will be lost.")) {
+      window.location.href = '../index.html';
+    }
+  }
+</script>
 
 
 

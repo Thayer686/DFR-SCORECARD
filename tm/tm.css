@@ -360,5 +360,13 @@ textarea {
   background: white;
   padding: 40px;          /* you can reduce this if it still adds too much margin */
 }
+#backButtonBar button {
+  background-color: #e0f7fa;
+  border: 1px solid #00838f;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 14px;
+}
+
 
 

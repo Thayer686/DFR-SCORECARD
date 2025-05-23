@@ -1000,6 +1000,24 @@
 <!-- ✅ Your custom script (must come AFTER the libraries above) -->
 <script src="dfr.js"></script>
 
+<div id="backButtonBar" style="
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 9999;
+">
+  <button onclick="goBackToPortal()" class="action-btn">⬅️ Back to Portal</button>
+</div>
+
+<script>
+  function goBackToPortal() {
+    if (confirm("Are you sure you want to return to the portal? Unsaved changes will be lost.")) {
+      window.location.href = '../index.html';
+    }
+  }
+</script>
+
+
 
 </body>
 </html>
