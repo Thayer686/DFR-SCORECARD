@@ -1,4 +1,4 @@
-const CURRENT_APP_VERSION = "v8.2"; // 🔁 Update this each release
+const CURRENT_APP_VERSION = "v8.3"; // 🔁 Update this each release
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js').then(registration => {
@@ -10,10 +10,9 @@ if ('serviceWorker' in navigator) {
           localStorage.setItem("lastSeenVersion", CURRENT_APP_VERSION);
           alert(`✅ OMH Field App has been updated to version ${CURRENT_APP_VERSION}`);
 
-          const shouldReload = confirm("🚨 A new version of the DFR app is available. Click OK to update now.");
-          if (shouldReload) {
-            newWorker.postMessage('SKIP_WAITING');
-          }
+          alert(`✅ OMH Field App has been updated to version ${CURRENT_APP_VERSION}`);
+newWorker.postMessage('SKIP_WAITING');
+
         }
       };
     };
