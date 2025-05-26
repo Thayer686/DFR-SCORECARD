@@ -9,9 +9,7 @@ if ('serviceWorker' in navigator) {
           // ✅ Save version and notify user
           localStorage.setItem("lastSeenVersion", CURRENT_APP_VERSION);
           alert(`✅ OMH Field App has been updated to version ${CURRENT_APP_VERSION}`);
-
-          alert(`✅ OMH Field App has been updated to version ${CURRENT_APP_VERSION}`);
-newWorker.postMessage('SKIP_WAITING');
+          newWorker.postMessage('SKIP_WAITING');
 
         }
       };

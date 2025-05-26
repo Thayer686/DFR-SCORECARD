@@ -1,4 +1,4 @@
-const CACHE_NAME = 'field-report-v8.4'; // 🔁 bump this for every update
+const CACHE_NAME = 'field-report-v8.5'; // 🔁 bump this for every update
 
 const urlsToCache = [
   './',
@@ -55,3 +55,6 @@ self.addEventListener('message', event => {
     self.skipWaiting();
   }
 });
+
+console.log("🧹 Installing SW:", CACHE_NAME);
+
