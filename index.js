@@ -1,10 +1,15 @@
+const CURRENT_APP_VERSION = "v8.1"; // 🔁 Update this each release
+
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js').then(registration => {
     registration.onupdatefound = () => {
       const newWorker = registration.installing;
       newWorker.onstatechange = () => {
         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          // ✅ Show update prompt to user
+          // ✅ Save version and notify user
+          localStorage.setItem("lastSeenVersion", CURRENT_APP_VERSION);
+          alert(`✅ OMH Field App has been updated to version ${CURRENT_APP_VERSION}`);
+
           const shouldReload = confirm("🚨 A new version of the DFR app is available. Click OK to update now.");
           if (shouldReload) {
             newWorker.postMessage('SKIP_WAITING');
@@ -22,3 +27,17 @@ if ('serviceWorker' in navigator) {
     refreshing = true;
   });
 }
+
+// ✅ Also show version alert on first open or hard refresh (no SW update)
+document.addEventListener("DOMContentLoaded", () => {
+  const seen = localStorage.getItem("lastSeenVersion");
+  const isControlled = !!navigator.serviceWorker?.controller;
+
+  if (seen !== CURRENT_APP_VERSION) {
+    localStorage.setItem("lastSeenVersion", CURRENT_APP_VERSION);
+
+    if (isControlled) {
+      alert(`✅ OMH Field App is now running version ${CURRENT_APP_VERSION}`);
+    }
+  }
+});

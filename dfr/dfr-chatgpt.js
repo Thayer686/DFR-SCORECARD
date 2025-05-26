@@ -68,19 +68,13 @@ async function loadActivityMap() {
     selects.forEach(select => {
       const tom = select.tomselect;
       if (tom) {
-        // Rebuild the native select DOM
-select.innerHTML = '<option value="">Select...</option>';
-Object.keys(costCodeList).forEach(code => {
-  const opt = document.createElement("option");
-  opt.value = code;
-  opt.textContent = code;
-  select.appendChild(opt);
-});
-
-// Tell TomSelect to resync its DOM to reflect options
-tom.sync();
-tom.setValue("");
-
+        tom.clearOptions();
+        tom.addOption({ value: "", text: "Select..." });
+        Object.keys(costCodeList).forEach(code => {
+          tom.addOption({ value: code, text: code });
+        });
+        tom.setValue("");
+        tom.refreshOptions(false);
       }
     });
 
@@ -127,49 +121,50 @@ tom.setValue("");
 
   });
 
-   // 🔧 ✅ Add this block LAST
-  setTimeout(() => {
-    document.querySelectorAll("select").forEach(select => {
-      if (!select.tomselect) {
-        new TomSelect(select, {
-          maxOptions: false,
-          create: false,
-          sortField: {
-            field: "text",
-            direction: "asc"
-          },
-          placeholder: "Select..."
-        });
-      }
-    });
-  }, 0);
-
-  setTimeout(() => {
   document.querySelectorAll("select").forEach(select => {
-    const wrapper = select.closest(".ts-wrapper");
-    const control = wrapper?.querySelector(".ts-control");
-    const hasValue = select.value?.trim();
-
-    // If empty, visually show "Select..." text for PDF and screen clarity
-    if (control && !hasValue) {
-      const placeholder = document.createElement("div");
-      placeholder.className = "visible-placeholder";
-      placeholder.textContent = select.getAttribute("placeholder") || "Select...";
-      placeholder.style.cssText = `
-        position: absolute;
-        top: 8px;
-        left: 10px;
-        font-size: 13px;
-        color: #999;
-        pointer-events: none;
-      `;
-      control.style.position = "relative";
-      control.appendChild(placeholder);
+  new TomSelect(select, {
+    maxOptions: false,
+    create: false,
+    sortField: {
+      field: "text",
+      direction: "asc"
+    },
+    placeholder: "Select...",
+    render: {
+      item: function (data, escape) {
+        return data.text ? `<div>${escape(data.text)}</div>` : "";
+      }
     }
   });
-}, 50); // Delay slightly to let TomSelect finish rendering
+});
 
 
+
+  /*
+  // Setup TomSelect
+ document.querySelectorAll("select").forEach(select => {
+  if (select.tomselect) {
+    const wrapper = select.closest(".ts-wrapper");
+    const selectedText = select.tomselect.getItem(select.value)?.textContent?.trim() || "";
+    if (wrapper && selectedText) {
+      const printSpan = document.createElement("span");
+      printSpan.textContent = selectedText;
+      printSpan.className = "print-only";
+      printSpan.style.cssText = `
+        display: inline-block;
+        position: absolute;
+        background: white;
+        padding: 6px 10px;
+        font-size: 13px;
+        z-index: 9999;
+        width: 100%;
+      `;
+      wrapper.style.position = "relative";
+      wrapper.appendChild(printSpan);
+    }
+  }
+});
+*/
 
 
   attachCostCodeListeners();
@@ -695,44 +690,6 @@ document.querySelectorAll(".photo-description").forEach((input, index) => {
 });
 
 
-// 🔥 Save Manual Manpower Rows
-formData.manualManpowerRows = [];
-document.querySelectorAll(".manpower-row.manual-row").forEach(row => {
-  const manpower = row.querySelector("input[id^='manpowerselect']")?.value || "";
-  const classification = row.querySelector("input[id^='classificationselect']")?.value || "";
-  const loa = row.querySelector("input[type='checkbox']")?.checked || false;
-  const notes = row.querySelector("input[id^='manualnotes']")?.value || "";
-  const hours = Array.from(row.querySelectorAll(".hour-input")).map(i => i.value || "");
-  formData.manualManpowerRows.push({ manpower, classification, loa, notes, hours });
-});
-
-// 🔥 Save Manual Equipment Rows
-formData.manualEquipmentRows = [];
-document.querySelectorAll(".equipment-row.manual-row").forEach(row => {
-  const equipment = row.querySelector("input[id^='equipmentselect']")?.value || "";
-  const total = row.querySelector(".equipment-total")?.value || "";
-  const uofm = row.querySelector("select.UofMSelect")?.value || "";
-  const po = row.querySelector("input[id^='po']")?.value || "";
-  const notes = row.querySelector("input[id^='notesEquip']")?.value || "";
-  const hours = Array.from(row.querySelectorAll(".hour-input")).map(i => i.value || "");
-  formData.manualEquipmentRows.push({ equipment, total, uofm, po, notes, hours });
-});
-
-// 🔥 Save Manual Subcontractor Rows
-formData.manualSubRows = [];
-document.querySelectorAll(".subcontractor-row.manual-row").forEach(row => {
-  const name = row.querySelector("input.subcontractorName-input")?.value || "";
-  const total = row.querySelector(".sub-total-field")?.value || "";
-  const uofm = row.querySelector("select.UofMSelect")?.value || "";
-  const hours = Array.from(row.querySelectorAll(".sub-hour-input")).map(i => i.value || "");
-  const services = row.querySelector("input[id^='services']")?.value || "";
-  const siterep = row.querySelector("input[id^='siterep']")?.value || "";
-  const po = row.querySelector("input[id^='PO#']")?.value || "";
-  const notes = row.querySelector("input[id^='notes3']")?.value || "";
-  formData.manualSubRows.push({ name, total, uofm, hours, services, siterep, po, notes });
-});
-
-
   // 👇 NEW: Debug preview
   // console.log("🔍 Form data to be saved:", formData);
   // alert("✅ Form data logged to console for debug.\nOpen DevTools (F12 > Console) to view it.");
@@ -792,62 +749,39 @@ function addManualSubcontractorRowsForRestore(data) {
 
 // --- Restore Function ---
 function restoreForm(data) {
-  // 🔥 Ensure rows are added before restoring values
+  function restoreForm(data) {
+
   addManualManpowerRowsForRestore(data);
-  addManualEquipmentRowsForRestore(data);
-  addManualSubcontractorRowsForRestore(data);
-  // 🔥 Ensure rows exist before restoring values
-  if (data.manualManpowerRows && data.manualManpowerRows.length) {
-   // const currentRows = document.querySelectorAll(".manpower-row.manual-row").length;
-   // const neededRows = data.manualManpowerRows.length - currentRows;
 
-   // for (let i = 0; i < neededRows; i++) {
-     // document.getElementById("addManpowerRowBtn")?.click();
-  //  }
+  // ✅ RESTORE VALUES for each manually added manpower row
+  const manualRows = document.querySelectorAll(".manpower-row.manual-row");
 
-    // 🧪 Log how many rows we're restoring into
-    const manualRows = document.querySelectorAll(".manpower-row.manual-row");
-    console.log("🔁 Restoring manual rows:", manualRows.length);
+if (data.manualManpowerRows && data.manualManpowerRows.length && manualRows.length) {
+  data.manualManpowerRows.forEach((rowData, idx) => {
+    const row = manualRows[idx];
+    if (!row) return;
 
-    data.manualManpowerRows.forEach((rowData, idx) => {
-      const row = manualRows[idx];
-      if (!row) {
-        console.warn(`⚠️ No row found for index ${idx}`);
-        return;
-      }
+    const mp = row.querySelector('input[id^="manpowerselect"]');
+    const cl = row.querySelector('input[id^="classificationselect"]');
+    const loa = row.querySelector('input[type="checkbox"]');
+    const notes = row.querySelector('.manual-notes-input');
+    const hourInputs = row.querySelectorAll('.hour-input');
 
-     const mp = row.querySelector(`input[id^='manpowerselect']`);
-const cl = row.querySelector(`input[id^='classificationselect']`);
-const loa = row.querySelector(`input[type='checkbox']`);
-const notesInput = row.querySelector(`input[id^='manualnotes']`);
+    if (mp) mp.value = rowData.manpower || "";
+    if (cl) cl.value = rowData.classification || "";
+    if (loa) loa.checked = !!rowData.loa;
+    if (notes) notes.value = rowData.notes || "";
 
-const hourInputs = row.querySelectorAll(".hour-input");
-
-console.log(`🧪 Row ${idx + 1} restore:`, { mp, cl, loa, notes: rowData.notes, hours: rowData.hours });
-
-if (mp) mp.value = rowData.manpower || "";
-if (cl) cl.value = rowData.classification || "";
-if (loa) loa.checked = !!rowData.loa;
-if (notesInput) {
-  notesInput.value = rowData.notes || "";
-  console.log(`✅ Restored note value: "${notesInput.value}" for row ${idx + 1}`);
-} else {
-  console.warn(`❌ Could not find notes input for row ${idx + 1}`);
-}
-
-
-      rowData.hours?.forEach((val, i) => {
-        if (hourInputs[i]) {
-          hourInputs[i].value = val || "";
-        }
-      });
+    rowData.hours?.forEach((val, i) => {
+      if (hourInputs[i]) hourInputs[i].value = val || "";
     });
-  }
-
+  });
+}}
 
 
 
   //addManualEquipmentRowsForRestore(data);
+  addManualSubcontractorRowsForRestore(data);
   
 
   // 🔁 Continue with rest of your restoreForm logic...
@@ -865,26 +799,13 @@ if (notesInput) {
 
   // (Any custom restore logic here, e.g., for Tom Select dro
 
+
+
 // 🔥 RESTORE: Manual Equipment Rows
 if (data.manualEquipmentRows && data.manualEquipmentRows.length) {
- // data.manualEquipmentRows.forEach(() => {
-   // document.getElementById("addEquipmentRowBtn").click();
- // });
-
-  // 🕒 Delay to ensure TomSelect is applied
-setTimeout(() => {
-  const manualEquipRows = document.querySelectorAll(".equipment-row.manual-row");
-  data.manualEquipmentRows.forEach((rowData, idx) => {
-    const row = manualEquipRows[idx];
-    if (!row) return;
-
-    const uofm = row.querySelector('select[id^="uofm"]');
-    if (uofm?.tomselect) {
-      uofm.tomselect.setValue(rowData.uofm || "");
-    }
+  data.manualEquipmentRows.forEach(() => {
+    document.getElementById("addEquipmentRowBtn").click();
   });
-}, 100); // Adjust timing if needed
-
 
   const manualEquipRows = document.querySelectorAll(".equipment-row.manual-row");
 
@@ -894,15 +815,7 @@ setTimeout(() => {
 
     const equipment = row.querySelector("input[id^='equipmentselect']");
     const total = row.querySelector(".equipment-total");
-    const uofm = row.querySelector('select[id^="uofm"]');
-if (uofm) {
-  if (uofm.tomselect) {
-    uofm.tomselect.setValue(rowData.uofm || "");
-  } else {
-    uofm.value = rowData.uofm || "";
-  }
-}
-
+    const uofm = row.querySelector("input[id^='uofm']");
     const po = row.querySelector("input[id^='po']");
     const notes = row.querySelector("input[id^='notesEquip']");
     const hourInputs = row.querySelectorAll(".hour-input");
@@ -924,7 +837,7 @@ if (uofm) {
 if (data.manualSubRows && data.manualSubRows.length) {
   data.manualSubRows.forEach(() => {
     document.getElementById("addSubcontractorRowBtn").click();
- });
+  });
   const manualSubRows = document.querySelectorAll(".subcontractor-row.manual-row");
   data.manualSubRows.forEach((rowData, idx) => {
     const row = manualSubRows[idx];
@@ -938,64 +851,31 @@ if (data.manualSubRows && data.manualSubRows.length) {
       row.querySelector("input[id^='services']").value = rowData.services || "";
       row.querySelector("input[id^='siterep']").value = rowData.siterep || "";
       row.querySelector("input[id^='PO#']").value = rowData.po || "";
-      const notes = row.querySelector("input[id^='manualsubnotes']");
-if (notes) notes.value = rowData.notes || "";
-
+      row.querySelector("input[id^='notes3']").value = rowData.notes || "";
     }
   });
 }
 
-const skipIds = new Set();
-data.manualManpowerRows?.forEach((rowData, i) => {
-  skipIds.add(`notes${16 + i}`);
-  skipIds.add(`manpowerselect${16 + i}`);
-  skipIds.add(`classificationselect${16 + i}`);
-  skipIds.add(`checkbox${16 + i}`);
-});
+  Object.keys(data).forEach(id => {
 
-Object.keys(data).forEach(id => {
-  if (["photos", "manpowerHours", "equipmentHours", "subcontractorHours"].includes(id)) return;
-  if (skipIds.has(id)) return; // 🔥 skip already handled manual rows
+    if (["photos", "manpowerHours", "equipmentHours", "subcontractorHours"].includes(id)) return;
+    const el = document.getElementById(id);
+    if (el) {
+  if (el.type === "checkbox") {
+    el.checked = data[id];
+  } else {
+    el.value = data[id];
 
-  const el = document.getElementById(id);
-  if (el) {
-    if (el.type === "checkbox") {
-      el.checked = data[id];
-    } else {
-      if (el.tomselect) {
-        el.tomselect.setValue(data[id]);
-      } else {
-        el.value = data[id];
-      }
+    // ✅ Trigger Tom Select update if it exists
+    if (el.tomselect) {
+      el.tomselect.setValue(data[id]);
     }
-
-    el.dispatchEvent(new Event("input", { bubbles: true }));
-    el.dispatchEvent(new Event("change", { bubbles: true }));
   }
-});
 
-
-Object.keys(data).forEach(id => {
-  if (["photos", "manpowerHours", "equipmentHours", "subcontractorHours"].includes(id)) return;
-
-  const el = document.getElementById(id);
-  if (el) {
-    if (el.type === "checkbox") {
-      el.checked = data[id];
-    } else {
-      if (el.tomselect) {
-        el.tomselect.setValue(data[id]);  // ✅ Tom Select dropdowns
-      } else {
-        el.value = data[id];              // ✅ Regular inputs/selects
-      }
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
     }
-
-    // ✅ Fire change/input events for any linked logic (totals, activity text, etc.)
-    el.dispatchEvent(new Event("input", { bubbles: true }));
-    el.dispatchEvent(new Event("change", { bubbles: true }));
-  }
-});
-
+  });
 
   data.manpowerHours?.forEach((val, i) => {
   const input = document.querySelectorAll(".hour-cell input")[i];
@@ -1131,21 +1011,18 @@ document.querySelectorAll(".photo-description").forEach((input, index) => {
   data.equipmentHours = Array.from(document.querySelectorAll(".equip-hour-cell input")).map(i => i.value);
   data.subcontractorHours = Array.from(document.querySelectorAll(".sub-hour-cell input")).map(i => i.value);
 
- // 🔥 NEW: Save Manual Manpower Rows
+  // 🔥 NEW: Save Manual Manpower Rows
 data.manualManpowerRows = [];
-document.querySelectorAll(".manpower-row.manual-row").forEach((row, idx) => {
-  const manpower = row.querySelector("input[id^='manpowerselect']")?.value || "";
-  const classification = row.querySelector("input[id^='classificationselect']")?.value || "";
-  const loa = row.querySelector("input[type='checkbox']")?.checked || false;
-  const notes = row.querySelector("input[id^='manualnotes']")?.value || "";
+document.querySelectorAll(".manpower-row.manual-row").forEach(row => {
+  data.manualManpowerRows.push({
+    manpower: row.querySelector("input[id^='manpowerselect']")?.value || "",
+    classification: row.querySelector("input[id^='classificationselect']")?.value || "",
+    loa: row.querySelector("input[type='checkbox']")?.checked || false,
+    hours: Array.from(row.querySelectorAll(".hour-input")).map(input => input.value || ""),
+    notes: row.querySelector(".manual-notes-input")?.value || ""
 
-
-  const hours = Array.from(row.querySelectorAll(".hour-input")).map(input => input.value || "");
-
-  data.manualManpowerRows.push({ manpower, classification, loa, hours, notes });
+  });
 });
-
-
 
 // 🔥 NEW: Save Manual Equipment Rows
 data.manualEquipmentRows = [];
@@ -1153,8 +1030,7 @@ document.querySelectorAll(".equipment-row.manual-row").forEach(row => {
   data.manualEquipmentRows.push({
     equipment: row.querySelector("input[id^='equipmentselect']")?.value || "",
     total: row.querySelector(".equipment-total")?.value || "",
-      uofm: row.querySelector("select[id^='uofm']")?.value || "",
-
+    uofm: row.querySelector("select.UofMSelect")?.value || "",
 
     hours: Array.from(row.querySelectorAll(".hour-input")).map(input => input.value || ""),
     po: row.querySelector("input[id^='po']")?.value || "",
@@ -1173,8 +1049,7 @@ document.querySelectorAll(".subcontractor-row.manual-row").forEach(row => {
     services: row.querySelector("input[id^='services']")?.value || "",
     siterep: row.querySelector("input[id^='siterep']")?.value || "",
     po: row.querySelector("input[id^='PO#']")?.value || "",
-    notes: row.querySelector("input[id^='manualsubnotes']")?.value || ""
-
+    notes: row.querySelector("input[id^='notes3']")?.value || ""
   });
 });
 
@@ -1258,13 +1133,12 @@ ts.setValue("");
 if (cached) {
   try {
     const data = JSON.parse(cached);
-    setTimeout(() => {
-  restoreForm(data);
-  // Wait another tick to ensure TomSelect is ready
-  setTimeout(() => autoSaveFormToCache(), 50);
-}, 250);
+    requestAnimationFrame(() => {
+      restoreForm(data);
 
-
+      // 🔥 Immediately re-cache the fully restored form to ensure images/signature persist on double reload
+      autoSaveFormToCache();
+    });
   } catch (err) {
     console.warn("⚠️ Failed to restore autosaved form:", err);
   }
@@ -1354,76 +1228,46 @@ document.querySelectorAll('.ts-control').forEach(el => {
 
 // 🔧 Optional: Style with ::after content via print CSS
 
-const replacements = [];
-
-document.querySelectorAll("select").forEach(select => {
-  if (!select.tomselect) return;
-
-  const wrapper = select.closest(".ts-wrapper");
-  const selectedText = select.tomselect.getItem(select.value)?.textContent?.trim();
-  const displayText = selectedText || "Select...";
-
-  if (wrapper) {
-    wrapper.style.position = "relative";
-    const span = document.createElement("span");
-    span.className = "print-only";
-    span.textContent = displayText;
-  span.style.cssText = `
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 12px;
-  font-family: inherit;
-  color: black;
-  background: white;
-  padding: 0 6px;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  box-sizing: border-box;
-  border: none;
-  z-index: 999;
-  pointer-events: none;
-`;
-
-
-    wrapper.appendChild(span);
-    replacements.push(span);
-  }
-});
-
-document.querySelectorAll("select").forEach(select => {
-  if (!select.tomselect) return;
-
-  const tsControl = select.closest(".ts-wrapper")?.querySelector(".ts-control");
-  const selectedText = select.tomselect.getItem(select.value)?.textContent?.trim();
-
-  // If nothing selected, manually inject visible placeholder
-  if (!selectedText && tsControl && !tsControl.querySelector(".pdf-placeholder")) {
-    const placeholder = document.createElement("div");
-    placeholder.textContent = "Select...";
-    placeholder.className = "pdf-placeholder";
-    placeholder.style.cssText = `
-      color: #999;
-      font-size: 13px;
-      padding-left: 6px;
-    `;
-    tsControl.appendChild(placeholder);
-  }
-});
-
 
 
   // Render the canvas from the visible form
+  const replacements = [];
+  document.querySelectorAll("select").forEach(select => {
+    if (!select.tomselect) return;
+    const wrapper = select.closest(".ts-wrapper");
+    const selectedText = select.tomselect.getItem(select.value)?.textContent?.trim();
+    const displayText = selectedText || "Select...";
+    if (wrapper) {
+      wrapper.style.position = "relative";
+      const span = document.createElement("span");
+      span.className = "print-only";
+      span.textContent = displayText;
+      span.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        font-size: 12px;
+        font-family: inherit;
+        padding-left: 6px;
+        background: white;
+        color: black;
+        box-sizing: border-box;
+        z-index: 10;
+        pointer-events: none;
+      `;
+      wrapper.appendChild(span);
+      replacements.push(span);
+    }
+  });
   const canvas = await html2canvas(element, {
-  scale: 3,
+  scale: 3,          // 🔥 bump from 2 → 3 for higher pixel density
   useCORS: true,
-  backgroundColor: "#ffffff", // force white background
-  allowTaint: false,
-  logging: false,
-  removeContainer: true
+  backgroundColor: null // optional: transparent background if needed
 });
 
   const imgData = canvas.toDataURL('image/jpeg', 1.0);
@@ -1463,10 +1307,7 @@ document.querySelectorAll("select").forEach(select => {
 
 
   pdf.save(filename);
-  document.querySelectorAll(".pdf-placeholder").forEach(el => el.remove());
-
   replacements.forEach(span => span.remove());
-
   document.querySelectorAll(".print-only").forEach(el => el.remove());
 
 });
@@ -1538,8 +1379,7 @@ document.getElementById("addManpowerRowBtn")?.addEventListener("click", () => {
     <td class="center-checkbox"><input type="checkbox" id="checkbox${extraManpowerCount}" /></td>
     ${[...Array(6)].map(() => `<td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>`).join("")}
     <td style="position: relative;">
-    <input type="text" id="manualnotes${extraManpowerCount - 15}" class="manual-notes-input" style="padding-right: 30px;" />
-
+    <input type="text" id="notes${extraManpowerCount}" class="manual-notes-input" style="padding-right: 30px;" />
     <button class="remove-btn" title="Remove Row" style="position: absolute; top: 4px; right: 4px;">🗑</button>
     </td>
   `;
@@ -1556,34 +1396,33 @@ document.getElementById("addManpowerRowBtn")?.addEventListener("click", () => {
     autoSaveFormToCache();
   });
 
- // 🧮 Hour total calculation logic
-const hourInputs = row.querySelectorAll(".hour-input");
-const totalField = row.querySelector(".total-field");
+  // ✅ Recalculate totals for new row
+  const hourInputs = row.querySelectorAll(".hour-cell input");
+  const totalField = row.querySelector(".total-field");
 
-hourInputs.forEach(input => {
-  input.addEventListener("input", () => {
-    let sum = 0;
-    hourInputs.forEach(i => {
-      const val = parseFloat(i.value);
-      if (!isNaN(val)) sum += val;
+  hourInputs.forEach(input => {
+    input.addEventListener("input", () => {
+      let sum = 0;
+      hourInputs.forEach(i => {
+        const val = parseFloat(i.value);
+        if (!isNaN(val)) sum += val;
+      });
+      totalField.value = sum.toFixed(2);
+      updateGrandTotalHours();
     });
-    totalField.value = sum.toFixed(2);
-    updateGrandTotalHours();
+
+    input.addEventListener("blur", () => {
+      const val = parseFloat(input.value);
+      if (!isNaN(val)) input.value = val.toFixed(2);
+    });
   });
 
-  input.addEventListener("blur", () => {
-    const val = parseFloat(input.value);
-    if (!isNaN(val)) input.value = val.toFixed(2);
-  });
-});
-
-// 💾 Autosave for all new fields
+  // 🔥 Attach autosave to all new fields in this row:
 row.querySelectorAll("input, textarea, select").forEach(el => {
   el.addEventListener("input", autoSaveFormToCache);
   el.addEventListener("change", autoSaveFormToCache);
 });
-
-autoSaveFormToCache();
+  autoSaveFormToCache();
 });
 
 
@@ -1690,8 +1529,7 @@ document.getElementById("addSubcontractorRowBtn")?.addEventListener("click", () 
   <td><input type="text" id="siterep${extraSubCount}" /></td>
   <td><input type="text" id="PO#${extraSubCount}" /></td>
   <td style="position: relative;">
- <input type="text" id="manualsubnotes${extraSubCount}" style="padding-right: 30px;" />
-
+  <input type="text" id="notes3${extraSubCount}" style="padding-right: 30px;" />
   <button class="remove-btn" title="Remove Row" style="position: absolute; top: 4px; right: 4px;">🗑</button>
 </td>
 `;
@@ -1775,7 +1613,6 @@ if ('serviceWorker' in navigator) {
 }
 
  
-
 
 
 

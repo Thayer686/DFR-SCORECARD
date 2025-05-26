@@ -1,6 +1,7 @@
-const CACHE_NAME = 'field-report-v8.0'; // 🔁 bump this for every update
+const CACHE_NAME = 'field-report-v8.1'; // 🔁 bump this for every update
 
 const urlsToCache = [
+  './',
   'index.html',
   'index.css',
   'index.js',
@@ -36,12 +37,17 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// ✅ Fetch event
+// ✅ Fetch event with offline fallback
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request).catch(() => {
+        return new Response("Offline – resource not cached", { status: 503 });
+      });
+    })
   );
 });
+
 
 // 🔁 Listen for skipWaiting trigger from client
 self.addEventListener('message', event => {
