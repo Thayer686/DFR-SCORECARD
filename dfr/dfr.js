@@ -742,14 +742,14 @@ const today = new Date();
 const dd = String(today.getDate()).padStart(2, '0');
 const mm = String(today.getMonth() + 1).padStart(2, '0');
 const yyyy = today.getFullYear();
-const dateStr = `${dd}_${mm}_${yyyy}`;
+const dateStr = `${mm}_${dd}_${yyyy}`;
 
 const projectNumber = document.getElementById("projectNumberSelect")?.value?.trim().replace(/\s+/g, "_") || "####";
 const supervisorFullName = document.getElementById("omhsupervisor")?.value?.trim() || "XX";
 const nameParts = supervisorFullName.split(" ");
 const initials = nameParts.map(part => part[0]?.toUpperCase()).join("").slice(0, 2) || "XX";
 
-const defaultFilename = `DFR_${initials}_DIG_${projectNumber}_${dateStr}`;
+const defaultFilename = `${dateStr}_DFR_${initials}_DIG_${projectNumber}`;
 const filename = prompt("Enter a filename to save:", defaultFilename);
 if (!filename) return;
 

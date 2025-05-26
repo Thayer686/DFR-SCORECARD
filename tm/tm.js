@@ -1167,7 +1167,11 @@ document.getElementById("saveFormBtn")?.addEventListener("click", () => {
   }
 
   // 📄 Compose file name
-  const filename = `TM_Form_${initials}_${formDate}.json`;
+  const digId = document.getElementById("digIdSelect")?.value?.trim().replace(/\s+/g, "_") || "####";
+const dateParts = formDate.split("-");
+const formattedDate = dateParts.length === 3 ? `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}` : formDate;
+const filename = `${formattedDate}_TM_Form_${initials}_${digId}.json`;
+
 
   // 💾 Save the JSON blob
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
@@ -1266,7 +1270,11 @@ document.getElementById("exportPdfBtn")?.addEventListener("click", async () => {
   }
 
   // 🧾 Compose file name
-  const filename = `TM_Form_${initials}_${formDate}.pdf`;
+  const digId = document.getElementById("digIdSelect")?.value?.trim().replace(/\s+/g, "_") || "####";
+const dateParts = formDate.split("-");
+const formattedDate = dateParts.length === 3 ? `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}` : formDate;
+const filename = `${formattedDate}_TM_Form_${initials}_${digId}.pdf`;
+
 
   // 🖼️ Render to canvas
   await new Promise(resolve => setTimeout(resolve, 100)); // slight pause for layout
@@ -1301,7 +1309,11 @@ document.getElementById("emailBtn")?.addEventListener("click", () => {
   const nameParts = supervisorFullName.split(" ");
   const initials = nameParts.map(part => part[0]?.toUpperCase()).join("").slice(0, 2) || "XX";
 
-  const filename = `TM_Form_${initials}_${formDate}`;
+  const digId = document.getElementById("digIdSelect")?.value?.trim().replace(/\s+/g, "_") || "####";
+const dateParts = formDate.split("-");
+const formattedDate = dateParts.length === 3 ? `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}` : formDate;
+const filename = `${formattedDate}_TM_Form_${initials}_${digId}`;
+
 
   const recipients = [
     "tyler.anderson@ogilviemtn.ca",
