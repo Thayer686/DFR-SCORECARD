@@ -1,4 +1,4 @@
-const CACHE_NAME = 'field-report-v8.3'; // 🔁 bump this for every update
+const CACHE_NAME = 'field-report-v8.4'; // 🔁 bump this for every update
 
 const urlsToCache = [
   './',
