@@ -1418,7 +1418,7 @@ document.querySelectorAll("select").forEach(select => {
 
   // Render the canvas from the visible form
   const canvas = await html2canvas(element, {
-  scale: 3,
+  scale: 2,
   useCORS: true,
   backgroundColor: "#ffffff", // force white background
   allowTaint: false,
