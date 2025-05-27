@@ -218,9 +218,6 @@ setupSignatureCanvas("clientSig", false);
     }
   });
 
-
-
-
   const scopeItems = [
     { id: "2.1", desc: "FP Base", unit: "<=1m" },
     { id: "2.1", desc: "VP Base", unit: ">1m" },
