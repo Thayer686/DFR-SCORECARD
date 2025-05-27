@@ -1505,6 +1505,8 @@ Before proceeding, make sure you've already:
 ✅ Clicked **Save Form** (JSON)
 
 📂 You can find the files in the **Files** app > **Downloads**.
+This function will not attached the files directly due to browser security limitations.
+Please attach the files manually after opening your email client.
 
 Then attach:
 📎 ${filename}.pdf
