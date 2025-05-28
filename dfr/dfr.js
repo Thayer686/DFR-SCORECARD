@@ -738,11 +738,15 @@ document.querySelectorAll(".subcontractor-row.manual-row").forEach(row => {
   // alert("✅ Form data logged to console for debug.\nOpen DevTools (F12 > Console) to view it.");
 
 
-const today = new Date();
-const dd = String(today.getDate()).padStart(2, '0');
-const mm = String(today.getMonth() + 1).padStart(2, '0');
-const yyyy = today.getFullYear();
-const dateStr = `${mm}_${dd}_${yyyy}`;
+// 🔥 Use date from #date1 input
+let dateVal = document.getElementById("date1")?.value || "";
+let dateStr = "no_date";
+
+if (dateVal) {
+  const [yyyy, mm, dd] = dateVal.split("-");
+  dateStr = `${mm}_${dd}_${yyyy}`;
+}
+
 
 const projectNumber = document.getElementById("projectNumberSelect")?.value?.trim().replace(/\s+/g, "_") || "####";
 const supervisorFullName = document.getElementById("omhsupervisor")?.value?.trim() || "XX";
@@ -767,7 +771,6 @@ function addManualManpowerRowsForRestore(data) {
     document.getElementById("addManpowerRowBtn")?.click();
   }
 }
-
 
 
 function addManualEquipmentRowsForRestore(data) {
@@ -1414,8 +1417,6 @@ document.querySelectorAll("select").forEach(select => {
   }
 });
 
-
-
   // Render the canvas from the visible form
   const canvas = await html2canvas(element, {
   scale: 2,
@@ -1444,11 +1445,14 @@ document.querySelectorAll("select").forEach(select => {
   pdf.addImage(imgData, 'JPEG', 0, 0, widthInInches, heightInInches);
 
   // Generate dynamic filename
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
-  const dateStr = `${yyyy}${mm}${dd}`;
+  let dateVal = document.getElementById("date1")?.value || "";
+let dateStr = "no_date";
+
+if (dateVal) {
+  const [yyyy, mm, dd] = dateVal.split("-");
+  dateStr = `${yyyy}${mm}${dd}`;
+}
+
 
   // 🔍 Extract project number
   const projectNumber = document.getElementById("projectNumberSelect")?.value?.trim().replace(/\s+/g, "_") || "####";
