@@ -26,6 +26,17 @@
     </div>
   </div>
 
+  <!-- Optional: Service worker registration -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/DFR-SCORECARD/service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg))
+        .catch(err => console.log('Service Worker registration failed:', err));
+    });
+  }
+</script>
+
   <script>
     function generateTMfromDFR() {
       const cached = localStorage.getItem("autosavedDFR");
