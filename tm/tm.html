@@ -182,6 +182,18 @@
 
 <script src="../index.js"></script>
 
+<!-- ✅ Service Worker registration (cleaned up) -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/DFR-SCORECARD/service-worker.js')
+        .then(reg => console.log('✅ Service Worker registered:', reg))
+        .catch(err => console.warn('❌ Service Worker registration failed:', err));
+    });
+  }
+</script>
+
+
 <div style="position: fixed; bottom: 4px; right: 8px; font-size: 15px; color: rgb(0, 0, 0);">
   v1.0.0
 </div>
