@@ -72,21 +72,21 @@
 
   <!--ROW 3-->
   <tr>
-    <th>Client Project Number:</th>
-    <td>
-      <select id="clientProjectNumberSelect" name="clientProjectNumber">
-        <option value="">Select...</option>
-      </select>
-    </td>
-    <th>Project Number:</th>
-    <td>
-      <select id="projectNumberSelect" name="projectNumber">
-        <option value="">Select...</option>
-      </select>
-    </td>
-    <th>Temperature:</th>
-    <td><input type="text" id="temperature1"/></td>
-  </tr>
+  <th>Work Package:</th>
+  <td>
+    <select id="workPackage" name="workPackage" readonly>
+      <option value="CWP-406 & 407" selected>CWP-406 & 407</option>
+    </select>
+  </td>
+  <th>Dig #:</th>
+  <td>
+    <select id="digNumberSelect" name="digNumber">
+      <option value="">Select...</option>
+    </select>
+  </td>
+  <th>Temperature:</th>
+  <td><input type="text" id="temperature1"/></td>
+</tr>
 
    <!--ROW 4-->
   <tr>
@@ -103,54 +103,58 @@
      
 <table class="costcode-table" style="width: 100%; table-layout: fixed;">
   <colgroup>
-    <col style="width: 567.5px;"> <!-- Label column: Cost Code / Activity -->
-    <col style="width: 193.5px;"> <!-- costCode1 / activity1 -->
-    <col style="width: 190px;"> <!-- costCode2 -->
-    <col style="width: 193px;"> <!-- costCode3 -->
-    <col style="width: 194px;"> <!-- costCode4 -->
-    <col style="width: 195px;"> <!-- costCode5 -->
-    <col style="width: 193.5px;"> <!-- costCode6 -->
+    <col style="width: 699px;"> <!-- Label column: Cost Code / Activity -->
+    <col style="width: 142px;"> <!-- costCode1 / activity1 -->
+    <col style="width: 142px;"> <!-- costCode2 -->
+    <col style="width: 142px;"> <!-- costCode3 -->
+    <col style="width: 142px;"> <!-- costCode4 -->
+    <col style="width: 142px;"> <!-- costCode5 -->
+    <col style="width: 138px;"> <!-- costCode6 -->
     <col style="width: auto;">  <!-- remaining space or padding -->
   </colgroup>
 
   <!-- Row 1: Cost Codes -->
   <tr>
-    <td style="height: 60px; background-color: #edf1dc; text-align: right;"><strong>Cost Code:</strong></td>
-    <td style="background-color: #dbe5f1;"><select id="costCode1" Class="costCodeSelect"></select></td>
-    <td style="background-color: #dbe5f1;"><select id="costCode2" Class="costCodeSelect"></select></td>
-    <td style="background-color: #dbe5f1;"><select id="costCode3" Class="costCodeSelect"></select></td>
-    <td style="background-color: #dbe5f1;"><select id="costCode4" Class="costCodeSelect"></select></td>
-    <td style="background-color: #dbe5f1;"><select id="costCode5" Class="costCodeSelect"></select></td>
-    <td style="background-color: #dbe5f1;"><select id="costCode6" Class="costCodeSelect"></select></td>
-    <td style="background-color: #edf1dc;"></td>
-  </tr>
+  <td style="height: 65px; background-color: #edf1dc; text-align: right;"><strong>Select Associated Dig #:</strong></td>
+  <td style="background-color: #dbe5f1;"><select id="digNumber1" class="digNumberSelect"></select></td>
+  <td style="background-color: #dbe5f1;"><select id="digNumber2" class="digNumberSelect"></select></td>
+  <td style="background-color: #dbe5f1;"><select id="digNumber3" class="digNumberSelect"></select></td>
+  <td style="background-color: #dbe5f1;"><select id="digNumber4" class="digNumberSelect"></select></td>
+  <td style="background-color: #dbe5f1;"><select id="digNumber5" class="digNumberSelect"></select></td>
+  <td style="background-color: #dbe5f1;"><select id="digNumber6" class="digNumberSelect"></select></td>
+  <td style="background-color: #edf1dc;"></td>
+</tr>
 
+
+ 
   <!-- Row 2: Activities -->
-  <tr>
-    <td style="height: 60px; background-color: #edf1dc; text-align: right;"><strong>Activity:</strong></td>
-    <td style="background-color: #dbe5f1;"><input type="text" id="activity1" readonly /></td>
-    <td style="background-color: #dbe5f1;"><input type="text" id="activity2" readonly /></td>
-    <td style="background-color: #dbe5f1;"><input type="text" id="activity3" readonly /></td>
-    <td style="background-color: #dbe5f1;"><input type="text" id="activity4" readonly /></td>
-    <td style="background-color: #dbe5f1;"><input type="text" id="activity5" readonly /></td>
-    <td style="background-color: #dbe5f1;"><input type="text" id="activity6" readonly /></td>
+  <!-- <tr>
+    <td style="height: 75px; background-color: #edf1dc; text-align: right;" class="activity-row"><strong>Activity:</strong></td>
+    <td style="background-color: #dbe5f1;"><textarea id="activity1" class="activity-field" readonly></textarea></td>
+    <td style="background-color: #dbe5f1;"><textarea id="activity2" class="activity-field" readonly></textarea></td>
+    <td style="background-color: #dbe5f1;"><textarea id="activity3" class="activity-field" readonly></textarea></td>
+    <td style="background-color: #dbe5f1;"><textarea id="activity4" class="activity-field" readonly></textarea></td>
+    <td style="background-color: #dbe5f1;"><textarea id="activity5" class="activity-field" readonly></textarea></td>
+    <td style="background-color: #dbe5f1;"><textarea id="activity6" class="activity-field" readonly></textarea></td>
     <td style="background-color: #edf1dc;"></td>
-  </tr>
+  </tr> -->
+
 </table>
+
 
 <!-- Manpower Table -->
 <table style="width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 14px;">
   <colgroup>
     <col style="width: 75px;">   <!-- Manpower -->
     <col style="width: 75px;">   <!-- Classification -->
-    <col style="width: 23.5px;">   <!-- Total -->
-    <col style="width: 25px;">   <!-- LOA -->
-    <col style="width: 67.8px;"> <!-- Hour 1 -->
-    <col style="width: 66px;">   <!-- Hour 2 -->
-    <col style="width: 67.8px;"> <!-- Hour 3 -->
-    <col style="width: 67.8px;"> <!-- Hour 4 -->
-    <col style="width: 67.8px;"> <!-- Hour 5 -->
-    <col style="width: 67.8px;"> <!-- Hour 6 -->
+    <col style="width: 24px;">   <!-- Total -->
+    <col style="width: 24px;">   <!-- LOA -->
+    <col style="width: 40px;"> <!-- Hour 1 -->
+    <col style="width: 40px;">   <!-- Hour 2 -->
+    <col style="width: 40px;"> <!-- Hour 3 -->
+    <col style="width: 40px;"> <!-- Hour 4 -->
+    <col style="width: 40px;"> <!-- Hour 5 -->
+    <col style="width: 40px;"> <!-- Hour 6 -->
     <col style="width: 266.5px;">   <!-- Notes -->
   </colgroup>
 
@@ -305,101 +309,29 @@
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
     <td><input type="text" id="notes10"/></td>
   </tr>
-<!-- Input Row 11 -->
-<tr class="manpower-row">
-    <td><select class="manpowerSelect" id="manpowerselect11"><option>Select...</option></select></td>
-    <td><select class="classificationSelect" id="classificationselect11"><option>Select...</option></select></td>
-    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
-    <td class="center-checkbox"><input type="checkbox" id="checkbox11"/></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td><input type="text" id="notes11"/></td>
-  </tr>
-<!-- Input Row 12 -->
-<tr class="manpower-row">
-   <td><select class="manpowerSelect" id="manpowerselect12"><option>Select...</option></select></td>
-    <td><select class="classificationSelect" id="classificationselect12"><option>Select...</option></select></td>
-    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
-    <td class="center-checkbox"><input type="checkbox" id="checkbox12"/></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td><input type="text" id="notes12"/></td>
-  </tr>
-<!-- Input Row 13 -->
-<tr class="manpower-row">
-    <td><select class="manpowerSelect" id="manpowerselect13"><option>Select...</option></select></td>
-    <td><select class="classificationSelect" id="classificationselect13"><option>Select...</option></select></td>
-    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
-    <td class="center-checkbox"><input type="checkbox" id="checkbox13"/></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td><input type="text" id="notes13"/></td>
-    <tr class="manpower-row">
-<!-- Input Row 14 -->
-<tr class="manpower-row">
-   <td><select class="manpowerSelect" id="manpowerselect14"><option>Select...</option></select></td>
-    <td><select class="classificationSelect" id="classificationselect14"><option>Select...</option></select></td>
-    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
-    <td class="center-checkbox"><input type="checkbox" id="checkbox14"/></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td><input type="text" id="notes14"/></td>
-  </tr>
-<!-- Input Row 15 -->
-<tr class="manpower-row">
-    <td><select class="manpowerSelect" id="manpowerselect15"><option>Select...</option></select></td>
-    <td><select class="classificationSelect" id="classificationselect15"><option>Select...</option></select></td>
-    <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
-    <td class="center-checkbox"><input type="checkbox" id="checkbox15"/></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td><input type="text" id="notes15"/></td>
-  </tr>
+
 
   <tr>
   <td colspan="11" style="text-align: center;">
   <button id="addManpowerRowBtn" class="action-btn">➕ Add Manpower Row</button>
-
 </td>
-
 </tr>
-
 </table>
 
 <!-- Totals / Equipment Table -->
 <table class="equipment-table" style="width: 100%; table-layout: fixed;">
   <colgroup>
-    <col style="width: 197px;"> <!-- Total Hours -->
-    <col style="width: 30px;"> <!-- Total Hours value -->
-    <col style="width: 35px;"> <!-- Cost Code label -->
-    <col style="width: 89px;"> <!-- Cost Code 1 -->
-    <col style="width: 87px;"> <!-- Cost Code 2 -->
-    <col style="width: 89px;"> <!-- Cost Code 3 -->
-    <col style="width: 90px;"> <!-- Cost Code 4 -->
-    <col style="width: 89px;"> <!-- Cost Code 5 -->
-    <col style="width: 89px;"> <!-- Cost Code 6 -->
-    <col style="width: 100px;"> <!-- PO -->
-    <col style="width: 250px;"> <!-- Notes -->
+    <col style="width: 167px;"> <!-- Total Hours -->
+    <col style="width: 27px;"> <!-- Total Hours value -->
+    <col style="width: 27px;"> <!-- Cost Code label -->
+    <col style="width: 44px;"> <!-- Cost Code 1 -->
+    <col style="width: 45px;"> <!-- Cost Code 2 -->
+    <col style="width: 46px;"> <!-- Cost Code 3 -->
+    <col style="width: 44px;"> <!-- Cost Code 4 -->
+    <col style="width: 44px;"> <!-- Cost Code 5 -->
+    <col style="width: 44px;"> <!-- Cost Code 6 -->
+    <col style="width: 92px;"> <!-- PO -->
+    <col style="width: 205px;"> <!-- Notes -->
   </colgroup>
 
   <!-- Row 1: Totals and Cost Code Selects -->
@@ -407,12 +339,12 @@
     <td style="height: 60px; background-color: #edf1dc; text-align: right;"><strong>Total Hours:</strong></td>
     <td style="background-color: #dbe5f1;"><input type="text" id="grandTotalHours" class="grand-total-hours" readonly /></td>
     <td style="background-color: #edf1dc; text-align: center;"><strong>Cost Code:</strong></td>
-    <td style="background-color: #dbe5f1;"><select id="costCode7" Class="costCodeSelect"></select></td>
-    <td style="background-color: #dbe5f1;"><select id="costCode8" Class="costCodeSelect"></select></td>
-    <td style="background-color: #dbe5f1;"><select id="costCode9" Class="costCodeSelect"></select></td>
-    <td style="background-color: #dbe5f1;"><select id="costCode10" Class="costCodeSelect"></select></td>
-    <td style="background-color: #dbe5f1;"><select id="costCode11" Class="costCodeSelect"></select></td>
-    <td style="background-color: #dbe5f1;"><select id="costCode12" Class="costCodeSelect"></select></td>
+     <td style="background-color: #dbe5f1;"><select id="digNumber7" class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber8" class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber9" class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber10" class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber11" class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber12" class="digNumberSelect"></select></td>
 
     <td rowspan="2" style="background-color: #edf1dc; text-align: center;"><strong>PO (if equipment is rented)</strong></td>
     <td rowspan="2" style="background-color: #edf1dc; text-align: center;"><strong>Notes</strong></td>
@@ -566,104 +498,30 @@
     <td><input type="text" id="po10"/></td>
     <td><input type="text" id="notes25"/></td>
   </tr>
-  <!--Row 11-->
-  <tr class="equipment-row">
-    <td><select class="equipmentSelect" id="equipmentselect11"><option>Select...</option></select></td>
-    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
-    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm11"><option>Select...</option></select></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td><input type="text" id="po11"/></td>
-    <td><input type="text" id="notes26"/></td>
-  </tr>
-  <!--Row 12-->
-  <tr class="equipment-row">
-    <td><select class="equipmentSelect" id="equipmentselect12"><option>Select...</option></select></td>
-    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
-    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm12"><option>Select...</option></select></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td><input type="text" id="po12"/></td>
-    <td><input type="text" id="notes27"/></td>
-  </tr>
-  <!--Row 13-->
-  <tr class="equipment-row">
-    <td><select class="equipmentSelect" id="equipmentselect13"><option>Select...</option></select></td>
-    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
-    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm13"><option>Select...</option></select></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td><input type="text" id="po13"/></td>
-    <td><input type="text" id="notes28"/></td>
-  </tr>
-  <!--Row 14-->
-  <tr class="equipment-row">
-    <td><select class="equipmentSelect" id="equipmentselect14"><option>Select...</option></select></td>
-    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
-    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm14"><option>Select...</option></select></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td><input type="text" id="po14"/></td>
-    <td><input type="text" id="notes29"/></td>
-  </tr>
-  <!--Row 15-->
-  <tr class="equipment-row">
-    <td><select class="equipmentSelect" id="equipmentselect15"><option>Select...</option></select></td>
-    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
-    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm15"><option>Select...</option></select></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-    <td><input type="text" id="po15"/></td>
-    <td><input type="text" id="notes30"/></td>
-  </tr>
-
   <tr>
   <td colspan="11" style="text-align: center;">
   <button id="addEquipmentRowBtn" class="action-btn">➕ Add Equipment Row</button>
-
 </td>
-
 </tr>
-
 </table>
 
 <!--Subcontractor Table-->
 
 <table class="subcontractor-table" style="width: 100%; table-layout: fixed;">
   <colgroup>
-    <col style="width: 197px;">
-    <col style="width: 30px;">
-    <col style="width: 35px;">
-    <col style="width: 89px;">
-    <col style="width: 87px;">
-    <col style="width: 89px;">
-    <col style="width: 90px;">
-    <col style="width: 89px;">
-    <col style="width: 89px;">
-    <col style="width: 100px;">
+    <col style="width: 179px;">
+    <col style="width: 29px;">
+    <col style="width: 29px;">
+    <col style="width: 48px;">
+    <col style="width: 48px;">
+    <col style="width: 48px;">
+    <col style="width: 48px;">
+    <col style="width: 48px;">
+    <col style="width: 48px;">
+    <col style="width: 88px;">
     <col style="width: 80px;">
     <col style="width: 50px;">
-    <col style="width: 120px;">
+    <col style="width: 100px;">
   </colgroup>
 
   <!-- Header Row -->
@@ -671,12 +529,12 @@
       <td style="height: 60px; background-color: #edf1dc; text-align: right;"><strong>Total Hours:</strong></td>
       <td style="background-color: #dbe5f1;"><input type="text" id="equipmentGrandTotal" class="grand-total-hours" readonly /></td>
       <td style="background-color: #edf1dc; text-align: center;"><strong>Cost Code:</strong></td>
-      <td style="background-color: #dbe5f1;"><select id="subcostCode1" Class="costCodeSelect"></select></td>
-      <td style="background-color: #dbe5f1;"><select id="subcostCode2" Class="costCodeSelect"></select></td>
-      <td style="background-color: #dbe5f1;"><select id="subcostCode3" Class="costCodeSelect"></select></td>
-      <td style="background-color: #dbe5f1;"><select id="subcostCode4" Class="costCodeSelect"></select></td>
-      <td style="background-color: #dbe5f1;"><select id="subcostCode5" Class="costCodeSelect"></select></td>
-      <td style="background-color: #dbe5f1;"><select id="subcostCode6" Class="costCodeSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber13" Class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber14" Class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber15" Class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber16" Class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber17" Class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber18" Class="digNumberSelect"></select></td>
 
       <td rowspan="2" style="background-color: #edf1dc; text-align: center;"><strong>Services</strong></td>
       <td rowspan="2" style="background-color: #edf1dc; text-align: center;"><strong>Site Rep</strong></td>
@@ -780,10 +638,8 @@
   <tr>
   <td colspan="13" style="text-align: center; padding: 10px;">
     <button id="addSubcontractorRowBtn" class="action-btn">➕ Add Subcontractor Row</button>
-  
   </td>
   </tr>
- 
 </table>
 
 <!-- Units Table-->
@@ -843,6 +699,12 @@
     <td><input type="text" id="noofunits4" /></td>
     <td><input type="text" id="notes39"/></td>
   </tr>
+
+   <tr>
+  <td colspan="4" style="text-align: center;">
+  <button id="addUnitsRowBtn" class="action-btn">➕ Add Units Row</button>
+</td>
+</tr>
 </table>
 
 <!-- Daily Notes Table -->
@@ -899,20 +761,6 @@
         <div class="photo-wrapper">
           <div class="photo-cell" data-index="3"></div>
           <input type="text" class="photo-description" id="photoDesc3" placeholder="Photo 4 caption" />
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="photo-wrapper">
-          <div class="photo-cell" data-index="4"></div>
-          <input type="text" class="photo-description" id="photoDesc4" placeholder="Photo 5 caption" />
-        </div>
-      </td>
-      <td>
-        <div class="photo-wrapper">
-          <div class="photo-cell" data-index="5"></div>
-          <input type="text" class="photo-description" id="photoDesc5" placeholder="Photo 6 caption" />
         </div>
       </td>
     </tr>
@@ -999,7 +847,7 @@
 
 
 <!-- ✅ Your custom script (must come AFTER the libraries above) -->
-<script src="dfr.js"></script>
+<script src="dfr.js" defer></script>
 
 <div id="backButtonBar" style="
   position: fixed;
@@ -1020,8 +868,8 @@
 
 <script src="../index.js"></script>
 
-<div style="position: fixed; bottom: 4px; right: 8px; font-size: 10px; color: gray;">
-  v9.1
+<div style="position: fixed; bottom: 4px; right: 8px; font-size: 15px; color: rgb(0, 0, 0);">
+  v1.0.0
 </div>
 
 

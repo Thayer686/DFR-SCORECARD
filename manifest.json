@@ -30,8 +30,8 @@
       }]
     },
     {
-      "name": "Timesheet Form (TM)",
-      "short_name": "TM",
+      "name": "Daily Scorecard",
+      "short_name": "DS",
       "url": "/tm/tm.html",
       "icons": [{
         "src": "assets/icons/icon-192.png",
