@@ -6,21 +6,34 @@ const urlsToCache = [
   'index.css',
   'index.js',
   'manifest.json',
-  'dfr/dfr.js',
-  'dfr/dfr.css',
+  'service-worker.js',
+
+  // DFR app
   'dfr/dfr.html',
-  'dfr/dfr.js.map',
-  'tm/tm.js',
-  'tm/tm.css',
+  'dfr/dfr.css',
+  'dfr/dfr.js',
+
+  // TM app
   'tm/tm.html',
-  'tm/tm.js.map',
-  'tm/tm.html.map',
+  'tm/tm.css',
+  'tm/tm.js',
+
+  // Shared data
   'data/activityMap.json',
   'data/digNumberMap.json',
   'data/listData.json',
   'data/unitMap.json',
+
+  // All assets
   'assets/icons/icon-192.png',
-  'assets/icons/icon-512.png'
+  'assets/icons/icon-512.png',
+  'assets/desktop.ini',
+  'assets/icons/desktop.ini',
+  'assets/icons/icon-192.png',
+  'assets/icons/icon-512.png',
+  'assets/icons/icon-512.png',
+  'assets/icons/icon-192.png',
+  'assets/images/OMH Logo.png'
 ];
 
 // ✅ Install event
