@@ -29,10 +29,6 @@ const urlsToCache = [
   'assets/icons/icon-512.png',
   'assets/desktop.ini',
   'assets/icons/desktop.ini',
-  'assets/icons/icon-192.png',
-  'assets/icons/icon-512.png',
-  'assets/icons/icon-512.png',
-  'assets/icons/icon-192.png',
   'assets/images/OMH Logo.png'
 ];
 
