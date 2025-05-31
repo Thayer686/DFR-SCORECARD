@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OMH T&M Form</title>
+   <meta name="viewport" content="width=1224, initial-scale=0.9, minimum-scale=0.5, maximum-scale=3, user-scalable=yes">
+
+
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#1e3a5f" />
+  <link rel="stylesheet" href="tm.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <!-- ✅ Load jsPDF -->
+  <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+</head>
+<body>
+  
+  <div class="pwa-wrapper"> <!-- ✅ This should wrap everything -->
+    <div class="canvas">
+      <div class="tm-container">
+        <header class="tm-header">
+          <img src="../assets/images/OMH Logo.png" alt="OMH Logo" class="logo">
+          <div class="header-fields">
+            <label>Date:<br>
+              <input type="date" id="tmDate">
+            </label>
+            <label style="margin-top: 10px;">Dig ID:<br>
+              <select id="digIdSelect">
+                <option value="">Select...</option>
+              </select>
+            </label>
+          </div>
+        </header>
+
+    <!-- Scope of Work Section -->
+    <h2>Scope of Work</h2>
+    <table class="scope-table">
+      <thead>
+        <tr>
+          <th style="width: 10%;">Scope ID</th>
+          <th style="width: 25%;">Cost Item / Description</th>
+          <th style="width: 7%;">Unit</th>
+          <th style="width: 10%;">Today's Units</th>
+          <th style="width: 42%;">Comments</th>
+        </tr>
+      </thead>
+      <tbody id="scopeBody">
+        <!-- Filled dynamically -->
+      </tbody>
+    </table>
+
+   <div class="row-buttons right-align">
+  <button id="addScopeRow" type="button" class="add-row-btn">➕ Add Scope Row</button>
+  <button id="removeScopeRow" type="button" class="remove-row-btn">🗑 Remove Last Row</button>
+</div>
+
+    <!-- Crew Section -->
+    <h2>T&M Crew Time Sheet</h2>
+    <table class="crew-table">
+      <thead>
+        <tr>
+          <th style="width: 18%;">Classification</th>
+          <th style="width: 20%;">Manpower</th>
+          <th style="width: 8%;">Unit</th>
+          <th style="width: 10%;">Total</th>
+          <th style="width: 6%;">LOA</th>
+          <th style="width: 6%;">Truck</th>
+          <th style="width: 32%;">Notes</th>
+        </tr>
+      </thead>
+      <tbody id="crewBody">
+        <!-- Rows added dynamically -->
+      </tbody>
+    </table>
+
+    <div class="row-buttons right-align">
+  <button id="addCrewRow" type="button" class="add-row-btn">➕ Add Crew Row</button>
+  <button id="removeCrewRow" type="button" class="remove-row-btn">🗑 Remove Last Crew Row</button>
+</div>
+
+
+
+    <!-- Equipment Section -->
+    <h2>T&M Equipment Sheet</h2>
+    <table class="equipment-table">
+      <thead>
+        <tr>
+          <th style="width: 15%;">Unit #</th>
+          <th style="width: 30%;">Equipment Description</th>
+          <th style="width: 12%;">Unit</th>
+          <th style="width: 10%;">Total</th>
+          <th style="width: 33%;">Notes</th>
+        </tr>
+      </thead>
+      <tbody id="equipmentBody">
+        <!-- Rows added dynamically -->
+      </tbody>
+    </table>
+
+    <div class="row-buttons right-align">
+  <button type="button" id="addEquipmentBtn" class="add-row-btn">➕ Add Equipment Row</button>
+  <button type="button" id="removeEquipmentBtn" class="remove-row-btn">🗑️ Remove Last Equipment Row</button>
+</div>
+
+    <!-- Comments -->
+    <h2>Comments</h2>
+    <textarea id="comments" placeholder="E.g. Load fence panels..."></textarea>
+
+   <h3>Signatures</h3>
+<div class="signature-row">
+  <div class="sig-meta">
+    <label for="contractorRep">Contractor Representative:</label>
+    <input type="text" id="contractorRep" placeholder="Enter name and title...">
+    <label for="contractorDate">Date:</label>
+    <input type="date" id="contractorDate">
+  </div>
+  <div class="sig-pad">
+    <label>Signature:</label>
+    <canvas id="contractorSig" class="signature-box"></canvas>
+    <button type="button" class="clear-btn" onclick="clearSignature('contractorSig')">🧽 Clear</button>
+  </div>
+</div>
+
+<div class="signature-row">
+  <div class="sig-meta">
+    <label for="clientRep">Client Representative:</label>
+    <input type="text" id="clientRep" placeholder="Enter name and title...">
+    <label for="clientDate">Date:</label>
+    <input type="date" id="clientDate">
+  </div>
+  <div class="sig-pad">
+    <label>Signature:</label>
+    <canvas id="clientSig" class="signature-box"></canvas>
+    <button type="button" class="clear-btn" onclick="clearSignature('clientSig')">🧽 Clear</button>
+  </div>
+</div>
+
+
+    <div class="footer-note">
+      This document is a draft and is subject to review and approval by supervision. Its contents are not final and may be revised as needed.
+    </div>
+
+    <div class="form-buttons">
+  <button type="button" id="saveFormBtn" class="btn save">💾 Save Form</button>
+  <button type="button" id="loadFormBtn" class="btn load">📂 Load Form</button>
+  <button type="button" id="exportPdfBtn" class="btn pdf">🧾 Export to PDF</button>
+  <button type="button" id="emailBtn" class="btn email">📧 Email</button>
+  <button type="button" id="resetBtn" class="btn reset">♻️ Reset Form</button>
+</div>
+
+
+
+  <script src="tm.js"></script>
+
+  </div> <!-- ✅ close .canvas -->
+</div>
+
+<div id="backButtonBar" style="
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 9999;
+">
+  <button onclick="goBackToPortal()" class="action-btn">⬅️ Back to Portal</button>
+</div>
+
+<script>
+  function goBackToPortal() {
+    if (confirm("Are you sure you want to return to the portal? Unsaved changes will be lost.")) {
+      window.location.href = '../index.html';
+    }
+  }
+</script>
+
+
+<script src="../index.js"></script>
+
+<div style="position: fixed; bottom: 4px; right: 8px; font-size: 15px; color: rgb(0, 0, 0);">
+  v1.0.0
+</div>
+
+</body>
+</html>
