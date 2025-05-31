@@ -578,7 +578,9 @@ reader.readAsDataURL(file);
     
 // --- Manual Save Function ---
 function saveForm() {
-  const formData = {};
+  const formData = {
+     version: 'v1.0.0' // 👈 Add this line!
+  };
 
   document.querySelectorAll("input, textarea, select").forEach(el => {
     if (el.id) {

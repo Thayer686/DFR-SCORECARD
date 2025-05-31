@@ -1145,11 +1145,12 @@ function setFormData(data) {
 }
 
 
-
-
 // Save Form to JSON file
 document.getElementById("saveFormBtn")?.addEventListener("click", () => {
   const data = getFormData();
+
+   // ✅ Add version info!
+  data.version = 'v1.0.0';
 
   // 🔍 Get date from form input
   const formDate = document.getElementById("tmDate")?.value || "unknown-date";
