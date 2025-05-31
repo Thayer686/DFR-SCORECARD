@@ -22,7 +22,7 @@ const urlsToCache = [
   'data/activityMap.json',
   'data/digNumberMap.json',
   'data/listData.json',
-  'data/unitMap.json',
+  'data/unitIdMap.json',
 
   // All assets
   'assets/icons/icon-192.png',
