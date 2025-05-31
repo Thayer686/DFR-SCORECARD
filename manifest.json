@@ -22,7 +22,7 @@
     {
       "name": "Daily Field Report (DFR)",
       "short_name": "DFR",
-      "url": "/dfr/dfr.html",
+      "url": "/DFR-SCORECARD/dfr/dfr.html",
       "icons": [{
         "src": "assets/icons/icon-192.png",
         "sizes": "192x192",
@@ -32,7 +32,7 @@
     {
       "name": "Daily Scorecard",
       "short_name": "DS",
-      "url": "/tm/tm.html",
+      "url": "/DFR-SCORECARD/tm/tm.html",
       "icons": [{
         "src": "assets/icons/icon-192.png",
         "sizes": "192x192",
