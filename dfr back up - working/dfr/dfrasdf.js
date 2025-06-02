@@ -1,13 +1,4 @@
-const CACHE_NAME = 'field-report-v1.0.1'; // 🔁 bump this for every update
-
-// 🔧 Debounce helper (🔥 NEW!)
-function debounce(func, wait = 300) {
-  let timeout;
-  return (...args) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), wait);
-  };
-}
+const CACHE_NAME = 'field-report-v9.0'; // 🔁 bump this for every update
 
 let listData = {};
 
@@ -40,88 +31,24 @@ async function loadLists() {
 
   populateAllDigNumberDropdowns();
 
-  
-
     // ✅ Populate the top-level Dig Number select from listData.digNumbers
-  const datalist = document.getElementById("digNumberOptions");
-if (datalist && listData.digNumbers) {
-  datalist.innerHTML = "";
-  listData.digNumbers.forEach(digNum => {
-    const option = document.createElement("option");
-    option.value = digNum;
-    datalist.appendChild(option);
-  });
-}
+  const digNumberSelect = document.getElementById("digNumberSelect");
+  if (digNumberSelect && listData.digNumbers) {
+    digNumberSelect.innerHTML = '<option value="">Select...</option>';
+    listData.digNumbers.forEach(digNum => {
+      const option = document.createElement("option");
+      option.value = digNum;
+      option.textContent = digNum;
+      digNumberSelect.appendChild(option);
+    });
+    digNumberSelect.value = "";
+  }
 
   populateSelect("projectNameSelect", listData.projectNames);
   populateSelect("clientSelect", listData.clients);
   populateSelect("locationSelect", listData.locations);
   populateSelect("weatherSelect", listData.weather);
   populateSelect("workPackage", listData.workPackages);
-
-  // 🔥 Populate the digNumberInput1–6 datalists
-for (let i = 1; i <= 18; i++) {
-  const datalist = document.getElementById(`digNumberOptions${i}`);
-  if (datalist && listData.digNumbers) {
-    datalist.innerHTML = "";
-    listData.digNumbers.forEach(digNum => {
-      const option = document.createElement("option");
-      option.value = digNum;
-      datalist.appendChild(option);
-    });
-  }
-}
-
-// 🔥 Populate manpowerInput1–15 datalists
-for (let i = 1; i <= 15; i++) {
-  const datalist = document.getElementById(`manpowerOptions${i}`);
-  if (datalist && listData.manpower) {
-    datalist.innerHTML = "";
-    listData.manpower.forEach(mp => {
-      const option = document.createElement("option");
-      option.value = mp;
-      datalist.appendChild(option);
-    });
-  }
-}
-
-// 🔥 Populate classificationInput1–15 datalists
-for (let i = 1; i <= 15; i++) {
-  const datalist = document.getElementById(`classificationOptions${i}`);
-  if (datalist && listData.classification) {
-    datalist.innerHTML = "";
-    listData.classification
-      .map(item => item.trim())
-      .sort((a, b) => a.localeCompare(b))
-      .forEach(cl => {
-        const option = document.createElement("option");
-        option.value = cl;
-        datalist.appendChild(option);
-      });
-  }
-}
-
-// 🔥 Populate equipmentInput1–15 datalists with NUMERICAL sort (and trim)
-for (let i = 1; i <= 15; i++) {
-  const datalist = document.getElementById(`equipmentOptions${i}`);
-  if (datalist && listData.equipment) {
-    datalist.innerHTML = "";
-    listData.equipment
-      .map(item => item.trim()) // Remove leading/trailing spaces
-      .sort((a, b) => {
-        const [a1, a2] = a.split("-").map(Number);
-        const [b1, b2] = b.split("-").map(Number);
-        return a1 - b1 || a2 - b2;
-      })
-      .forEach(eq => {
-        const option = document.createElement("option");
-        option.value = eq;
-        datalist.appendChild(option);
-      });
-  }
-}
-
-
 
   // ✅ Add these back!
   document.querySelectorAll(".manpowerSelect").forEach(select => {
@@ -211,11 +138,11 @@ setTimeout(() => {
 }, 0);
 
   
- // linkTopToBottomCostCodesWithOverride();
+  linkTopToBottomCostCodesWithOverride();
   attachEquipmentRowListeners();
   attachSubcontractorRowListeners();
   attachUnitIdListeners();
-  //linkTopToBottomDigNumbersWithOverride(); // 🔥 Add this new call here!
+
 
 function populateDigNumberDropdowns() {
   // Grab dig numbers from digNumberSelect
@@ -249,16 +176,19 @@ function populateDigNumberDropdowns() {
 }
 
 
+
 function attachUnitIdListeners() {
   document.querySelectorAll(".unitUsedSelect").forEach(select => {
     select.addEventListener("change", () => {
       const selectedValue = select.value;
-      const unitId = unitIdMap.UnitsUsedList[selectedValue] || "";
+      const unitId = unitIdMap.UnitsUsedList[selected] || "";
 
-      // Correct selector: get .unitIdInput instead of .unitIdSelect
-      const unitIdInput = select.closest("tr")?.querySelector(".unitIdInput");
-      if (unitIdInput) {
-        unitIdInput.value = unitId;
+
+      // Get corresponding unitId field in same row
+      const unitIdSelect = select.closest("tr")?.querySelector(".unitIdSelect");
+
+      if (unitIdSelect) {
+  unitIdSelect.value = unitId;
       }
     });
   });
@@ -273,28 +203,16 @@ function findActivityText(code) {
   return "";
 }
 
-function populateSelectElement(select, list, ensureValue) {
+function populateSelectElement(select, list) {
   if (!select || !list) return;
-
-  // Clear existing options and set default
   select.innerHTML = '<option value="">Select...</option>';
-
-  // 🔥 If ensureValue (e.g. the saved value) isn’t in the list, add it to ensure it appears
-  if (ensureValue && !list.includes(ensureValue)) {
-    list = [ensureValue, ...list];
-  }
-
-  // ✅ Trim and sort alphabetically
-  list = list.map(item => item.trim()).sort((a, b) => a.localeCompare(b));
-
   list.forEach(item => {
     const option = document.createElement("option");
-    option.value = item;
     option.textContent = item;
+    option.value = item;
     select.appendChild(option);
   });
 }
-
 
 function populateSelect(id, values) {
   const select = document.getElementById(id);
@@ -351,7 +269,6 @@ function populateSelect(id, values) {
 
     //Grand total of manpower
     function updateGrandTotalHours() {
-      console.log("🔧 updateGrandTotalHours called");
       let sum = 0;
       document.querySelectorAll(".manpower-row .total-field").forEach(input => {
         const val = parseFloat(input.value);
@@ -439,56 +356,32 @@ function populateSelect(id, values) {
         }
       });
     }
-
-    function linkTopToBottomDigNumbersWithOverride() {
+    
+function linkTopToBottomCostCodesWithOverride() {
   for (let i = 1; i <= 6; i++) {
-    const topSelect = document.getElementById(`digNumber${i}`);
-    const bottomSelect = document.getElementById(`digNumber${i + 6}`);
+    const top = document.getElementById(`costCode${i}`);
+    const bottom = document.getElementById(`costCode${i + 6}`);
 
-    if (topSelect && bottomSelect) {
-      let isSynced = true;
+    if (top && bottom) {
+      (function(top, bottom) {
+        let isSynced = true;
 
-      topSelect.addEventListener("change", () => {
-        if (isSynced) {
-          bottomSelect.value = topSelect.value;
-          bottomSelect.dispatchEvent(new Event("change", { bubbles: true }));
-        }
-      });
+        top.addEventListener("change", () => {
+  if (isSynced) {
+    bottom.value = top.value;
+  }
+});
 
-      bottomSelect.addEventListener("input", () => {
-        if (bottomSelect.value !== topSelect.value) {
-          isSynced = false;
-        }
-      });
+
+        bottom.addEventListener("input", () => {
+          if (bottom.value !== top.value) {
+            isSynced = false;
+          }
+        });
+      })(top, bottom);
     }
   }
 }
-    
-// function linkTopToBottomCostCodesWithOverride() {
-//   for (let i = 1; i <= 6; i++) {
-//     const top = document.getElementById(`costCode${i}`);
-//     const bottom = document.getElementById(`costCode${i + 6}`);
-
-//     if (top && bottom) {
-//       (function(top, bottom) {
-//         let isSynced = true;
-
-//         top.addEventListener("change", () => {
-//   if (isSynced) {
-//     bottom.value = top.value;
-//   }
-// });
-
-
-//         bottom.addEventListener("input", () => {
-//           if (bottom.value !== top.value) {
-//             isSynced = false;
-//           }
-//         });
-//       })(top, bottom);
-//     }
-//   }
-// }
 
 listData.UnitsUsedList = Object.keys(unitIdMap); // Or .sort() if you want it alphabetical
 
@@ -546,7 +439,7 @@ function attachUnitIdListeners() {
     const canvas = document.createElement("canvas");
     canvas.width = width;
     canvas.height = height;
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const ctx = canvas.getContext("2d");
     ctx.drawImage(img, 0, 0, width, height);
 
     const resizedDataUrl = canvas.toDataURL("image/jpeg", 0.8);
@@ -685,9 +578,7 @@ reader.readAsDataURL(file);
     
 // --- Manual Save Function ---
 function saveForm() {
-  const formData = {
-     version: 'v1.0.0' // 👈 Add this line!
-  };
+  const formData = {};
 
   document.querySelectorAll("input, textarea, select").forEach(el => {
     if (el.id) {
@@ -848,325 +739,199 @@ function restoreForm(data) {
   addManualEquipmentRowsForRestore(data);
   addManualSubcontractorRowsForRestore(data);
   addManualUnitsRowsForRestore(data);
-  // 🔥 Ensure rows exist before restoring values
-  if (data.manualManpowerRows && data.manualManpowerRows.length) {
- 
-    console.log("🟡 data.allUnitsRows during restore:", data.allUnitsRows);
 
-  
-  if (data.allUnitsRows && data.allUnitsRows.length) {
-  const allUnitRows = document.querySelectorAll(".Units-table tr:has(.unitUsedSelect)");
-  data.allUnitsRows.forEach((rowData, idx) => {
-    const row = allUnitRows[idx];
-    if (!row) return;
-
-    const unitSelect = row.querySelector(".unitUsedSelect");
-    const unitIdInput = row.querySelector(".unitIdInput");
-    const noOfUnitsInput = row.querySelector("input[id^='noofunits']");
-    const notesInput = row.querySelector("input[id^='notes']");
-
-    if (unitSelect) {
-  const unitOptions = Object.keys(unitIdMap.UnitsUsedList);
-  console.log("🟡 Available dropdown options before repopulation:", unitOptions);
-
-  populateSelectElement(unitSelect, unitOptions);
-
-  console.log("🟡 Dropdown options AFTER repopulation:", [...unitSelect.options].map(o => o.value));
-  console.log("🟡 Trying to restore unitUsed for row", idx, ":", rowData.unitUsed);
-
-  unitSelect.value = rowData.unitUsed || "";
-  console.log("🟡 After setting value:", unitSelect.value);
-
-  unitSelect.dispatchEvent(new Event("change", { bubbles: true }));
-}
-
-    if (unitIdInput) unitIdInput.value = rowData.unitId || "";
-    if (noOfUnitsInput) noOfUnitsInput.value = rowData.noOfUnits || "";
-    if (notesInput) notesInput.value = rowData.notes || "";
-  });
-}
-
-
-    // 🧪 Log how many rows we're restoring into
+  // 🔥 Restore manual manpower rows
+  if (data.manualManpowerRows?.length) {
     const manualRows = document.querySelectorAll(".manpower-row.manual-row");
-    console.log("🔁 Restoring manual rows:", manualRows.length);
-
     data.manualManpowerRows.forEach((rowData, idx) => {
       const row = manualRows[idx];
-      if (!row) {
-  console.warn("⚠️ No row found for restore");
-  return;
-}
+      if (!row) return;
 
-const mp = row.querySelector(`input[id^='manpowerselect']`);
-const cl = row.querySelector(`input[id^='classificationselect']`);
-const loa = row.querySelector(`input[type='checkbox']`);
-const notesInput = row.querySelector(`input[id^='manualnotes']`);
-
-const hourInputs = row.querySelectorAll(".hour-input");
-
-console.log(`🧪 Row ${idx + 1} restore:`, { mp, cl, loa, notes: rowData.notes, hours: rowData.hours });
-
-if (mp) mp.value = rowData.manpower || "";
-if (cl) cl.value = rowData.classification || "";
-if (loa) loa.checked = !!rowData.loa;
-if (notesInput) {
-  notesInput.value = rowData.notes || "";
-  console.log(`✅ Restored note value: "${notesInput.value}" for row ${idx + 1}`);
-} else {
-  console.warn(`❌ Could not find notes input for row ${idx + 1}`);
-}
+      row.querySelector(`input[id^='manpowerselect']`).value = rowData.manpower || "";
+      row.querySelector(`input[id^='classificationselect']`).value = rowData.classification || "";
+      row.querySelector(`input[type='checkbox']`).checked = !!rowData.loa;
+      row.querySelector(`input[id^='manualnotes']`).value = rowData.notes || "";
 
       rowData.hours?.forEach((val, i) => {
-        if (hourInputs[i]) {
-          hourInputs[i].value = val || "";
-        }
+        const hourInput = row.querySelectorAll(".hour-input")[i];
+        if (hourInput) hourInput.value = val || "";
       });
     });
   }
-  
-  // 🔁 Continue with rest of your restoreForm logic...
-  document.querySelectorAll("input, select, textarea").forEach(el => {
-    if (el.id && data.hasOwnProperty(el.id)) {
-      if (el.type === "checkbox") {
-        el.checked = data[el.id];
-      } else {
-        el.value = data[el.id];
+
+  // 🔥 Restore manual equipment rows
+  if (data.manualEquipmentRows?.length) {
+    const manualEquipRows = document.querySelectorAll(".equipment-row.manual-row");
+    data.manualEquipmentRows.forEach((rowData, idx) => {
+      const row = manualEquipRows[idx];
+      if (!row) return;
+
+      row.querySelector("input[id^='equipmentselect']").value = rowData.equipment || "";
+      row.querySelector(".equipment-total").value = rowData.total || "";
+      row.querySelector('select[id^="uofm"]').value = rowData.uofm || "";
+      row.querySelector("input[id^='po']").value = rowData.po || "";
+      row.querySelector("input[id^='notesEquip']").value = rowData.notes || "";
+
+      rowData.hours?.forEach((val, i) => {
+        const hourInput = row.querySelectorAll(".hour-input")[i];
+        if (hourInput) hourInput.value = val || "";
+      });
+    });
+  }
+
+  // 🔥 Restore manual subcontractor rows
+  if (data.manualSubRows?.length) {
+    const manualSubRows = document.querySelectorAll(".subcontractor-row.manual-row");
+    data.manualSubRows.forEach((rowData, idx) => {
+      const row = manualSubRows[idx];
+      if (!row) return;
+
+      row.querySelector(".subcontractorName-input").value = rowData.name || "";
+      row.querySelector(".sub-total-field").value = rowData.total || "";
+      row.querySelector(".UofMSelect").value = rowData.uofm || "";
+      row.querySelector("input[id^='services']").value = rowData.services || "";
+      row.querySelector("input[id^='siterep']").value = rowData.siterep || "";
+      row.querySelector("input[id^='PO#']").value = rowData.po || "";
+      row.querySelector("input[id^='manualsubnotes']").value = rowData.notes || "";
+
+      rowData.hours?.forEach((val, i) => {
+        const hourInput = row.querySelectorAll(".sub-hour-input")[i];
+        if (hourInput) hourInput.value = val || "";
+      });
+    });
+  }
+
+  // 🔥 Restore manual units rows (prevent duplication)
+  if (data.manualUnitsRows?.length) {
+    const existingCount = document.querySelectorAll(".units-row.manual-row").length;
+    const toAdd = data.manualUnitsRows.length - existingCount;
+    if (toAdd > 0) {
+      for (let i = 0; i < toAdd; i++) {
+        document.getElementById("addUnitsRowBtn")?.click();
       }
     }
-  });
 
-if (data.manualEquipmentRows && data.manualEquipmentRows.length) {
-  const manualEquipRows = document.querySelectorAll(".equipment-row.manual-row");
+    const manualUnitRows = document.querySelectorAll(".units-row.manual-row");
+    data.manualUnitsRows.forEach((rowData, idx) => {
+      const row = manualUnitRows[idx];
+      if (!row) return;
 
-  data.manualEquipmentRows.forEach((rowData, idx) => {
-    const row = manualEquipRows[idx];
-    if (!row) return;
-
-    const equipment = row.querySelector("input[id^='equipmentselect']");
-    const total = row.querySelector(".equipment-total");
-    const uofm = row.querySelector("select[id^='uofm']");
-    const po = row.querySelector("input[id^='po']");
-    const notes = row.querySelector("input[id^='notesEquip']");
-    const hourInputs = row.querySelectorAll(".hour-input");
-
-    if (equipment) equipment.value = rowData.equipment || "";
-    if (total) total.value = rowData.total || "";
-    if (uofm) uofm.value = rowData.uofm || "";
-    if (po) po.value = rowData.po || "";
-    if (notes) notes.value = rowData.notes || "";
-
-    rowData.hours?.forEach((val, i) => {
-      if (hourInputs[i]) hourInputs[i].value = val || "";
+      row.querySelector(".unitUsedSelect").value = rowData.unitUsed || "";
+      row.querySelector(".unitIdInput").value = rowData.unitId || "";
+      row.querySelector("td:nth-child(3) input[type='text']").value = rowData.noOfUnits || "";
+      row.querySelector("td:last-child input[type='text']").value = rowData.notes || "";
     });
-  });
-}
-
-
-// 🔥 RESTORE: Manual Subcontractor Rows
-if (data.manualSubRows && data.manualSubRows.length) {
-  const manualSubRows = document.querySelectorAll(".subcontractor-row.manual-row");
-  data.manualSubRows.forEach((rowData, idx) => {
-    const row = manualSubRows[idx];
-    if (!row) return;
-
-    const nameInput = row.querySelector(".subcontractorName-input");
-    const totalInput = row.querySelector(".sub-total-field");
-    const uofmSelect = row.querySelector(".UofMSelect");
-    const servicesInput = row.querySelector("input[id^='services']");
-    const siterepInput = row.querySelector("input[id^='siterep']");
-    const poInput = row.querySelector("input[id^='PO#']");
-    const notesInput = row.querySelector("input[id^='manualsubnotes']");
-    const hourInputs = row.querySelectorAll(".sub-hour-input");
-
-    if (nameInput) nameInput.value = rowData.name || "";
-    if (totalInput) totalInput.value = rowData.total || "";
-    if (uofmSelect) uofmSelect.value = rowData.uofm || "";
-    if (servicesInput) servicesInput.value = rowData.services || "";
-    if (siterepInput) siterepInput.value = rowData.siterep || "";
-    if (poInput) poInput.value = rowData.po || "";
-    if (notesInput) notesInput.value = rowData.notes || "";
-
-    rowData.hours?.forEach((val, i) => {
-      if (hourInputs[i]) hourInputs[i].value = val || "";
-    });
-  });
-}
-
-
-// --- RESTORE: Manual Units Rows ---
-const currentManualRows = document.querySelectorAll(".units-row.manual-row").length;
-const neededManualRows = data.manualUnitsRows?.length || 0;
-
-// 🔥 Create missing manual rows first
-for (let i = currentManualRows; i < neededManualRows; i++) {
-  document.getElementById("addUnitsRowBtn")?.click();
-}
-
-// 🔥 Now repopulate their values
-const manualRows = document.querySelectorAll(".units-row.manual-row");
-data.manualUnitsRows?.forEach((rowData, idx) => {
-  const row = manualRows[idx];
-  if (!row) return;
-
-  const unitSelect = row.querySelector(".unitUsedSelect");
-  const unitIdInput = row.querySelector(".unitIdInput");
-  const noOfUnitsInput = row.querySelector("input[id^='noofunits']");
-  const notesInput = row.querySelector("input[id^='notes']");
-
-  // Populate the dropdown
-  if (unitSelect) {
-    populateSelectElement(unitSelect, Object.keys(unitIdMap.UnitsUsedList));
-    unitSelect.value = rowData.unitUsed || "";
-    unitSelect.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
-  if (unitIdInput) unitIdInput.value = rowData.unitId || "";
-  if (noOfUnitsInput) noOfUnitsInput.value = rowData.noOfUnits || "";
-  if (notesInput) notesInput.value = rowData.notes || "";
-});
+  // 🔥 Restore other fields
+  const skipIds = new Set();
+  data.manualManpowerRows?.forEach((_, i) => {
+    skipIds.add(`notes${16 + i}`);
+    skipIds.add(`manpowerselect${16 + i}`);
+    skipIds.add(`classificationselect${16 + i}`);
+    skipIds.add(`checkbox${16 + i}`);
+  });
 
-
-
-const skipIds = new Set();
-data.manualManpowerRows?.forEach((rowData, i) => {
-  skipIds.add(`notes${16 + i}`);
-  skipIds.add(`manpowerselect${16 + i}`);
-  skipIds.add(`classificationselect${16 + i}`);
-  skipIds.add(`checkbox${16 + i}`);
-});
-
-Object.keys(data).forEach(id => {
-  if (["photos", "manpowerHours", "equipmentHours", "subcontractorHours"].includes(id)) return;
-  if (skipIds.has(id)) return; // 🔥 skip already handled manual rows
-
-const el = document.getElementById(id);
-if (el) {
-  if (el.type === "checkbox") {
-    el.checked = data[id];
-  } else {
-    el.value = data[id];
-  }
-
-  el.dispatchEvent(new Event("input", { bubbles: true }));
-  el.dispatchEvent(new Event("change", { bubbles: true }));
-}
-
-});
-
-
-Object.keys(data).forEach(id => {
-  if (["photos", "manpowerHours", "equipmentHours", "subcontractorHours"].includes(id)) return;
-
-  const el = document.getElementById(id);
-  if (el) {
-    if (el.type === "checkbox") {
-      el.checked = data[id];
-    } else {
-      el.value = data[id];
+  Object.keys(data).forEach(id => {
+    if (["photos", "manpowerHours", "equipmentHours", "subcontractorHours"].includes(id)) return;
+    if (skipIds.has(id)) return;
+    const el = document.getElementById(id);
+    if (el) {
+      if (el.type === "checkbox") el.checked = data[id];
+      else el.value = data[id];
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
     }
+  });
 
-    // ✅ Fire change/input events for any linked logic (totals, activity text, etc.)
-    el.dispatchEvent(new Event("input", { bubbles: true }));
-    el.dispatchEvent(new Event("change", { bubbles: true }));
-  }
-});
-
-
-
+  // 🔥 Restore hour cell values
   data.manpowerHours?.forEach((val, i) => {
-  const input = document.querySelectorAll(".hour-cell input")[i];
-  if (input) {
-    input.value = val;
-    input.dispatchEvent(new Event("input", { bubbles: true })); // 🔥 force total-field to recalculate
-  }
-});
-
-data.equipmentHours?.forEach((val, i) => {
-  const input = document.querySelectorAll(".equip-hour-cell input")[i];
-  if (input) {
-    input.value = val;
-    input.dispatchEvent(new Event("input", { bubbles: true })); // 🔥 force recalculation
-  }
-});
-
-data.subcontractorHours?.forEach((val, i) => {
-  const input = document.querySelectorAll(".sub-hour-cell input")[i];
-  if (input) {
-    input.value = val;
-    input.dispatchEvent(new Event("input", { bubbles: true })); // 🔥 force recalculation
-  }
-});
-
- if (data.photos) {
-  Object.keys(data.photos).forEach(key => {
-    const index = key.replace("photo", "");
-    const cell = document.querySelectorAll(".photo-cell")[index];
-    const src = data.photos[key];
-
-    if (cell && src) {
-      const img = document.createElement("img");
-      img.src = src;
-
-      const removeBtn = document.createElement("button");
-      removeBtn.textContent = "✖";
-      removeBtn.className = "remove-btn";
-      removeBtn.addEventListener("click", event => {
-        event.stopPropagation();
-        cell.classList.remove("has-image");
-        cell.innerHTML = "";
-        autoSaveFormToCache();
-      });
-
-      cell.innerHTML = "";
-      cell.classList.add("has-image");
-      cell.appendChild(img);
-      cell.appendChild(removeBtn);
+    const input = document.querySelectorAll(".hour-cell input")[i];
+    if (input) {
+      input.value = val;
+      input.dispatchEvent(new Event("input", { bubbles: true }));
     }
   });
-}
 
+  data.equipmentHours?.forEach((val, i) => {
+    const input = document.querySelectorAll(".equip-hour-cell input")[i];
+    if (input) {
+      input.value = val;
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+  });
+
+  data.subcontractorHours?.forEach((val, i) => {
+    const input = document.querySelectorAll(".sub-hour-cell input")[i];
+    if (input) {
+      input.value = val;
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+  });
+
+  // 🔥 Restore photos
+  if (data.photos) {
+    document.querySelectorAll(".photo-cell").forEach((cell, index) => {
+      const src = data.photos[`photo${index}`];
+      if (src) {
+        const img = document.createElement("img");
+        img.src = src;
+
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "✖";
+        removeBtn.className = "remove-btn";
+        removeBtn.addEventListener("click", event => {
+          event.stopPropagation();
+          cell.classList.remove("has-image");
+          cell.innerHTML = "";
+          autoSaveFormToCache();
+        });
+
+        cell.innerHTML = "";
+        cell.classList.add("has-image");
+        cell.appendChild(img);
+        cell.appendChild(removeBtn);
+      }
+    });
+  }
 
   // 🔥 Restore photo descriptions
-if (data.photoCaptions) {
-  document.querySelectorAll(".photo-description").forEach((input, index) => {
-    input.value = data.photoCaptions[`caption${index}`] || "";
-  });
-}
-
-
- // 🔥 Restore signature canvases
-document.querySelectorAll(".signature-canvas").forEach((canvas, index) => {
-  const key = `signatureCanvas${index}`;
-  const base64 = data[key];
-  if (base64) {
-
-    // 🔥 Ensure correct canvas size before restoring
-    canvas.width = canvas.offsetWidth || 400;
-    canvas.height = canvas.offsetHeight || 120;
-
-    const ctx = canvas.getContext("2d");
-    const img = new Image();
-    img.onload = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      canvas.style.display = "block";
-      canvas.parentElement.querySelector(".text-entry").style.display = "none";
-      const controls = canvas.parentElement.querySelector(".signature-controls");
-      if (controls) controls.style.display = "none";
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    };
-    img.src = base64;
+  if (data.photoCaptions) {
+    document.querySelectorAll(".photo-description").forEach((input, index) => {
+      input.value = data.photoCaptions[`caption${index}`] || "";
+    });
   }
-});
 
+  // 🔥 Restore signature canvases
+  document.querySelectorAll(".signature-canvas").forEach((canvas, index) => {
+    const key = `signatureCanvas${index}`;
+    const base64 = data[key];
+    if (base64) {
+      canvas.width = canvas.offsetWidth || 400;
+      canvas.height = canvas.offsetHeight || 120;
+      const ctx = canvas.getContext("2d");
+      const img = new Image();
+      img.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.style.display = "block";
+        canvas.parentElement.querySelector(".text-entry").style.display = "none";
+        const controls = canvas.parentElement.querySelector(".signature-controls");
+        if (controls) controls.style.display = "none";
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      };
+      img.src = base64;
+    }
+  });
 
-
-  console.log("✅ Form restored.");
+  console.log("✅ Form fully restored!");
 }
+
 
 // --- Autosave Logic ---
 function autoSaveFormToCache() {
   const data = {};
+
+  // 🔥 Save basic inputs
   document.querySelectorAll("input, select, textarea").forEach(el => {
     if (el.id) {
       if (el.type === "checkbox") data[el.id] = el.checked;
@@ -1174,147 +939,90 @@ function autoSaveFormToCache() {
     }
   });
 
-  
-  localStorage.setItem("autosavedDFR", JSON.stringify(data));
-  sessionStorage.setItem("autosavedDFR", JSON.stringify(data));
+  // 🔥 Save signature canvases
+  document.querySelectorAll(".signature-canvas").forEach((canvas, index) => {
+    if (!canvas) return;
+    const key = `signatureCanvas${index}`;
+    const ctx = canvas.getContext("2d");
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const isBlank = imageData.data.every(v => v === 0);
+    if (!isBlank) {
+      data[key] = canvas.toDataURL("image/png");
+    }
+  });
 
+  // 🔥 Save photos
+  data.photos = {};
+  document.querySelectorAll(".photo-cell").forEach((cell, index) => {
+    const img = cell.querySelector("img");
+    if (img) data.photos[`photo${index}`] = img.src;
+  });
 
-// 🔥 Save signature canvases for autosave
-document.querySelectorAll(".signature-canvas").forEach((canvas, index) => {
-  if (!canvas) return;
-  const key = `signatureCanvas${index}`;
-  const ctx = canvas.getContext("2d");
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const isBlank = imageData.data.every(v => v === 0);
-  if (!isBlank) {
-    data[key] = canvas.toDataURL("image/png");  // ✅ Correct variable
-  }
-});
+  // 🔥 Save photo captions
+  data.photoCaptions = {};
+  document.querySelectorAll(".photo-description").forEach((input, index) => {
+    data.photoCaptions[`caption${index}`] = input.value;
+  });
 
-
-// 🔥 Save photos for autosave
-data.photos = {};
-document.querySelectorAll(".photo-cell").forEach((cell, index) => {
-  const img = cell.querySelector("img");
-  if (img) {
-    data.photos[`photo${index}`] = img.src;
-  }
-});
-
-// 🔥 Save photo descriptions
-data.photoCaptions = {};
-document.querySelectorAll(".photo-description").forEach((input, index) => {
-  data.photoCaptions[`caption${index}`] = input.value;
-});
-
-
+  // 🔥 Save hours
   data.manpowerHours = Array.from(document.querySelectorAll(".hour-cell input")).map(i => i.value);
   data.equipmentHours = Array.from(document.querySelectorAll(".equip-hour-cell input")).map(i => i.value);
   data.subcontractorHours = Array.from(document.querySelectorAll(".sub-hour-cell input")).map(i => i.value);
 
- // 🔥 NEW: Save Manual Manpower Rows
-data.manualManpowerRows = [];
-document.querySelectorAll(".manpower-row.manual-row").forEach((row, idx) => {
-  const manpower = row.querySelector("input[id^='manpowerselect']")?.value || "";
-  const classification = row.querySelector("input[id^='classificationselect']")?.value || "";
-  const loa = row.querySelector("input[type='checkbox']")?.checked || false;
-  const notes = row.querySelector("input[id^='manualnotes']")?.value || "";
-  const hours = Array.from(row.querySelectorAll(".hour-input")).map(input => input.value || "");
-  data.manualManpowerRows.push({ manpower, classification, loa, hours, notes });
-});
-
-data.manpowerHours = Array.from(document.querySelectorAll(".hour-cell input")).map(input => input.value || "");
-
-
-// 🔥 NEW: Save Manual Equipment Rows
-data.manualEquipmentRows = [];
-document.querySelectorAll(".equipment-row.manual-row").forEach(row => {
-  data.manualEquipmentRows.push({
-    equipment: row.querySelector("input[id^='equipmentselect']")?.value || "",
-    total: row.querySelector(".equipment-total")?.value || "",
-    uofm: row.querySelector("select[id^='uofm']")?.value || "",
-    hours: Array.from(row.querySelectorAll(".hour-input")).map(input => input.value || ""),
-    po: row.querySelector("input[id^='po']")?.value || "",
-    notes: row.querySelector("input[id^='notesEquip']")?.value || ""
-  });
-});
-
-data.equipmentHours = Array.from(document.querySelectorAll(".equip-hour-cell input")).map(input => input.value || "");
-
-
-// 🔥 NEW: Save Manual Subcontractor Rows
-data.manualSubRows = [];
-document.querySelectorAll(".subcontractor-row.manual-row").forEach(row => {
-  data.manualSubRows.push({
-    name: row.querySelector("input.subcontractorName-input")?.value || "",
-    total: row.querySelector(".sub-total-field")?.value || "",
-    uofm: row.querySelector("select.UofMSelect")?.value || "",
-    hours: Array.from(row.querySelectorAll(".sub-hour-input")).map(input => input.value || ""),
-    services: row.querySelector("input[id^='services']")?.value || "",
-    siterep: row.querySelector("input[id^='siterep']")?.value || "",
-    po: row.querySelector("input[id^='PO#']")?.value || "",
-    notes: row.querySelector("input[id^='manualsubnotes']")?.value || ""
-
-  });
-});
-
-data.subcontractorHours = Array.from(document.querySelectorAll(".sub-hour-cell input")).map(input => input.value || "");
-
-
-// 🔥 Save all Units Rows (static and manual)
-data.allUnitsRows = [];
-document.querySelectorAll(".Units-table tr").forEach(row => {
-  const unitUsed = row.querySelector(".unitUsedSelect")?.value || "";
-  const unitId = row.querySelector(".unitIdInput")?.value || "";
-  const noOfUnits = row.querySelector("input[id^='noofunits']")?.value || "";
-  const notes = row.querySelector("input[id^='notes']")?.value || "";
-
-  if (unitUsed || unitId || noOfUnits || notes) {
-    data.allUnitsRows.push({
-      unitUsed,
-      unitId,
-      noOfUnits,
-      notes
+  // 🔥 Save manual manpower rows
+  data.manualManpowerRows = [];
+  document.querySelectorAll(".manpower-row.manual-row").forEach(row => {
+    data.manualManpowerRows.push({
+      manpower: row.querySelector("input[id^='manpowerselect']")?.value || "",
+      classification: row.querySelector("input[id^='classificationselect']")?.value || "",
+      loa: row.querySelector("input[type='checkbox']")?.checked || false,
+      hours: Array.from(row.querySelectorAll(".hour-input")).map(input => input.value || ""),
+      notes: row.querySelector("input[id^='manualnotes']")?.value || ""
     });
-  }
-});
+  });
 
-// 🔥 Save Manual Units Rows separately
-data.manualUnitsRows = [];
-document.querySelectorAll(".units-row.manual-row").forEach(row => {
-  const unitUsed = row.querySelector(".unitUsedSelect")?.value || "";
-  const unitId = row.querySelector(".unitIdInput")?.value || "";
-  const noOfUnits = row.querySelector("input[id^='noofunits']")?.value || "";
-  const notes = row.querySelector("input[id^='notes']")?.value || "";
+  // 🔥 Save manual equipment rows
+  data.manualEquipmentRows = [];
+  document.querySelectorAll(".equipment-row.manual-row").forEach(row => {
+    data.manualEquipmentRows.push({
+      equipment: row.querySelector("input[id^='equipmentselect']")?.value || "",
+      total: row.querySelector(".equipment-total")?.value || "",
+      uofm: row.querySelector("select[id^='uofm']")?.value || "",
+      hours: Array.from(row.querySelectorAll(".hour-input")).map(input => input.value || ""),
+      po: row.querySelector("input[id^='po']")?.value || "",
+      notes: row.querySelector("input[id^='notesEquip']")?.value || ""
+    });
+  });
 
-  if (unitUsed || unitId || noOfUnits || notes) {
+  // 🔥 Save manual subcontractor rows
+  data.manualSubRows = [];
+  document.querySelectorAll(".subcontractor-row.manual-row").forEach(row => {
+    data.manualSubRows.push({
+      name: row.querySelector("input.subcontractorName-input")?.value || "",
+      total: row.querySelector(".sub-total-field")?.value || "",
+      uofm: row.querySelector("select.UofMSelect")?.value || "",
+      hours: Array.from(row.querySelectorAll(".sub-hour-input")).map(input => input.value || ""),
+      services: row.querySelector("input[id^='services']")?.value || "",
+      siterep: row.querySelector("input[id^='siterep']")?.value || "",
+      po: row.querySelector("input[id^='PO#']")?.value || "",
+      notes: row.querySelector("input[id^='manualsubnotes']")?.value || ""
+    });
+  });
+
+  // 🔥 Save manual units rows
+  data.manualUnitsRows = [];
+  document.querySelectorAll(".units-row.manual-row").forEach(row => {
     data.manualUnitsRows.push({
-      unitUsed,
-      unitId,
-      noOfUnits,
-      notes
+      unitUsed: row.querySelector(".unitUsedSelect")?.value || "",
+      unitId: row.querySelector(".unitIdInput")?.value || "",
+      noOfUnits: row.querySelector("input[id^='noofunits']")?.value || "",
+      notes: row.querySelector("input[id^='notes']")?.value || ""
     });
-  }
-});
-
-
-
-
-// 🔥 Save all signature canvases as base64
-const jsonData = JSON.stringify(data);
-localStorage.setItem("autosavedDFR", jsonData);
-sessionStorage.setItem("autosavedDFR", jsonData);
-
-}
-
-// 🔥 NEW: Use debounced autosave for performance!
-const debouncedAutoSave = debounce(autoSaveFormToCache, 300);
-
-function attachAutosaveListeners() {
-  document.querySelectorAll("input, textarea, select").forEach(el => {
-    el.addEventListener("input", debouncedAutoSave);
-    el.addEventListener("change", debouncedAutoSave);
   });
+
+  // 🔥 Save final data
+  const jsonData = JSON.stringify(data);
+  localStorage.setItem("autosavedDFR", jsonData);
 }
 
 
@@ -1337,53 +1045,9 @@ function handleLoadFromFile() {
 
 document.addEventListener("DOMContentLoaded", () => {
   loadLists().then(() => {
-    // ✅ All dropdowns and data lists are now loaded and populated
-
-    // ✅ Now restore the form values!
-    const cached = sessionStorage.getItem("autosavedDFR") || localStorage.getItem("autosavedDFR");
-    if (cached) {
-      try {
-        const data = JSON.parse(cached);
-        console.log("🟡 Cached data at restore:", data);
-        restoreForm(data);
-        autoSaveFormToCache(); // No delay needed
-      } catch (err) {
-        console.warn("⚠️ Failed to restore autosaved form:", err);
-      }
-    }
-
-    // ✅ Then attach listeners and extra logic
     attachAutosaveListeners();
-    attachUnitIdListeners();
-    linkTopToBottomDigNumbersWithOverride(); // ✅ this is where to add the call!
 
-    function linkTopToBottomDigNumbersWithOverride() {
-  for (let i = 1; i <= 6; i++) {
-    const topInput = document.getElementById(`digNumberInput${i}`);
-    const bottomInput = document.getElementById(`digNumberInput${i + 6}`);
-
-    if (topInput && bottomInput) {
-      let isSynced = true;
-
-      // Top input change -> update bottom input
-      topInput.addEventListener("input", () => {
-        if (isSynced) {
-          bottomInput.value = topInput.value;
-          bottomInput.dispatchEvent(new Event("input", { bubbles: true }));
-        }
-      });
-
-      // Bottom input change -> break sync
-      bottomInput.addEventListener("input", () => {
-        if (bottomInput.value !== topInput.value) {
-          isSynced = false;
-        }
-      });
-    }
-  }
-}
-
-
+    // ✅ Client project change handler
     const clientProjectDropdown = document.getElementById("workPackage");
     if (clientProjectDropdown) {
       clientProjectDropdown.addEventListener("change", () => {
@@ -1394,21 +1058,34 @@ document.addEventListener("DOMContentLoaded", () => {
     // ✅ Save
     document.getElementById("saveFormBtn")?.addEventListener("click", saveForm);
 
-    // ✅ Reset existing input and attach change handler ONCE
+    // ✅ Reset load input and reattach
     const loadInput = document.getElementById("loadInput");
     const newInput = loadInput.cloneNode(true);
     loadInput.replaceWith(newInput);
-
     newInput.addEventListener("change", handleLoadFromFile);
 
-    // ✅ Load button click triggers ONLY ONE file input
+    // ✅ Load button triggers file input
     document.getElementById("loadFormBtn").addEventListener("click", () => {
       newInput.value = ""; // reset to allow same file to be reselected
       newInput.click();
     });
+
+    // ✅ Restore autosaved form
+    const cached = localStorage.getItem("autosavedDFR");
+    if (cached) {
+      try {
+        const data = JSON.parse(cached);
+        if (data && typeof data === "object") {
+          console.log("🔥 Restoring autosaved form:", data);
+          restoreForm(data);
+        }
+      } catch (err) {
+        console.warn("⚠️ Failed to restore autosaved form:", err);
+        localStorage.removeItem("autosavedDFR"); // Clean up bad data
+      }
+    }
   });
 });
-
 
 
 

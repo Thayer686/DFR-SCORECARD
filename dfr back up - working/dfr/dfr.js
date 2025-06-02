@@ -1,4 +1,4 @@
-const CACHE_NAME = 'field-report-v1.0.1'; // 🔁 bump this for every update
+const CACHE_NAME = 'field-report-v1.0.0'; // 🔁 bump this for every update
 
 // 🔧 Debounce helper (🔥 NEW!)
 function debounce(func, wait = 300) {
@@ -43,85 +43,37 @@ async function loadLists() {
   
 
     // ✅ Populate the top-level Dig Number select from listData.digNumbers
-  const datalist = document.getElementById("digNumberOptions");
-if (datalist && listData.digNumbers) {
-  datalist.innerHTML = "";
-  listData.digNumbers.forEach(digNum => {
-    const option = document.createElement("option");
-    option.value = digNum;
-    datalist.appendChild(option);
-  });
-}
+  const digNumberSelect = document.getElementById("digNumberSelect");
+  if (digNumberSelect && listData.digNumbers) {
+    digNumberSelect.innerHTML = '<option value="">Select...</option>';
+    listData.digNumbers.forEach(digNum => {
+      const option = document.createElement("option");
+      option.value = digNum;
+      option.textContent = digNum;
+      digNumberSelect.appendChild(option);
+    });
+    digNumberSelect.value = "";
+  }
+
+  // 🔥 NEW CODE START (Add this immediately after)
+  const digNumberSearch = document.getElementById("digNumberSearch");
+  if (digNumberSearch) {
+    digNumberSearch.addEventListener('input', () => {
+      const filter = digNumberSearch.value.toLowerCase();
+      Array.from(digNumberSelect.options).forEach(option => {
+        if (option.value === "") return; // keep the default option visible
+        const text = option.textContent.toLowerCase();
+        option.style.display = text.includes(filter) ? '' : 'none';
+      });
+    });
+  }
+  // 🔥 NEW CODE END
 
   populateSelect("projectNameSelect", listData.projectNames);
   populateSelect("clientSelect", listData.clients);
   populateSelect("locationSelect", listData.locations);
   populateSelect("weatherSelect", listData.weather);
   populateSelect("workPackage", listData.workPackages);
-
-  // 🔥 Populate the digNumberInput1–6 datalists
-for (let i = 1; i <= 18; i++) {
-  const datalist = document.getElementById(`digNumberOptions${i}`);
-  if (datalist && listData.digNumbers) {
-    datalist.innerHTML = "";
-    listData.digNumbers.forEach(digNum => {
-      const option = document.createElement("option");
-      option.value = digNum;
-      datalist.appendChild(option);
-    });
-  }
-}
-
-// 🔥 Populate manpowerInput1–15 datalists
-for (let i = 1; i <= 15; i++) {
-  const datalist = document.getElementById(`manpowerOptions${i}`);
-  if (datalist && listData.manpower) {
-    datalist.innerHTML = "";
-    listData.manpower.forEach(mp => {
-      const option = document.createElement("option");
-      option.value = mp;
-      datalist.appendChild(option);
-    });
-  }
-}
-
-// 🔥 Populate classificationInput1–15 datalists
-for (let i = 1; i <= 15; i++) {
-  const datalist = document.getElementById(`classificationOptions${i}`);
-  if (datalist && listData.classification) {
-    datalist.innerHTML = "";
-    listData.classification
-      .map(item => item.trim())
-      .sort((a, b) => a.localeCompare(b))
-      .forEach(cl => {
-        const option = document.createElement("option");
-        option.value = cl;
-        datalist.appendChild(option);
-      });
-  }
-}
-
-// 🔥 Populate equipmentInput1–15 datalists with NUMERICAL sort (and trim)
-for (let i = 1; i <= 15; i++) {
-  const datalist = document.getElementById(`equipmentOptions${i}`);
-  if (datalist && listData.equipment) {
-    datalist.innerHTML = "";
-    listData.equipment
-      .map(item => item.trim()) // Remove leading/trailing spaces
-      .sort((a, b) => {
-        const [a1, a2] = a.split("-").map(Number);
-        const [b1, b2] = b.split("-").map(Number);
-        return a1 - b1 || a2 - b2;
-      })
-      .forEach(eq => {
-        const option = document.createElement("option");
-        option.value = eq;
-        datalist.appendChild(option);
-      });
-  }
-}
-
-
 
   // ✅ Add these back!
   document.querySelectorAll(".manpowerSelect").forEach(select => {
@@ -249,6 +201,7 @@ function populateDigNumberDropdowns() {
 }
 
 
+
 function attachUnitIdListeners() {
   document.querySelectorAll(".unitUsedSelect").forEach(select => {
     select.addEventListener("change", () => {
@@ -263,6 +216,7 @@ function attachUnitIdListeners() {
     });
   });
 }
+
 
 function findActivityText(code) {
   for (const cwp in activityMap) {
@@ -284,8 +238,8 @@ function populateSelectElement(select, list, ensureValue) {
     list = [ensureValue, ...list];
   }
 
-  // ✅ Trim and sort alphabetically
-  list = list.map(item => item.trim()).sort((a, b) => a.localeCompare(b));
+  // 🔥 Sort list alphabetically
+  list = [...list].sort((a, b) => a.localeCompare(b));
 
   list.forEach(item => {
     const option = document.createElement("option");
@@ -1356,33 +1310,6 @@ document.addEventListener("DOMContentLoaded", () => {
     attachAutosaveListeners();
     attachUnitIdListeners();
     linkTopToBottomDigNumbersWithOverride(); // ✅ this is where to add the call!
-
-    function linkTopToBottomDigNumbersWithOverride() {
-  for (let i = 1; i <= 6; i++) {
-    const topInput = document.getElementById(`digNumberInput${i}`);
-    const bottomInput = document.getElementById(`digNumberInput${i + 6}`);
-
-    if (topInput && bottomInput) {
-      let isSynced = true;
-
-      // Top input change -> update bottom input
-      topInput.addEventListener("input", () => {
-        if (isSynced) {
-          bottomInput.value = topInput.value;
-          bottomInput.dispatchEvent(new Event("input", { bubbles: true }));
-        }
-      });
-
-      // Bottom input change -> break sync
-      bottomInput.addEventListener("input", () => {
-        if (bottomInput.value !== topInput.value) {
-          isSynced = false;
-        }
-      });
-    }
-  }
-}
-
 
     const clientProjectDropdown = document.getElementById("workPackage");
     if (clientProjectDropdown) {

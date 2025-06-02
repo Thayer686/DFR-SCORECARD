@@ -153,6 +153,8 @@
   <td style="background-color: #edf1dc;"></td>
 </tr>
 
+
+ 
   <!-- Row 2: Activities -->
   <!-- <tr>
     <td style="height: 75px; background-color: #edf1dc; text-align: right;" class="activity-row"><strong>Activity:</strong></td>
@@ -197,15 +199,8 @@
   
   <!-- Input Row 1 -->
   <tr class="manpower-row">
-    <td>
-  <input list="manpowerOptions1" id="manpowerInput1" placeholder="Search Manpower..." />
-  <datalist id="manpowerOptions1"></datalist>
-</td>
-
-    <td>
-  <input list="classificationOptions1" id="classificationInput1" placeholder="Search Classification..." />
-  <datalist id="classificationOptions1"></datalist>
-</td>
+    <td><select class="manpowerSelect" id="manpowerselect1"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect1"><option>Select...</option></select></td>
     <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
     <td class="center-checkbox"><input type="checkbox" id="checkbox1"/></td>
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -218,14 +213,8 @@
   </tr>
 <!-- Input Row 2 -->
 <tr class="manpower-row">
-    <td>
-  <input list="manpowerOptions2" id="manpowerInput2" placeholder="Search Manpower..." />
-  <datalist id="manpowerOptions2"></datalist>
-</td>
-    <td>
-  <input list="classificationOptions2" id="classificationInput2" placeholder="Search Classification..." />
-  <datalist id="classificationOptions2"></datalist>
-</td>
+    <td><select class="manpowerSelect" id="manpowerselect2"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect2"><option>Select...</option></select></td>
     <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
     <td class="center-checkbox"><input type="checkbox" id="checkbox2"/></td>
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -238,14 +227,8 @@
   </tr>
 <!-- Input Row 3 -->
 <tr class="manpower-row">
-    <td>
-  <input list="manpowerOptions3" id="manpowerInput3" placeholder="Search Manpower..." />
-  <datalist id="manpowerOptions3"></datalist>
-</td>
-   <td>
-  <input list="classificationOptions3" id="classificationInput3" placeholder="Search Classification..." />
-  <datalist id="classificationOptions3"></datalist>
-</td>
+    <td><select class="manpowerSelect" id="manpowerselect3"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect3"><option>Select...</option></select></td>
     <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
     <td class="center-checkbox"><input type="checkbox" id="checkbox3"/></td>
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -258,14 +241,8 @@
   </tr>
 <!-- Input Row 4 -->
 <tr class="manpower-row">
-    <td>
-  <input list="manpowerOptions4" id="manpowerInput4" placeholder="Search Manpower..." />
-  <datalist id="manpowerOptions4"></datalist>
-</td>
-    <td>
-  <input list="classificationOptions4" id="classificationInput4" placeholder="Search Classification..." />
-  <datalist id="classificationOptions4"></datalist>
-</td>
+    <td><select class="manpowerSelect" id="manpowerselect4"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect4"><option>Select...</option></select></td>
     <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
     <td class="center-checkbox"><input type="checkbox" id="checkbox4"/></td>
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -278,14 +255,8 @@
   </tr>
 <!-- Input Row 5 -->
 <tr class="manpower-row">
-    <td>
-  <input list="manpowerOptions5" id="manpowerInput5" placeholder="Search Manpower..." />
-  <datalist id="manpowerOptions5"></datalist>
-</td>
-    <td>
-  <input list="classificationOptions5" id="classificationInput5" placeholder="Search Classification..." />
-  <datalist id="classificationOptions5"></datalist>
-</td>
+    <td><select class="manpowerSelect" id="manpowerselect5"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect5"><option>Select...</option></select></td>
     <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
     <td class="center-checkbox"><input type="checkbox" id="checkbox5"/></td>
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -298,14 +269,8 @@
     <tr class="manpower-row">
 <!-- Input Row 6 -->
 <tr class="manpower-row">
-    <td>
-  <input list="manpowerOptions6" id="manpowerInput6" placeholder="Search Manpower..." />
-  <datalist id="manpowerOptions6"></datalist>
-</td>
-    <td>
-  <input list="classificationOptions6" id="classificationInput6" placeholder="Search Classification..." />
-  <datalist id="classificationOptions6"></datalist>
-</td>
+    <td><select class="manpowerSelect" id="manpowerselect6"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect6"><option>Select...</option></select></td>
     <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
     <td class="center-checkbox"><input type="checkbox" id="checkbox6"/></td>
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -318,14 +283,8 @@
   </tr>
 <!-- Input Row 7 -->
 <tr class="manpower-row">
-    <td>
-  <input list="manpowerOptions7" id="manpowerInput7" placeholder="Search Manpower..." />
-  <datalist id="manpowerOptions7"></datalist>
-</td>
-    <td>
-  <input list="classificationOptions7" id="classificationInput7" placeholder="Search Classification..." />
-  <datalist id="classificationOptions7"></datalist>
-</td>
+    <td><select class="manpowerSelect" id="manpowerselect7"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect7"><option>Select...</option></select></td>
     <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
     <td class="center-checkbox"><input type="checkbox" id="checkbox7"/></td>
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -338,14 +297,8 @@
   </tr>
 <!-- Input Row 8 -->
 <tr class="manpower-row">
-    <td>
-  <input list="manpowerOptions8" id="manpowerInput8" placeholder="Search Manpower..." />
-  <datalist id="manpowerOptions8"></datalist>
-</td>
-    <td>
-  <input list="classificationOptions8" id="classificationInput8" placeholder="Search Classification..." />
-  <datalist id="classificationOptions8"></datalist>
-</td>
+    <td><select class="manpowerSelect" id="manpowerselect8"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect8"><option>Select...</option></select></td>
     <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
     <td class="center-checkbox"><input type="checkbox" id="checkbox8"/></td>
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -358,14 +311,8 @@
   </tr>
 <!-- Input Row 9 -->
 <tr class="manpower-row">
-    <td>
-  <input list="manpowerOptions9" id="manpowerInput9" placeholder="Search Manpower..." />
-  <datalist id="manpowerOptions9"></datalist>
-</td>
-    <td>
-  <input list="classificationOptions9" id="classificationInput9" placeholder="Search Classification..." />
-  <datalist id="classificationOptions9"></datalist>
-</td>
+    <td><select class="manpowerSelect" id="manpowerselect9"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect9"><option>Select...</option></select></td>
     <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
     <td class="center-checkbox"><input type="checkbox" id="checkbox9"/></td>
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -378,14 +325,8 @@
   </tr>
 <!-- Input Row 10 -->
 <tr class="manpower-row">
-    <td>
-  <input list="manpowerOptions10" id="manpowerInput10" placeholder="Search Manpower..." />
-  <datalist id="manpowerOptions10"></datalist>
-</td>
-    <td>
-  <input list="classificationOptions10" id="classificationInput10" placeholder="Search Classification..." />
-  <datalist id="classificationOptions10"></datalist>
-</td>
+    <td><select class="manpowerSelect" id="manpowerselect10"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect10"><option>Select...</option></select></td>
     <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
     <td class="center-checkbox"><input type="checkbox" id="checkbox10"/></td>
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -398,14 +339,8 @@
   </tr>
 
   <tr class="manpower-row">
-    <td>
-  <input list="manpowerOptions11" id="manpowerInput11" placeholder="Search Manpower..." />
-  <datalist id="manpowerOptions11"></datalist>
-</td>
-    <td>
-  <input list="classificationOptions11" id="classificationInput11" placeholder="Search Classification..." />
-  <datalist id="classificationOptions11"></datalist>
-</td>
+    <td><select class="manpowerSelect" id="manpowerselect11"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect11"><option>Select...</option></select></td>
     <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
     <td class="center-checkbox"><input type="checkbox" id="checkbox11"/></td>
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -418,14 +353,8 @@
   </tr>
 
   <tr class="manpower-row">
-    <td>
-  <input list="manpowerOptions12" id="manpowerInput12" placeholder="Search Manpower..." />
-  <datalist id="manpowerOptions12"></datalist>
-</td>
-    <td>
-  <input list="classificationOptions12" id="classificationInput12" placeholder="Search Classification..." />
-  <datalist id="classificationOptions12"></datalist>
-</td>
+    <td><select class="manpowerSelect" id="manpowerselect12"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect12"><option>Select...</option></select></td>
     <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
     <td class="center-checkbox"><input type="checkbox" id="checkbox12"/></td>
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -438,14 +367,8 @@
   </tr>
 
   <tr class="manpower-row">
-    <td>
-  <input list="manpowerOptions13" id="manpowerInput13" placeholder="Search Manpower..." />
-  <datalist id="manpowerOptions13"></datalist>
-</td>
-    <td>
-  <input list="classificationOptions13" id="classificationInput13" placeholder="Search Classification..." />
-  <datalist id="classificationOptions13"></datalist>
-</td>
+    <td><select class="manpowerSelect" id="manpowerselect13"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect13"><option>Select...</option></select></td>
     <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
     <td class="center-checkbox"><input type="checkbox" id="checkbox13"/></td>
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -458,14 +381,8 @@
   </tr>
 
   <tr class="manpower-row">
-    <td>
-  <input list="manpowerOptions14" id="manpowerInput14" placeholder="Search Manpower..." />
-  <datalist id="manpowerOptions14"></datalist>
-</td>
-    <td>
-  <input list="classificationOptions14" id="classificationInput14" placeholder="Search Classification..." />
-  <datalist id="classificationOptions14"></datalist>
-</td>
+    <td><select class="manpowerSelect" id="manpowerselect14"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect14"><option>Select...</option></select></td>
     <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
     <td class="center-checkbox"><input type="checkbox" id="checkbox14"/></td>
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -478,14 +395,8 @@
   </tr>
 
   <tr class="manpower-row">
-    <td>
-  <input list="manpowerOptions15" id="manpowerInput15" placeholder="Search Manpower..." />
-  <datalist id="manpowerOptions15"></datalist>
-</td>
-    <td>
-  <input list="classificationOptions15" id="classificationInput15" placeholder="Search Classification..." />
-  <datalist id="classificationOptions15"></datalist>
-</td>
+    <td><select class="manpowerSelect" id="manpowerselect15"><option>Select...</option></select></td>
+    <td><select class="classificationSelect" id="classificationselect15"><option>Select...</option></select></td>
     <td class="total-cell"><input type="number" value="0.00" readonly class="total-field" /></td>
     <td class="center-checkbox"><input type="checkbox" id="checkbox15"/></td>
     <td class="hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -526,30 +437,12 @@
     <td style="height: 60px; background-color: #edf1dc; text-align: right;"><strong>Total Hours:</strong></td>
     <td style="background-color: #dbe5f1;"><input type="text" id="grandTotalHours" class="grand-total-hours" readonly /></td>
     <td style="background-color: #edf1dc; text-align: center;"><strong>Dig #:</strong></td>
-     <td style="background-color: #dbe5f1;">
-  <input list="digNumberOptions7" id="digNumberInput7" placeholder="Search Dig #" />
-  <datalist id="digNumberOptions7"></datalist>
-    </td>
-    <td style="background-color: #dbe5f1;">
-      <input list="digNumberOptions8" id="digNumberInput8" placeholder="Search Dig #" />
-      <datalist id="digNumberOptions8"></datalist>
-    </td>
-    <td style="background-color: #dbe5f1;">
-      <input list="digNumberOptions9" id="digNumberInput9" placeholder="Search Dig #" />
-      <datalist id="digNumberOptions9"></datalist>
-    </td>
-    <td style="background-color: #dbe5f1;">
-      <input list="digNumberOptions10" id="digNumberInput10" placeholder="Search Dig #" />
-      <datalist id="digNumberOptions10"></datalist>
-    </td>
-    <td style="background-color: #dbe5f1;">
-      <input list="digNumberOptions11" id="digNumberInput11" placeholder="Search Dig #" />
-      <datalist id="digNumberOptions11"></datalist>
-    </td>
-    <td style="background-color: #dbe5f1;">
-      <input list="digNumberOptions12" id="digNumberInput12" placeholder="Search Dig #" />
-      <datalist id="digNumberOptions12"></datalist>
-    </td>
+     <td style="background-color: #dbe5f1;"><select id="digNumber7" class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber8" class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber9" class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber10" class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber11" class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber12" class="digNumberSelect"></select></td>
 
     <td rowspan="2" style="background-color: #edf1dc; text-align: center;"><strong>PO (if equipment is rented)</strong></td>
     <td rowspan="2" style="background-color: #edf1dc; text-align: center;"><strong>Notes</strong></td>
@@ -565,10 +458,7 @@
 
   <!--Row 1-->
   <tr class="equipment-row">
-    <td>
-  <input list="equipmentOptions1" id="equipmentInput1" placeholder="Search Equipment..." />
-  <datalist id="equipmentOptions1"></datalist>
-</td>
+    <td><select class="equipmentSelect" id="equipmentselect1"><option>Select...</option></select></td>
     <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
     <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm1"><option>Select...</option></select></td>
     <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -582,10 +472,7 @@
   </tr>
   <!--Row 2-->
   <tr class="equipment-row">
-    <td>
-  <input list="equipmentOptions2" id="equipmentInput2" placeholder="Search Equipment..." />
-  <datalist id="equipmentOptions2"></datalist>
-</td>
+    <td><select class="equipmentSelect" id="equipmentselect2"><option>Select...</option></select></td>
     <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
     <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm2"><option>Select...</option></select></td>
     <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -599,10 +486,7 @@
   </tr>
   <!--Row 3-->
   <tr class="equipment-row">
-    <td>
-  <input list="equipmentOptions3" id="equipmentInput3" placeholder="Search Equipment..." />
-  <datalist id="equipmentOptions3"></datalist>
-</td>
+    <td><select class="equipmentSelect" id="equipmentselect3"><option>Select...</option></select></td>
     <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
     <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm3"><option>Select...</option></select></td>
     <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -614,47 +498,37 @@
     <td><input type="text" id="po3"/></td>
     <td><input type="text" id="notes18"/></td>
   </tr>
-  <!-- Row 4 -->
-<tr class="equipment-row">
-  <td>
-    <input list="equipmentOptions4" id="equipmentInput4" placeholder="Search Equipment..." />
-    <datalist id="equipmentOptions4"></datalist>
-  </td>
-  <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
-  <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm4"><option>Select...</option></select></td>
-  <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-  <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-  <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-  <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-  <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-  <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-  <td><input type="text" id="po4"/></td>
-  <td><input type="text" id="notes19"/></td>
-</tr>
-  <!-- Row 5 -->
-<tr class="equipment-row">
-  <td>
-    <input list="equipmentOptions5" id="equipmentInput5" placeholder="Search Equipment..." />
-    <datalist id="equipmentOptions5"></datalist>
-  </td>
-  <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
-  <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm5"><option>Select...</option></select></td>
-  <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-  <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-  <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-  <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-  <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-  <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
-  <td><input type="text" id="po5"/></td>
-  <td><input type="text" id="notes20"/></td>
-</tr>
-
+  <!--Row 4-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect4"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm4"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po4"/></td>
+    <td><input type="text" id="notes19"/></td>
+  </tr>
+  <!--Row 5-->
+  <tr class="equipment-row">
+    <td><select class="equipmentSelect" id="equipmentselect5"><option>Select...</option></select></td>
+    <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
+    <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm5"><option>Select...</option></select></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
+    <td><input type="text" id="po5"/></td>
+    <td><input type="text" id="notes20"/></td>
+  </tr>
   <!--Row 6-->
   <tr class="equipment-row">
-    <td>
-    <input list="equipmentOptions6" id="equipmentInput6" placeholder="Search Equipment..." />
-    <datalist id="equipmentOptions6"></datalist>
-  </td>
+    <td><select class="equipmentSelect" id="equipmentselect6"><option>Select...</option></select></td>
     <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
     <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm6"><option>Select...</option></select></td>
     <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -668,10 +542,7 @@
   </tr>
     <!--Row 7-->
     <tr class="equipment-row">
-      <td>
-    <input list="equipmentOptions7" id="equipmentInput7" placeholder="Search Equipment..." />
-    <datalist id="equipmentOptions7"></datalist>
-  </td>
+      <td><select class="equipmentSelect" id="equipmentselect7"><option>Select...</option></select></td>
       <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
       <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm7"><option>Select...</option></select></td>
       <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -685,10 +556,7 @@
     </tr>
   <!--Row 8-->
   <tr class="equipment-row">
-    <td>
-    <input list="equipmentOptions8" id="equipmentInput8" placeholder="Search Equipment..." />
-    <datalist id="equipmentOptions8"></datalist>
-  </td>
+    <td><select class="equipmentSelect" id="equipmentselect8"><option>Select...</option></select></td>
     <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
     <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm8"><option>Select...</option></select></td>
     <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -702,10 +570,7 @@
   </tr>
   <!--Row 9-->
   <tr class="equipment-row">
-    <td>
-    <input list="equipmentOptions9" id="equipmentInput9" placeholder="Search Equipment..." />
-    <datalist id="equipmentOptions9"></datalist>
-  </td>
+    <td><select class="equipmentSelect" id="equipmentselect9"><option>Select...</option></select></td>
     <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
     <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm9"><option>Select...</option></select></td>
     <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -719,10 +584,7 @@
   </tr>
   <!--Row 10-->
   <tr class="equipment-row">
-    <td>
-    <input list="equipmentOptions10" id="equipmentInput10" placeholder="Search Equipment..." />
-    <datalist id="equipmentOptions10"></datalist>
-  </td>
+    <td><select class="equipmentSelect" id="equipmentselect10"><option>Select...</option></select></td>
     <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
     <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm10"><option>Select...</option></select></td>
     <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -737,10 +599,7 @@
 
   <!--Row 11-->
   <tr class="equipment-row">
-    <td>
-    <input list="equipmentOptions11" id="equipmentInput11" placeholder="Search Equipment..." />
-    <datalist id="equipmentOptions11"></datalist>
-  </td>
+    <td><select class="equipmentSelect" id="equipmentselect11"><option>Select...</option></select></td>
     <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
     <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm11"><option>Select...</option></select></td>
     <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -755,10 +614,7 @@
 
   <!--Row 12-->
   <tr class="equipment-row">
-    <td>
-    <input list="equipmentOptions12" id="equipmentInput12" placeholder="Search Equipment..." />
-    <datalist id="equipmentOptions12"></datalist>
-  </td>
+    <td><select class="equipmentSelect" id="equipmentselect12"><option>Select...</option></select></td>
     <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
     <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm12"><option>Select...</option></select></td>
     <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -772,10 +628,7 @@
   </tr>
   <!--Row 13-->
   <tr class="equipment-row">
-    <td>
-    <input list="equipmentOptions13" id="equipmentInput13" placeholder="Search Equipment..." />
-    <datalist id="equipmentOptions13"></datalist>
-  </td>
+    <td><select class="equipmentSelect" id="equipmentselect13"><option>Select...</option></select></td>
     <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
     <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm13"><option>Select...</option></select></td>
     <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -789,10 +642,7 @@
   </tr>
   <!--Row 14-->
   <tr class="equipment-row">
-    <td>
-    <input list="equipmentOptions14" id="equipmentInput14" placeholder="Search Equipment..." />
-    <datalist id="equipmentOptions14"></datalist>
-  </td>
+    <td><select class="equipmentSelect" id="equipmentselect14"><option>Select...</option></select></td>
     <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
     <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm14"><option>Select...</option></select></td>
     <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -806,10 +656,7 @@
   </tr>
   <!--Row 15-->
   <tr class="equipment-row">
-    <td>
-    <input list="equipmentOptions15" id="equipmentInput15" placeholder="Search Equipment..." />
-    <datalist id="equipmentOptions15"></datalist>
-  </td>
+    <td><select class="equipmentSelect" id="equipmentselect15"><option>Select...</option></select></td>
     <td class="equipment-total-cell"><input type="number" value="0.00" readonly class="total-field equipment-total" /></td>
     <td class="UofM-center"><select class="UofMSelect uofm-select" id="uofm15"><option>Select...</option></select></td>
     <td class="equip-hour-cell"><input type="number" class="hour-input" step="0.5" min="0" /></td>
@@ -853,31 +700,12 @@
       <td style="height: 60px; background-color: #edf1dc; text-align: right;"><strong>Total Hours:</strong></td>
       <td style="background-color: #dbe5f1;"><input type="text" id="equipmentGrandTotal" class="grand-total-hours" readonly /></td>
       <td style="background-color: #edf1dc; text-align: center;"><strong>Dig #:</strong></td>
-      <td style="background-color: #dbe5f1;">
-    <input list="digNumberOptions13" id="digNumberInput13" placeholder="Search Dig #" />
-    <datalist id="digNumberOptions13"></datalist>
-    </td>
-    <td style="background-color: #dbe5f1;">
-      <input list="digNumberOptions14" id="digNumberInput14" placeholder="Search Dig #" />
-      <datalist id="digNumberOptions14"></datalist>
-    </td>
-    <td style="background-color: #dbe5f1;">
-      <input list="digNumberOptions15" id="digNumberInput15" placeholder="Search Dig #" />
-      <datalist id="digNumberOptions15"></datalist>
-    </td>
-    <td style="background-color: #dbe5f1;">
-      <input list="digNumberOptions16" id="digNumberInput16" placeholder="Search Dig #" />
-      <datalist id="digNumberOptions16"></datalist>
-    </td>
-    <td style="background-color: #dbe5f1;">
-      <input list="digNumberOptions17" id="digNumberInput17" placeholder="Search Dig #" />
-      <datalist id="digNumberOptions17"></datalist>
-    </td>
-    <td style="background-color: #dbe5f1;">
-      <input list="digNumberOptions18" id="digNumberInput18" placeholder="Search Dig #" />
-      <datalist id="digNumberOptions18"></datalist>
-    </td>
-
+      <td style="background-color: #dbe5f1;"><select id="digNumber13" Class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber14" Class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber15" Class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber16" Class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber17" Class="digNumberSelect"></select></td>
+      <td style="background-color: #dbe5f1;"><select id="digNumber18" Class="digNumberSelect"></select></td>
 
       <td rowspan="2" style="background-color: #edf1dc; text-align: center;"><strong>Services</strong></td>
       <td rowspan="2" style="background-color: #edf1dc; text-align: center;"><strong>Site Rep</strong></td>
@@ -1204,7 +1032,7 @@
 
 
 <div style="position: fixed; bottom: 4px; right: 8px; font-size: 15px; color: rgb(0, 0, 0);">
-  v1.0.1
+  v1.0.0
 </div>
 
 
