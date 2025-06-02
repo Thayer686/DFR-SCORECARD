@@ -1,6 +1,6 @@
 {
-  "name": "OMH Daily Field Report",
-  "short_name": "Field Report",
+  "name": "OMH Daily Field Report & Scorecard",
+  "short_name": "DFR / Scorecard",
   "scope": "/DFR-SCORECARD/",
   "start_url": "/DFR-SCORECARD/index.html",
   "display": "standalone",
