@@ -224,6 +224,9 @@ function populateSelectElement(select, list, ensureValue) {
     list = [ensureValue, ...list];
   }
 
+  // 🔥 Sort list alphabetically
+  list = [...list].sort((a, b) => a.localeCompare(b));
+
   list.forEach(item => {
     const option = document.createElement("option");
     option.value = item;
