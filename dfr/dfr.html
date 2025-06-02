@@ -22,14 +22,39 @@
   <link rel="stylesheet" href="dfr.css" />
   <link rel="manifest" href="../manifest.json" />
   <meta name="theme-color" content="#1e3a5f" />
+
+  <style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+  }
+
+  .horizontal-scroll-container {
+    width: 100vw;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border: 2px solid rgb(39, 38, 38);
+  }
+
+  .pwa-wrapper {
+    width: 3000px; /* force it larger than viewport */
+    background: rgba(0,0,0,0.05); /* visual aid */
+  }
+</style>
+
+
+  
   
 </head>
 
 <body>
-    
+  <div class="horizontal-scroll-container">
+
     <div class="pwa-wrapper">
-    <div class="canvas">
-      <div class="header-bar">
+      <div class="canvas">
+        <div class="header-bar">
         <img src="../assets/images/OMH Logo.png" alt="OMH Logo" class="logo" />
         <h1 class="title">DAILY FIELD REPORT</h1>
       </div>
@@ -661,7 +686,7 @@
 
   <!-- Input Row -->
   <tr>
-    <td><select class="unitUsedSelect" id="unitsused"><option>Select...</option></select></td>
+    <td><select class="unitUsedSelect"><option>Select...</option></select></td>
     <td><input type="text" class="unitIdInput" id="UnitID1" readonly /></td>
 
     <td><input type="text" id="noofunits"/></td>
@@ -856,11 +881,14 @@
 
 <script src="../index.js"></script>
 
+</div>
+
 
 
 <div style="position: fixed; bottom: 4px; right: 8px; font-size: 15px; color: rgb(0, 0, 0);">
   v1.0.0
 </div>
+
 
 
 </body>

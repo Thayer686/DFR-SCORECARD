@@ -1,5 +1,14 @@
 const CACHE_NAME = 'field-report-v1.0.0'; // 🔁 bump this for every update
 
+// 🔧 Debounce helper (🔥 NEW!)
+function debounce(func, wait = 300) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+
 let listData = {};
 
 async function loadListData() {
@@ -30,6 +39,8 @@ async function loadLists() {
   await loadUnitIdMap();
 
   populateAllDigNumberDropdowns();
+
+  
 
     // ✅ Populate the top-level Dig Number select from listData.digNumbers
   const digNumberSelect = document.getElementById("digNumberSelect");
@@ -138,11 +149,11 @@ setTimeout(() => {
 }, 0);
 
   
-  linkTopToBottomCostCodesWithOverride();
+ // linkTopToBottomCostCodesWithOverride();
   attachEquipmentRowListeners();
   attachSubcontractorRowListeners();
   attachUnitIdListeners();
-
+  //linkTopToBottomDigNumbersWithOverride(); // 🔥 Add this new call here!
 
 function populateDigNumberDropdowns() {
   // Grab dig numbers from digNumberSelect
@@ -181,18 +192,17 @@ function attachUnitIdListeners() {
   document.querySelectorAll(".unitUsedSelect").forEach(select => {
     select.addEventListener("change", () => {
       const selectedValue = select.value;
-      const unitId = unitIdMap.UnitsUsedList[selected] || "";
+      const unitId = unitIdMap.UnitsUsedList[selectedValue] || "";
 
-
-      // Get corresponding unitId field in same row
-      const unitIdSelect = select.closest("tr")?.querySelector(".unitIdSelect");
-
-      if (unitIdSelect) {
-  unitIdSelect.value = unitId;
+      // Correct selector: get .unitIdInput instead of .unitIdSelect
+      const unitIdInput = select.closest("tr")?.querySelector(".unitIdInput");
+      if (unitIdInput) {
+        unitIdInput.value = unitId;
       }
     });
   });
 }
+
 
 function findActivityText(code) {
   for (const cwp in activityMap) {
@@ -203,16 +213,25 @@ function findActivityText(code) {
   return "";
 }
 
-function populateSelectElement(select, list) {
+function populateSelectElement(select, list, ensureValue) {
   if (!select || !list) return;
+
+  // Clear existing options and set default
   select.innerHTML = '<option value="">Select...</option>';
+
+  // 🔥 If ensureValue (e.g. the saved value) isn’t in the list, add it to ensure it appears
+  if (ensureValue && !list.includes(ensureValue)) {
+    list = [ensureValue, ...list];
+  }
+
   list.forEach(item => {
     const option = document.createElement("option");
-    option.textContent = item;
     option.value = item;
+    option.textContent = item;
     select.appendChild(option);
   });
 }
+
 
 function populateSelect(id, values) {
   const select = document.getElementById(id);
@@ -269,6 +288,7 @@ function populateSelect(id, values) {
 
     //Grand total of manpower
     function updateGrandTotalHours() {
+      console.log("🔧 updateGrandTotalHours called");
       let sum = 0;
       document.querySelectorAll(".manpower-row .total-field").forEach(input => {
         const val = parseFloat(input.value);
@@ -356,32 +376,56 @@ function populateSelect(id, values) {
         }
       });
     }
-    
-function linkTopToBottomCostCodesWithOverride() {
+
+    function linkTopToBottomDigNumbersWithOverride() {
   for (let i = 1; i <= 6; i++) {
-    const top = document.getElementById(`costCode${i}`);
-    const bottom = document.getElementById(`costCode${i + 6}`);
+    const topSelect = document.getElementById(`digNumber${i}`);
+    const bottomSelect = document.getElementById(`digNumber${i + 6}`);
 
-    if (top && bottom) {
-      (function(top, bottom) {
-        let isSynced = true;
+    if (topSelect && bottomSelect) {
+      let isSynced = true;
 
-        top.addEventListener("change", () => {
-  if (isSynced) {
-    bottom.value = top.value;
-  }
-});
+      topSelect.addEventListener("change", () => {
+        if (isSynced) {
+          bottomSelect.value = topSelect.value;
+          bottomSelect.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+      });
 
-
-        bottom.addEventListener("input", () => {
-          if (bottom.value !== top.value) {
-            isSynced = false;
-          }
-        });
-      })(top, bottom);
+      bottomSelect.addEventListener("input", () => {
+        if (bottomSelect.value !== topSelect.value) {
+          isSynced = false;
+        }
+      });
     }
   }
 }
+    
+// function linkTopToBottomCostCodesWithOverride() {
+//   for (let i = 1; i <= 6; i++) {
+//     const top = document.getElementById(`costCode${i}`);
+//     const bottom = document.getElementById(`costCode${i + 6}`);
+
+//     if (top && bottom) {
+//       (function(top, bottom) {
+//         let isSynced = true;
+
+//         top.addEventListener("change", () => {
+//   if (isSynced) {
+//     bottom.value = top.value;
+//   }
+// });
+
+
+//         bottom.addEventListener("input", () => {
+//           if (bottom.value !== top.value) {
+//             isSynced = false;
+//           }
+//         });
+//       })(top, bottom);
+//     }
+//   }
+// }
 
 listData.UnitsUsedList = Object.keys(unitIdMap); // Or .sort() if you want it alphabetical
 
@@ -743,14 +787,42 @@ function restoreForm(data) {
   addManualUnitsRowsForRestore(data);
   // 🔥 Ensure rows exist before restoring values
   if (data.manualManpowerRows && data.manualManpowerRows.length) {
-   // const currentRows = document.querySelectorAll(".manpower-row.manual-row").length;
-   // const neededRows = data.manualManpowerRows.length - currentRows;
+ 
+    console.log("🟡 data.allUnitsRows during restore:", data.allUnitsRows);
 
-   // for (let i = 0; i < neededRows; i++) {
-     // document.getElementById("addManpowerRowBtn")?.click();
+  
+  if (data.allUnitsRows && data.allUnitsRows.length) {
+  const allUnitRows = document.querySelectorAll(".Units-table tr:has(.unitUsedSelect)");
+  data.allUnitsRows.forEach((rowData, idx) => {
+    const row = allUnitRows[idx];
+    if (!row) return;
 
-     
-  //  }
+    const unitSelect = row.querySelector(".unitUsedSelect");
+    const unitIdInput = row.querySelector(".unitIdInput");
+    const noOfUnitsInput = row.querySelector("input[id^='noofunits']");
+    const notesInput = row.querySelector("input[id^='notes']");
+
+    if (unitSelect) {
+  const unitOptions = Object.keys(unitIdMap.UnitsUsedList);
+  console.log("🟡 Available dropdown options before repopulation:", unitOptions);
+
+  populateSelectElement(unitSelect, unitOptions);
+
+  console.log("🟡 Dropdown options AFTER repopulation:", [...unitSelect.options].map(o => o.value));
+  console.log("🟡 Trying to restore unitUsed for row", idx, ":", rowData.unitUsed);
+
+  unitSelect.value = rowData.unitUsed || "";
+  console.log("🟡 After setting value:", unitSelect.value);
+
+  unitSelect.dispatchEvent(new Event("change", { bubbles: true }));
+}
+
+    if (unitIdInput) unitIdInput.value = rowData.unitId || "";
+    if (noOfUnitsInput) noOfUnitsInput.value = rowData.noOfUnits || "";
+    if (notesInput) notesInput.value = rowData.notes || "";
+  });
+}
+
 
     // 🧪 Log how many rows we're restoring into
     const manualRows = document.querySelectorAll(".manpower-row.manual-row");
@@ -759,9 +831,9 @@ function restoreForm(data) {
     data.manualManpowerRows.forEach((rowData, idx) => {
       const row = manualRows[idx];
       if (!row) {
-        console.warn(`⚠️ No row found for index ${idx}`);
-        return;
-      }
+  console.warn("⚠️ No row found for restore");
+  return;
+}
 
 const mp = row.querySelector(`input[id^='manpowerselect']`);
 const cl = row.querySelector(`input[id^='classificationselect']`);
@@ -789,8 +861,6 @@ if (notesInput) {
       });
     });
   }
-
-  //addManualEquipmentRowsForRestore(data);
   
   // 🔁 Continue with rest of your restoreForm logic...
   document.querySelectorAll("input, select, textarea").forEach(el => {
@@ -804,55 +874,30 @@ if (notesInput) {
   });
 
 if (data.manualEquipmentRows && data.manualEquipmentRows.length) {
-
   const manualEquipRows = document.querySelectorAll(".equipment-row.manual-row");
 
-data.manualEquipmentRows.forEach((rowData, idx) => {
-  const row = manualEquipRows[idx];
-  if (!row) return;
-
-  const equipment = row.querySelector("input[id^='equipmentselect']");
-  const total = row.querySelector(".equipment-total");
-  const uofm = row.querySelector('select[id^="uofm"]');
-  if (uofm) {
-    uofm.value = rowData.uofm || "";
-  }
-
-  const po = row.querySelector("input[id^='po']");
-  const notes = row.querySelector("input[id^='notesEquip']");
-  const hourInputs = row.querySelectorAll(".hour-input");
-
-  if (equipment) equipment.value = rowData.equipment || "";
-  if (total) total.value = rowData.total || "";
-  if (po) po.value = rowData.po || "";
-  if (notes) notes.value = rowData.notes || "";
-
-  rowData.hours?.forEach((val, i) => {
-    if (hourInputs[i]) hourInputs[i].value = val || "";
-  });
-});
-
+  data.manualEquipmentRows.forEach((rowData, idx) => {
     const row = manualEquipRows[idx];
-if (!row) return;
+    if (!row) return;
 
-const equipment = row.querySelector("input[id^='equipmentselect']");
-const total = row.querySelector(".equipment-total");
-const uofm = row.querySelector("select[id^='uofm']");
-const po = row.querySelector("input[id^='po']");
-const notes = row.querySelector("input[id^='notesEquip']");
-const hourInputs = row.querySelectorAll(".hour-input");
+    const equipment = row.querySelector("input[id^='equipmentselect']");
+    const total = row.querySelector(".equipment-total");
+    const uofm = row.querySelector("select[id^='uofm']");
+    const po = row.querySelector("input[id^='po']");
+    const notes = row.querySelector("input[id^='notesEquip']");
+    const hourInputs = row.querySelectorAll(".hour-input");
 
-if (equipment) equipment.value = rowData.equipment || "";
-if (total) total.value = rowData.total || "";
-if (uofm) uofm.value = rowData.uofm || "";
-if (po) po.value = rowData.po || "";
-if (notes) notes.value = rowData.notes || "";
+    if (equipment) equipment.value = rowData.equipment || "";
+    if (total) total.value = rowData.total || "";
+    if (uofm) uofm.value = rowData.uofm || "";
+    if (po) po.value = rowData.po || "";
+    if (notes) notes.value = rowData.notes || "";
 
-rowData.hours?.forEach((val, i) => {
-  if (hourInputs[i]) hourInputs[i].value = val || "";
-});
-
-  };
+    rowData.hours?.forEach((val, i) => {
+      if (hourInputs[i]) hourInputs[i].value = val || "";
+    });
+  });
+}
 
 
 // 🔥 RESTORE: Manual Subcontractor Rows
@@ -886,36 +931,37 @@ if (data.manualSubRows && data.manualSubRows.length) {
 }
 
 
-// 🔥 RESTORE: Manual Units Rows
-if (data.manualUnitsRows && data.manualUnitsRows.length) {
-  const existingCount = document.querySelectorAll(".units-row.manual-row").length;
-  const neededCount = data.manualUnitsRows.length;
-  const toAdd = neededCount - existingCount;
+// --- RESTORE: Manual Units Rows ---
+const currentManualRows = document.querySelectorAll(".units-row.manual-row").length;
+const neededManualRows = data.manualUnitsRows?.length || 0;
 
-  if (toAdd > 0) {
-    for (let i = 0; i < toAdd; i++) {
-      document.getElementById("addUnitsRowBtn")?.click();
-    }
+// 🔥 Create missing manual rows first
+for (let i = currentManualRows; i < neededManualRows; i++) {
+  document.getElementById("addUnitsRowBtn")?.click();
+}
+
+// 🔥 Now repopulate their values
+const manualRows = document.querySelectorAll(".units-row.manual-row");
+data.manualUnitsRows?.forEach((rowData, idx) => {
+  const row = manualRows[idx];
+  if (!row) return;
+
+  const unitSelect = row.querySelector(".unitUsedSelect");
+  const unitIdInput = row.querySelector(".unitIdInput");
+  const noOfUnitsInput = row.querySelector("input[id^='noofunits']");
+  const notesInput = row.querySelector("input[id^='notes']");
+
+  // Populate the dropdown
+  if (unitSelect) {
+    populateSelectElement(unitSelect, Object.keys(unitIdMap.UnitsUsedList));
+    unitSelect.value = rowData.unitUsed || "";
+    unitSelect.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
-  const manualUnitRows = document.querySelectorAll(".units-row.manual-row");
-  data.manualUnitsRows.forEach((rowData, idx) => {
-    const row = manualUnitRows[idx];
-    if (!row) return;
-
-    const unitSelect = row.querySelector(".unitUsedSelect");
-    if (unitSelect) unitSelect.value = rowData.unitUsed || "";
-
-    const unitIdInput = row.querySelector(".unitIdInput");
-    if (unitIdInput) unitIdInput.value = rowData.unitId || "";
-
-    const noOfUnitsInput = row.querySelector("td:nth-child(3) input[type='text']");
-    if (noOfUnitsInput) noOfUnitsInput.value = rowData.noOfUnits || "";
-
-    const notesInput = row.querySelector("td:last-child input[type='text']");
-    if (notesInput) notesInput.value = rowData.notes || "";
-  });
-}
+  if (unitIdInput) unitIdInput.value = rowData.unitId || "";
+  if (noOfUnitsInput) noOfUnitsInput.value = rowData.noOfUnits || "";
+  if (notesInput) notesInput.value = rowData.notes || "";
+});
 
 
 
@@ -989,33 +1035,34 @@ data.subcontractorHours?.forEach((val, i) => {
   }
 });
 
+ if (data.photos) {
+  Object.keys(data.photos).forEach(key => {
+    const index = key.replace("photo", "");
+    const cell = document.querySelectorAll(".photo-cell")[index];
+    const src = data.photos[key];
 
-  if (data.photos) {
-    document.querySelectorAll(".photo-cell").forEach((cell, index) => {
-      const src = data.photos[`photo${index}`];
-      if (src) {
-        const img = document.createElement("img");
-        img.src = src;
+    if (cell && src) {
+      const img = document.createElement("img");
+      img.src = src;
 
-        const removeBtn = document.createElement("button");
-        removeBtn.textContent = "✖";
-        removeBtn.className = "remove-btn";
-        removeBtn.addEventListener("click", event => {
-          event.stopPropagation();
-          cell.classList.remove("has-image");
-          cell.innerHTML = "";
-
-          // 🔥 AUTOSAVE after photo is removed
-  autoSaveFormToCache();
-        });
-
+      const removeBtn = document.createElement("button");
+      removeBtn.textContent = "✖";
+      removeBtn.className = "remove-btn";
+      removeBtn.addEventListener("click", event => {
+        event.stopPropagation();
+        cell.classList.remove("has-image");
         cell.innerHTML = "";
-        cell.classList.add("has-image");
-        cell.appendChild(img);
-        cell.appendChild(removeBtn);
-      }
-    });
-  }
+        autoSaveFormToCache();
+      });
+
+      cell.innerHTML = "";
+      cell.classList.add("has-image");
+      cell.appendChild(img);
+      cell.appendChild(removeBtn);
+    }
+  });
+}
+
 
   // 🔥 Restore photo descriptions
 if (data.photoCaptions) {
@@ -1048,6 +1095,7 @@ document.querySelectorAll(".signature-canvas").forEach((canvas, index) => {
     img.src = base64;
   }
 });
+
 
 
   console.log("✅ Form restored.");
@@ -1112,6 +1160,8 @@ document.querySelectorAll(".manpower-row.manual-row").forEach((row, idx) => {
   data.manualManpowerRows.push({ manpower, classification, loa, hours, notes });
 });
 
+data.manpowerHours = Array.from(document.querySelectorAll(".hour-cell input")).map(input => input.value || "");
+
 
 // 🔥 NEW: Save Manual Equipment Rows
 data.manualEquipmentRows = [];
@@ -1125,6 +1175,9 @@ document.querySelectorAll(".equipment-row.manual-row").forEach(row => {
     notes: row.querySelector("input[id^='notesEquip']")?.value || ""
   });
 });
+
+data.equipmentHours = Array.from(document.querySelectorAll(".equip-hour-cell input")).map(input => input.value || "");
+
 
 // 🔥 NEW: Save Manual Subcontractor Rows
 data.manualSubRows = [];
@@ -1142,20 +1195,46 @@ document.querySelectorAll(".subcontractor-row.manual-row").forEach(row => {
   });
 });
 
-// 🔥 Save Manual Units Rows
+data.subcontractorHours = Array.from(document.querySelectorAll(".sub-hour-cell input")).map(input => input.value || "");
+
+
+// 🔥 Save all Units Rows (static and manual)
+data.allUnitsRows = [];
+document.querySelectorAll(".Units-table tr").forEach(row => {
+  const unitUsed = row.querySelector(".unitUsedSelect")?.value || "";
+  const unitId = row.querySelector(".unitIdInput")?.value || "";
+  const noOfUnits = row.querySelector("input[id^='noofunits']")?.value || "";
+  const notes = row.querySelector("input[id^='notes']")?.value || "";
+
+  if (unitUsed || unitId || noOfUnits || notes) {
+    data.allUnitsRows.push({
+      unitUsed,
+      unitId,
+      noOfUnits,
+      notes
+    });
+  }
+});
+
+// 🔥 Save Manual Units Rows separately
 data.manualUnitsRows = [];
 document.querySelectorAll(".units-row.manual-row").forEach(row => {
   const unitUsed = row.querySelector(".unitUsedSelect")?.value || "";
   const unitId = row.querySelector(".unitIdInput")?.value || "";
   const noOfUnits = row.querySelector("input[id^='noofunits']")?.value || "";
   const notes = row.querySelector("input[id^='notes']")?.value || "";
-  data.manualUnitsRows.push({
-    unitUsed,
-    unitId,
-    noOfUnits,
-    notes
-  });
+
+  if (unitUsed || unitId || noOfUnits || notes) {
+    data.manualUnitsRows.push({
+      unitUsed,
+      unitId,
+      noOfUnits,
+      notes
+    });
+  }
 });
+
+
 
 
 // 🔥 Save all signature canvases as base64
@@ -1165,13 +1244,16 @@ sessionStorage.setItem("autosavedDFR", jsonData);
 
 }
 
-// --- Attach Autosave Listeners ---
+// 🔥 NEW: Use debounced autosave for performance!
+const debouncedAutoSave = debounce(autoSaveFormToCache, 300);
+
 function attachAutosaveListeners() {
   document.querySelectorAll("input, textarea, select").forEach(el => {
-    el.addEventListener("input", autoSaveFormToCache);
-    el.addEventListener("change", autoSaveFormToCache);
+    el.addEventListener("input", debouncedAutoSave);
+    el.addEventListener("change", debouncedAutoSave);
   });
 }
+
 
 // --- Load from File ---
 function handleLoadFromFile() {
@@ -1192,7 +1274,25 @@ function handleLoadFromFile() {
 
 document.addEventListener("DOMContentLoaded", () => {
   loadLists().then(() => {
+    // ✅ All dropdowns and data lists are now loaded and populated
+
+    // ✅ Now restore the form values!
+    const cached = sessionStorage.getItem("autosavedDFR") || localStorage.getItem("autosavedDFR");
+    if (cached) {
+      try {
+        const data = JSON.parse(cached);
+        console.log("🟡 Cached data at restore:", data);
+        restoreForm(data);
+        autoSaveFormToCache(); // No delay needed
+      } catch (err) {
+        console.warn("⚠️ Failed to restore autosaved form:", err);
+      }
+    }
+
+    // ✅ Then attach listeners and extra logic
     attachAutosaveListeners();
+    attachUnitIdListeners();
+    linkTopToBottomDigNumbersWithOverride(); // ✅ this is where to add the call!
 
     const clientProjectDropdown = document.getElementById("workPackage");
     if (clientProjectDropdown) {
@@ -1216,20 +1316,9 @@ document.addEventListener("DOMContentLoaded", () => {
       newInput.value = ""; // reset to allow same file to be reselected
       newInput.click();
     });
-
-    // ✅ Restore autosaved form
-    const cached = sessionStorage.getItem("autosavedDFR") || localStorage.getItem("autosavedDFR");
-    if (cached) {
-      try {
-        const data = JSON.parse(cached);
-        restoreForm(data);
-        autoSaveFormToCache(); // No delay needed
-      } catch (err) {
-        console.warn("⚠️ Failed to restore autosaved form:", err);
-      }
-    }
   });
 });
+
 
 
 
