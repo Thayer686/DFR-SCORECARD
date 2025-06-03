@@ -306,8 +306,8 @@ digIds.forEach(val => {
   "Alexandra Klimchuk ", "Alicia Swan", "Andre Godel", "Annette Swan", "Barry Thompson", "Bernard Hughes",
   "Blaine Squires", "Blair Smith", "Brady Loring", "Brenagan Augier", "Brent Kelly", "Brian Miller",
   "Brittany Rabbitt", "Caitlyn Macaulay", "Cam Fossum", "Cameron Gilmore", "Carson Bischoff",
-  "Carson James", "Carson James", "Cayde McMullin", "Chad Henderson", "Christy Hamilton", "Cloud Diablo", "Cody Shindle",
-  "Colton Amlin", "Cory Pelkman (D&L)", "Craig Erickson", "Craig Welsman", "Damon Keith", "Dan Therrien",
+  "Carson James", "Carson James", "Cayde McMullin", "Chad Henderson", "Christy Hamilton", "Cloud Diablo", "Cody Graham", "Cody Shindle",
+  "Colton Amlin", "Cory Pelkman (D&L)", "Craig Erickson", "Craig Welsman","Dalton Patrick", "Damon Keith", "Dan Therrien",
   "Daniel Pearo", "Danielle Nelson", "Darren Donley", "Darryl Meade (GPS)", "David Guild", "Del James","Derek Seward",
   "Derek Swan", "Derick Bogar", "Derwood Smith", "Devan McLean", "Devon McCoy", "Dion Lahoda",
   "Dwayne Walkden", "Dylan Reid", "Emerson Beaudet", "Emily Gilbert", "Erik Bergstrom", "Ethan Long",
@@ -322,7 +322,7 @@ digIds.forEach(val => {
   "Matthew Neilsen", "Melissa Medwid", "Mitch Wilton", "Michael Bruno", "Michael Martin", "Michael Mclelan", "Mike Cobban",
   "Miles Sushelnitski", "Mladen Jovic", "Moin Padaniya", "Nate Glenn", "Nathan Stewart", "Nicole Golos",
   "Noah Stiles", "Nolan Conroy", "Patrick Hampson", "Quinton Tutin", "Reed Golos", "Richard Dalrymple",
-  "Rick Flegel", "River Block", "Rod McLaren", "Rutika Patel", "Ryan Bernicky", "Sam Kisser",
+  "Rick Flegel", "River Block", "Rod McLaren", "Rutika Patel", "Ryan Bernicky","Ryan Young", "Sam Kisser",
   "Samantha Stevenson", "Sandra Quigley", "Sarah Booth", "Sarah Simkin", "Scott Medley ", "Sean Menzel",
   "Shane Ayers", "Shane Jackson", "Shea McNeil", "Sheldon Traun", "Simon Ramsey", "Stacey Glanville",
   "Stefanie Cox", "Stephanie Henderson", "Sterling Nimco", "Steven Misumi", "Taylor Hegberg",
@@ -1150,7 +1150,7 @@ document.getElementById("saveFormBtn")?.addEventListener("click", () => {
   const data = getFormData();
 
    // ✅ Add version info!
-  data.version = 'v1.0.0';
+  data.version = 'v1.0.1';
 
   // 🔍 Get date from form input
   const formDate = document.getElementById("tmDate")?.value || "unknown-date";
@@ -1168,7 +1168,7 @@ document.getElementById("saveFormBtn")?.addEventListener("click", () => {
   const digId = document.getElementById("digIdSelect")?.value?.trim().replace(/\s+/g, "_") || "####";
 const dateParts = formDate.split("-");
 const formattedDate = dateParts.length === 3 ? `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}` : formDate;
-const filename = `${formattedDate}_TM_Form_${initials}_${digId}.json`;
+const filename = `${formattedDate}_Scorecard_${initials}_${digId}.json`;
 
 
   // 💾 Save the JSON blob
@@ -1271,7 +1271,7 @@ document.getElementById("exportPdfBtn")?.addEventListener("click", async () => {
   const digId = document.getElementById("digIdSelect")?.value?.trim().replace(/\s+/g, "_") || "####";
 const dateParts = formDate.split("-");
 const formattedDate = dateParts.length === 3 ? `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}` : formDate;
-const filename = `${formattedDate}_TM_Form_${initials}_${digId}.pdf`;
+const filename = `${formattedDate}_Scorecard_${initials}_${digId}.pdf`;
 
 
   // 🖼️ Render to canvas
@@ -1297,22 +1297,30 @@ const filename = `${formattedDate}_TM_Form_${initials}_${digId}.pdf`;
 // Email button
 document.getElementById("emailBtn")?.addEventListener("click", () => {
   const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
-  const dateStr = `${yyyy}${mm}${dd}`;
+const yyyy = today.getFullYear();
+const mm = String(today.getMonth() + 1).padStart(2, '0');
+const dd = String(today.getDate()).padStart(2, '0');
 
-  const formDate = document.getElementById("tmDate")?.value?.trim().replace(/\s+/g, "_") || "unknown-date";
-  const supervisorFullName = document.getElementById("omhsupervisor")?.value?.trim() || "XX";
-  const nameParts = supervisorFullName.split(" ");
-  const initials = nameParts.map(part => part[0]?.toUpperCase()).join("").slice(0, 2) || "XX";
-
-  const digId = document.getElementById("digIdSelect")?.value?.trim().replace(/\s+/g, "_") || "####";
+// 🟡 Grab form date (yyyy-mm-dd), reformat to mm-dd-yyyy
+const formDate = document.getElementById("tmDate")?.value?.trim() || "unknown-date";
+let formattedDate = formDate;
 const dateParts = formDate.split("-");
-const formattedDate = dateParts.length === 3 ? `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}` : formDate;
-const filename = `${formattedDate}_TM_Form_${initials}_${digId}`;
+if (dateParts.length === 3) {
+  formattedDate = `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}`;
+}
 
+// 🟡 Get supervisor initials
+const supervisorFullName = document.getElementById("omhsupervisor")?.value?.trim() || "XX";
+const nameParts = supervisorFullName.split(" ");
+const initials = nameParts.map(part => part[0]?.toUpperCase()).join("").slice(0, 2) || "XX";
 
+// 🟡 Get Dig ID
+const digId = document.getElementById("digIdSelect")?.value?.trim().replace(/\s+/g, "_") || "####";
+
+// 🟡 Final filename format: date_Scorecard_Initials_DigNumber
+const filename = `${formattedDate}_Scorecard_${initials}_${digId}`;
+
+// 📧 Compose mailto link
   const recipients = [
     "tyler.anderson@ogilviemtn.ca",
     "del.james@ogilviemtn.ca",
@@ -1320,7 +1328,7 @@ const filename = `${formattedDate}_TM_Form_${initials}_${digId}`;
     "alexandra.klimchuk@ogilviemtn.ca"
   ].join(",");
 
-  const mailtoLink = `mailto:${recipients}?subject=${encodeURIComponent(filename)}&body=${encodeURIComponent(`Please find the T&M Sheet attached.\n\nFiles:\n- ${filename}.pdf\n- ${filename}.json`)}`;
+  const mailtoLink = `mailto:${recipients}?subject=${encodeURIComponent(filename)}&body=${encodeURIComponent(`Please find the Daily Scorecard attached.\n\nFiles:\n- ${filename}.pdf\n- ${filename}.json`)}`;
 
   alert(`📧 You're about to open your email app.
 
@@ -1370,8 +1378,94 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+// --- Equipment Lookup Functionality ---
+document.getElementById("lookupEquipmentBtn")?.addEventListener("click", () => {
+  // Create overlay
+  const overlay = document.createElement("div");
+  overlay.style.cssText = `
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center;
+    z-index: 9999; padding: 20px;
+  `;
+
+  // Create modal
+  const modal = document.createElement("div");
+  modal.style.cssText = `
+    background: white; padding: 20px; border-radius: 8px;
+    max-width: 500px; width: 100%; max-height: 80vh; overflow: auto;
+  `;
+
+  const title = document.createElement("h3");
+  title.textContent = "Search Equipment";
+  modal.appendChild(title);
+
+  // Search input
+  const searchInput = document.createElement("input");
+  searchInput.type = "text";
+  searchInput.placeholder = "Search by unit or description...";
+  searchInput.style.cssText = `
+    width: 100%; padding: 8px; margin-bottom: 10px;
+  `;
+  modal.appendChild(searchInput);
+
+  // Results container
+  const resultContainer = document.createElement("div");
+  resultContainer.style.maxHeight = "60vh";
+  resultContainer.style.overflowY = "auto";
+  modal.appendChild(resultContainer);
+
+  const renderResults = (filter = "") => {
+  resultContainer.innerHTML = "";
+
+  let listToRender;
+
+  if (filter.trim() === "") {
+    // 🔥 Sort numerically based on padded numbers (01-001, 01-099 etc.)
+    listToRender = [...equipmentList].sort((a, b) => {
+      const pad = (str) => str.padStart(4, "0"); // pad each part to 4 digits
+      const aParts = a.unit.split("-").map(pad).join("");
+      const bParts = b.unit.split("-").map(pad).join("");
+      return aParts.localeCompare(bParts);
+    });
+  } else {
+    // 🔥 Regular filter
+    listToRender = equipmentList.filter(eq =>
+      `${eq.unit} ${eq.desc}`.toLowerCase().includes(filter.toLowerCase())
+    );
+  }
+
+  listToRender.forEach(eq => {
+    const p = document.createElement("p");
+    p.textContent = `${eq.unit} - ${eq.desc}`;
+    p.style.cssText = `
+      padding: 5px 0; border-bottom: 1px solid #eee;
+    `;
+    resultContainer.appendChild(p);
+  });
+};
+
+// 🏁 Initial rendering
+renderResults();
+
+// 🧠 Filter on input
+searchInput.addEventListener("input", () => {
+  renderResults(searchInput.value);
+});
 
 
 
+  // Close button
+  const closeBtn = document.createElement("button");
+  closeBtn.textContent = "Close";
+  closeBtn.style.cssText = `
+    margin-top: 10px; padding: 6px 12px; background: #d9534f; color: #fff;
+    border: none; border-radius: 4px; cursor: pointer;
+  `;
+  closeBtn.addEventListener("click", () => {
+    document.body.removeChild(overlay);
+  });
+  modal.appendChild(closeBtn);
 
-
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+});
