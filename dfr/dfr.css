@@ -644,6 +644,29 @@ input[type="date"] {
   font-size: 14px;
 }
 
+/* 🔥 Subtle vertical nudge for input and text fields */
+input[type="text"],
+input[list],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  transform: translateY(-1px); /* adjust as needed */
+}
+
+/* Globally center all text in inputs, textareas, and selects */
+input[type="text"],
+input[list],
+select,
+textarea {
+  vertical-align: middle;
+  line-height: 1.2;      /* Adjust to taste (try 1.2 – 1.4 for your case) */
+  padding-top: 6px;      /* 🔥 Adjust: add this to push text downward to center visually */
+  padding-bottom: 4px;   /* 🔥 Adjust: tweak for visual centering in your case */
+  box-sizing: border-box;
+}
+
+
 
 
 

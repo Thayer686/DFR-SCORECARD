@@ -417,6 +417,28 @@ select {
 
 
 
+/* 🔥 Slight upward shift for TM form - browser + PDF */
+.tm-container input[type="text"],
+.tm-container input[type="number"],
+.tm-container input[type="date"],
+.tm-container select,
+.tm-container textarea {
+  line-height: 1.1;
+  padding-top: 3px;
+}
+
+.pdf-export input,
+.pdf-export select,
+.pdf-export textarea {
+  font-size: 10px !important;
+  height: auto !important;
+  padding: 2px 4px !important;
+  padding-top: 1px !important;    /* 🔥 added */
+  line-height: 1.1 !important;    /* 🔥 added */
+  white-space: normal !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
 
 
 
