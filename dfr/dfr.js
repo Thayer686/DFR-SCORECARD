@@ -792,7 +792,7 @@ if (dateVal) {
   dateStr = `${mm}_${dd}_${yyyy}`;
 }
 
-const projectNumber = document.getElementById("digNumberSelect")?.value?.trim().replace(/\s+/g, "_") || "####";
+const projectNumber = document.getElementById("digNumberInput")?.value?.trim().replace(/\s+/g, "_") || "####";
 const supervisorFullName = document.getElementById("omhsupervisor")?.value?.trim() || "XX";
 const nameParts = supervisorFullName.split(" ");
 const initials = nameParts.map(part => part[0]?.toUpperCase()).join("").slice(0, 2) || "XX";
@@ -1498,46 +1498,47 @@ document.getElementById("exportPdfBtn")?.addEventListener("click", async () => {
   // Add the image to the PDF
   pdf.addImage(imgData, 'JPEG', 0, 0, widthInInches, heightInInches);
 
-  // Generate dynamic filename
+  // 🔥 Use the same naming logic as the JSON file
   let dateVal = document.getElementById("date1")?.value || "";
   let dateStr = "no_date";
 
   if (dateVal) {
     const [yyyy, mm, dd] = dateVal.split("-");
-    dateStr = `${yyyy}${mm}${dd}`;
+    dateStr = `${mm}_${dd}_${yyyy}`;
   }
 
-  // 🔍 Extract project number
-  const projectNumber = document.getElementById("digNumberSelect")?.value?.trim().replace(/\s+/g, "_") || "####";
-
-  // 🔍 Extract initials from OMH Supervisor input
+  const projectNumber = document.getElementById("digNumberInput")?.value?.trim().replace(/\s+/g, "_") || "####";
   const supervisorFullName = document.getElementById("omhsupervisor")?.value?.trim() || "XX";
   const nameParts = supervisorFullName.split(" ");
   const initials = nameParts.map(part => part[0]?.toUpperCase()).join("").slice(0, 2) || "XX";
 
-  // ✅ Final filename
-  const filename = `DFR_${initials}_DIG_${projectNumber}_${dateStr}.pdf`;
+  const defaultFilename = `${dateStr}_DFR_${initials}_DIG_${projectNumber}`;
 
-  pdf.save(filename);
+  // ✅ Save the PDF with this consistent filename
+  pdf.save(defaultFilename + ".pdf");
 });
+
 
 // --- Email PDF ---
 // Note: This will not attach the PDF directly due to browser security limitations
 // It will open the email client with a pre-filled subject and body
 // and the PDF will be saved in memory
-  document.getElementById("emailPdfBtn")?.addEventListener("click", () => {
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
-  const dateStr = `${yyyy}${mm}${dd}`;
+document.getElementById("emailPdfBtn")?.addEventListener("click", () => {
+  // 🔥 Use the same naming logic as JSON/PDF export
+  let dateVal = document.getElementById("date1")?.value || "";
+  let dateStr = "no_date";
 
-  const projectNumber = document.getElementById("digNumberSelect")?.value?.trim().replace(/\s+/g, "_") || "####";
+  if (dateVal) {
+    const [yyyy, mm, dd] = dateVal.split("-");
+    dateStr = `${mm}_${dd}_${yyyy}`;
+  }
+
+  const projectNumber = document.getElementById("digNumberInput")?.value?.trim().replace(/\s+/g, "_") || "####";
   const supervisorFullName = document.getElementById("omhsupervisor")?.value?.trim() || "XX";
   const nameParts = supervisorFullName.split(" ");
   const initials = nameParts.map(part => part[0]?.toUpperCase()).join("").slice(0, 2) || "XX";
 
-  const filename = `DFR_${initials}_DIG_${projectNumber}_${dateStr}`;
+  const filename = `${dateStr}_DFR_${initials}_DIG_${projectNumber}`;
 
   const recipients = [
     "tyler.anderson@ogilviemtn.ca",
@@ -1550,13 +1551,14 @@ document.getElementById("exportPdfBtn")?.addEventListener("click", async () => {
 
   alert(`📧 You're about to open your email app.
 
-Before proceeding, make sure you've already:
-✅ Clicked **Export to PDF**
-✅ Clicked **Save Form** (JSON)
+✅ Please ensure you've already:
+  - Exported the PDF: **${filename}.pdf**
+  - Saved the JSON file: **${filename}.json**
 
-📂 You can find the files in the **Files** app > **Downloads**.
-This function will not attached the files directly due to browser security limitations.
-Please attach the files manually after opening your email client.
+📂 You can find the files in your **Downloads** folder.
+
+⚠️ Due to browser security limitations, these files will not be attached automatically.
+You will need to manually attach them in your email app after it opens.
 
 Then attach:
 📎 ${filename}.pdf
@@ -1565,6 +1567,7 @@ Then attach:
   // Open email client
   window.location.href = mailtoLink;
 });
+
 
 // --- Add Manual Manpower Row ---
 let extraManpowerCount = 10;
