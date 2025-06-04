@@ -267,6 +267,10 @@ setupSignatureCanvas("clientSig", false);
   { id: "2.2.12.1", desc: "Labor, Equipment & Supplies Demobilization (After Base Mileage)" }
   ];
 
+  // 🔥 Sort scopeItems alphabetically by desc
+scopeItems.sort((a, b) => a.desc.localeCompare(b.desc));
+
+
   const digIds = [
     "10435", "10563", "10683", "10766", "10773", "10913", "11138", "11284",
     "6959", "6960", "6976", "6978", "6979", "6980", "6981", "6983",
