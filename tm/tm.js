@@ -237,7 +237,7 @@ setupSignatureCanvas("clientSig", false);
     { id: "2.2.8.1.1", desc: "Site Support – Temperate", unit: "/half day" },
     { id: "2.2.10.1", desc: "Coating Epoxy – Hand", unit: "/m²" },
     { id: "2.2.10.3", desc: "Coating Rock Shield", unit: "/m²" },
-    { id: "2.2.1.1", desc: "Labor, Equipment & Supplies Mobilization (After Base Mileage)" },
+    { id: "2.2.1.1", desc: "Labor, Equipment & Supplies Mobilization (After Base Mileage)", unit: "" },
     //additional cost codes
   { id: "2.2.1.2", desc: "Labor, Equipment & Supplies Mobilization Credit" },
   { id: "2.2.2.1", desc: "Bridge Installation (up to 12')" },
@@ -264,7 +264,7 @@ setupSignatureCanvas("clientSig", false);
   { id: "2.2.11.2", desc: "Topsoil & Restoration Credit" },
   { id: "2.2.11.3", desc: "Asphalt Resurfacing" },
   { id: "2.2.11.4", desc: "Access Route Reclamation" },
-  { id: "2.2.12.1", desc: "Labor, Equipment & Supplies Demobilization (After Base Mileage)" },
+  { id: "2.2.12.1", desc: "Labor, Equipment & Supplies Demobilization (After Base Mileage)" }
   ];
 
   const digIds = [
