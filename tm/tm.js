@@ -305,7 +305,7 @@ digIds.forEach(val => {
   "Aaron Swan", "Abdi Jama", "Adam King", "Adrienne Laporte", "Aileena Keith", "Aileena Marie",
   "Alexandra Klimchuk ", "Alicia Swan", "Andre Godel", "Annette Swan", "Barry Thompson", "Bernard Hughes",
   "Blaine Squires", "Blair Smith", "Brady Loring", "Brenagan Augier", "Brent Kelly", "Brian Miller",
-  "Brittany Rabbitt", "Caitlyn Macaulay", "Cam Fossum", "Cameron Gilmore", "Carson Bischoff",
+  "Brittany Rabbitt","Bryce Peters", "Caitlyn Macaulay", "Cam Fossum", "Cameron Gilmore", "Carson Bischoff",
   "Carson James", "Carson James", "Cayde McMullin", "Chad Henderson", "Christy Hamilton", "Cloud Diablo", "Cody Graham", "Cody Shindle",
   "Colton Amlin", "Cory Pelkman (D&L)", "Craig Erickson", "Craig Welsman","Dalton Patrick", "Damon Keith", "Dan Therrien",
   "Daniel Pearo", "Danielle Nelson", "Darren Donley", "Darryl Meade (GPS)", "David Guild", "Del James","Derek Seward",

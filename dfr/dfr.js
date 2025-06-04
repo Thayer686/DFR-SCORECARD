@@ -101,6 +101,7 @@ for (let i = 1; i <= 15; i++) {
   }
 }
 
+
 // 🔥 Populate equipmentInput1–15 datalists with NUMERICAL sort (and trim)
 for (let i = 1; i <= 15; i++) {
   const datalist = document.getElementById(`equipmentOptions${i}`);
@@ -686,7 +687,7 @@ reader.readAsDataURL(file);
 // --- Manual Save Function ---
 function saveForm() {
   const formData = {
-     version: 'v1.0.0' // 👈 Add this line!
+     version: 'v1.0.1' // 👈 Add this line!
   };
 
   document.querySelectorAll("input, textarea, select").forEach(el => {
@@ -700,13 +701,24 @@ document.querySelectorAll(".signature-canvas").forEach((canvas, index) => {
   if (!canvas) return;
   const key = `signatureCanvas${index}`;
   const ctx = canvas.getContext("2d", { willReadFrequently: true });
-const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-const isBlank = imageData.data.every(v => v === 0);
-if (!isBlank) {
-  formData[key] = canvas.toDataURL("image/png");
-}
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imageData.data;
 
+  // Count how many alpha channel pixels are not fully transparent
+  let nonTransparentPixels = 0;
+  for (let i = 3; i < data.length; i += 4) {  // alpha channel index
+    if (data[i] !== 0) nonTransparentPixels++;
+  }
+
+  // Threshold-based: consider it non-blank if >100 non-transparent pixels
+  if (nonTransparentPixels > 100) {
+    console.log(`✅ Signature ${index} saved with ${nonTransparentPixels} non-transparent pixels`);
+    formData[key] = canvas.toDataURL("image/png");
+  } else {
+    console.log(`⚠️ Signature ${index} considered blank (${nonTransparentPixels} pixels)`);
+  }
 });
+
 
   formData.manpowerHours = Array.from(document.querySelectorAll(".hour-cell input")).map(i => i.value);
   formData.equipmentHours = Array.from(document.querySelectorAll(".equip-hour-cell input")).map(i => i.value);
@@ -792,20 +804,32 @@ if (dateVal) {
   dateStr = `${mm}_${dd}_${yyyy}`;
 }
 
-const projectNumber = document.getElementById("digNumberInput")?.value?.trim().replace(/\s+/g, "_") || "####";
+// 🔍 Extract the Dig Number directly
+const digInput = document.getElementById("digNumberInput");
+let projectNumber = "####";
+if (digInput && digInput.value) {
+  projectNumber = digInput.value.trim().replace(/\s+/g, "_");
+}
+
+// 🛠️ Debugging to see what's read from the DOM
+console.log("📋 Dig # to be inserted in filename:", projectNumber);
+
+// 🔍 Supervisor name
 const supervisorFullName = document.getElementById("omhsupervisor")?.value?.trim() || "XX";
 const nameParts = supervisorFullName.split(" ");
 const initials = nameParts.map(part => part[0]?.toUpperCase()).join("").slice(0, 2) || "XX";
 
+// 📝 Compose final filename
 const defaultFilename = `${dateStr}_DFR_${initials}_DIG_${projectNumber}`;
 const filename = prompt("Enter a filename to save:", defaultFilename);
+
 if (!filename) return;
 
-  const blob = new Blob([JSON.stringify(formData, null, 2)], { type: "application/json" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = filename + ".json";
-  a.click();
+const blob = new Blob([JSON.stringify(formData, null, 2)], { type: "application/json" });
+const a = document.createElement("a");
+a.href = URL.createObjectURL(blob);
+a.download = filename + ".json";
+a.click();
 }
 
 function addManualManpowerRowsForRestore(data) {
@@ -993,7 +1017,6 @@ if (data.manualSubRows && data.manualSubRows.length) {
   });
 }
 
-
 // --- RESTORE: Manual Units Rows ---
 const currentManualRows = document.querySelectorAll(".units-row.manual-row").length;
 const neededManualRows = data.manualUnitsRows?.length || 0;
@@ -1025,7 +1048,6 @@ data.manualUnitsRows?.forEach((rowData, idx) => {
   if (noOfUnitsInput) noOfUnitsInput.value = rowData.noOfUnits || "";
   if (notesInput) notesInput.value = rowData.notes || "";
 });
-
 
 
 const skipIds = new Set();
@@ -1174,10 +1196,6 @@ function autoSaveFormToCache() {
     }
   });
 
-  
-  localStorage.setItem("autosavedDFR", JSON.stringify(data));
-  sessionStorage.setItem("autosavedDFR", JSON.stringify(data));
-
 
 // 🔥 Save signature canvases for autosave
 document.querySelectorAll(".signature-canvas").forEach((canvas, index) => {
@@ -1224,6 +1242,9 @@ document.querySelectorAll(".manpower-row.manual-row").forEach((row, idx) => {
 });
 
 data.manpowerHours = Array.from(document.querySelectorAll(".hour-cell input")).map(input => input.value || "");
+
+  localStorage.setItem("autosavedDFR", JSON.stringify(data));
+  sessionStorage.setItem("autosavedDFR", JSON.stringify(data));
 
 
 // 🔥 NEW: Save Manual Equipment Rows
@@ -1296,8 +1317,6 @@ document.querySelectorAll(".units-row.manual-row").forEach(row => {
     });
   }
 });
-
-
 
 
 // 🔥 Save all signature canvases as base64
@@ -1507,7 +1526,15 @@ document.getElementById("exportPdfBtn")?.addEventListener("click", async () => {
     dateStr = `${mm}_${dd}_${yyyy}`;
   }
 
+  console.log("🌟 Dig Number field content:", document.getElementById("digNumberInput").value);
+  console.log("🪵 Dig input field:", document.getElementById("digNumberInput").value);
+
+
+
   const projectNumber = document.getElementById("digNumberInput")?.value?.trim().replace(/\s+/g, "_") || "####";
+  console.log("🔍 Dig Number:", projectNumber);
+
+
   const supervisorFullName = document.getElementById("omhsupervisor")?.value?.trim() || "XX";
   const nameParts = supervisorFullName.split(" ");
   const initials = nameParts.map(part => part[0]?.toUpperCase()).join("").slice(0, 2) || "XX";
