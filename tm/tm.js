@@ -338,7 +338,7 @@ digIds.forEach(val => {
   "Alexandra Klimchuk ", "Alicia Swan", "Andre Godel", "Annette Swan", "Barry Thompson", "Bernard Hughes",
   "Blaine Squires", "Blair Smith", "Brady Loring", "Brenagan Augier", "Brent Kelly", "Brian Miller",
   "Brittany Rabbitt","Bryce Peters", "Caitlyn Macaulay", "Cam Fossum", "Cameron Gilmore", "Carson Bischoff",
-  "Carson James", "Carson James", "Cayde McMullin", "Chad Henderson", "Christy Hamilton","Chris Parron", "Cloud Diablo", "Cody Graham", "Cody Shindle",
+  "Carson James", "Carson James", "Cayde McMullin", "Chad Henderson", "Christy Hamilton","Chris Parron", "Craig Traun", "Cloud Diablo", "Cody Graham", "Cody Shindle",
   "Colton Amlin", "Cory Pelkman (D&L)", "Craig Erickson", "Craig Welsman","Dalton Patrick", "Damon Keith", "Dan Therrien",
   "Daniel Pearo", "Danielle Nelson", "Darren Donley", "Darryl Meade (GPS)", "David Guild", "Del James","Derek Seward",
   "Derek Swan", "Derick Bogar", "Derwood Smith", "Devan McLean", "Devon McCoy", "Dion Lahoda",
@@ -1183,7 +1183,7 @@ document.getElementById("saveFormBtn")?.addEventListener("click", () => {
   const data = getFormData();
 
    // ✅ Add version info!
-  data.version = 'v1.0.1';
+  data.version = 'v1.0.5';
 
   // 🔍 Get date from form input
   const formDate = document.getElementById("tmDate")?.value || "unknown-date";

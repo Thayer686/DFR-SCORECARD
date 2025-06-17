@@ -1,4 +1,4 @@
-const CACHE_NAME = 'field-report-v1.0.4'; // 🔁 bump this for every update
+const CACHE_NAME = 'field-report-v1.0.5'; // 🔁 bump this for every update
 
 // 🔧 Debounce helper (🔥 NEW!)
 function debounce(func, wait = 300) {
@@ -687,7 +687,7 @@ reader.readAsDataURL(file);
 // --- Manual Save Function ---
 function saveForm() {
   const formData = {
-     version: 'v1.0.1' // 👈 Add this line!
+     version: 'v1.0.5' // 👈 Add this line!
   };
 
   document.querySelectorAll("input, textarea, select").forEach(el => {
@@ -774,6 +774,25 @@ document.querySelectorAll(".subcontractor-row.manual-row").forEach(row => {
   const notes = row.querySelector("input[id^='notes3']")?.value || "";
   formData.manualSubRows.push({ name, total, uofm, hours, services, siterep, po, notes });
 });
+
+// 🔥 Save ALL Units Rows (static only — not manual)
+formData.allUnitsRows = [];
+document.querySelectorAll(".Units-table tr:not(.manual-row)").forEach((row, index) => {
+  const unitSelect = row.querySelector(".unitUsedSelect");
+  const unitIdInput = row.querySelector(".unitIdInput");
+  const noOfUnitsInput = row.querySelector("input[id^='noofunits']");
+  const notesInput = row.querySelector("input[id^='notes']");
+
+  const unitUsed = unitSelect?.value || "";
+  const unitId = unitIdInput?.value || "";
+  const noOfUnits = noOfUnitsInput?.value || "";
+  const notes = notesInput?.value || "";
+
+  if (unitUsed || unitId || noOfUnits || notes) {
+    formData.allUnitsRows.push({ unitUsed, unitId, noOfUnits, notes });
+  }
+});
+
 
 // 🔥 Save Manual Units Rows
 formData.manualUnitsRows = [];
@@ -878,8 +897,9 @@ function restoreForm(data) {
     console.log("🟡 data.allUnitsRows during restore:", data.allUnitsRows);
 
   
-  if (data.allUnitsRows && data.allUnitsRows.length) {
+ if (data.allUnitsRows && data.allUnitsRows.length) {
   const allUnitRows = document.querySelectorAll(".Units-table tr:has(.unitUsedSelect)");
+
   data.allUnitsRows.forEach((rowData, idx) => {
     const row = allUnitRows[idx];
     if (!row) return;
@@ -890,25 +910,21 @@ function restoreForm(data) {
     const notesInput = row.querySelector("input[id^='notes']");
 
     if (unitSelect) {
-  const unitOptions = Object.keys(unitIdMap.UnitsUsedList);
-  console.log("🟡 Available dropdown options before repopulation:", unitOptions);
+      const unitOptions = Object.keys(unitIdMap?.UnitsUsedList || {});
+      populateSelectElement(unitSelect, unitOptions);
+      unitSelect.value = rowData.unitUsed || "";
 
-  populateSelectElement(unitSelect, unitOptions);
+      // ✅ Update Unit ID manually (do not rely on change event)
+      if (unitIdInput && unitSelect.value) {
+        unitIdInput.value = unitIdMap.UnitsUsedList[unitSelect.value] || "";
+      }
+    }
 
-  console.log("🟡 Dropdown options AFTER repopulation:", [...unitSelect.options].map(o => o.value));
-  console.log("🟡 Trying to restore unitUsed for row", idx, ":", rowData.unitUsed);
-
-  unitSelect.value = rowData.unitUsed || "";
-  console.log("🟡 After setting value:", unitSelect.value);
-
-  unitSelect.dispatchEvent(new Event("change", { bubbles: true }));
-}
-
-    if (unitIdInput) unitIdInput.value = rowData.unitId || "";
     if (noOfUnitsInput) noOfUnitsInput.value = rowData.noOfUnits || "";
     if (notesInput) notesInput.value = rowData.notes || "";
   });
 }
+
 
 
     // 🧪 Log how many rows we're restoring into
@@ -1039,14 +1055,31 @@ data.manualUnitsRows?.forEach((rowData, idx) => {
 
   // Populate the dropdown
   if (unitSelect) {
-    populateSelectElement(unitSelect, Object.keys(unitIdMap.UnitsUsedList));
-    unitSelect.value = rowData.unitUsed || "";
-    unitSelect.dispatchEvent(new Event("change", { bubbles: true }));
-  }
+  const options = Object.keys(unitIdMap?.UnitsUsedList || {});
+  populateSelectElement(unitSelect, options);
 
-  if (unitIdInput) unitIdInput.value = rowData.unitId || "";
-  if (noOfUnitsInput) noOfUnitsInput.value = rowData.noOfUnits || "";
-  if (notesInput) notesInput.value = rowData.notes || "";
+  requestAnimationFrame(() => {
+    unitSelect.value = rowData.unitUsed || "";
+
+    // Fallback: Add missing option if not already present
+    if (![...unitSelect.options].some(opt => opt.value === unitSelect.value)) {
+      const fallback = document.createElement("option");
+      fallback.value = rowData.unitUsed;
+      fallback.textContent = rowData.unitUsed;
+      unitSelect.appendChild(fallback);
+      unitSelect.value = rowData.unitUsed;
+    }
+
+    // Auto-fill Unit ID based on selection
+    if (unitIdInput && unitSelect.value) {
+      unitIdInput.value = unitIdMap.UnitsUsedList[unitSelect.value] || "";
+    }
+  });
+}
+
+if (noOfUnitsInput) noOfUnitsInput.value = rowData.noOfUnits || "";
+if (notesInput) notesInput.value = rowData.notes || "";
+
 });
 
 

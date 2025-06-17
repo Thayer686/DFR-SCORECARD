@@ -1,4 +1,4 @@
-const CURRENT_APP_VERSION = "v1.0.4"; // 🔁 Update this each release
+const CURRENT_APP_VERSION = "v1.0.6"; // 🔁 Update this each release
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js').then(registration => {
