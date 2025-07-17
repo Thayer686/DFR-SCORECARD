@@ -352,7 +352,7 @@ digIds.forEach(val => {
   "Lauren Smith", "Liam Dan", "Lincoln Wood", "Linda Gelazus", "Linda Hamel", "Lorinda Downey", "Lou Maslin",
   "Lucas Hall", "Luke Carriou", "Marc Trudel", "Marco Van Delden", "Mark Wilson", "Matthew Jones",
   "Matthew Neilsen", "Melissa Medwid", "Mike Cobban", "Mitch Wilton", "Michael Bruno", "Michael Martin", "Michael Mclelan", "Mike Cobban",
-  "Miles Sushelnitski", "Mladen Jovic", "Moin Padaniya", "Nate Glenn", "Nathan Stewart", "Nicole Golos",
+  "Miles Sushelnitski", "Mladen Jovic", "Moe Assif", "Moin Padaniya", "Nate Glenn", "Nathan Stewart", "Nicole Golos",
   "Noah Stiles", "Nolan Conroy", "Patrick Hampson", "Quinton Tutin", "Reed Golos", "Richard Dalrymple",
   "Rick Flegel", "River Block", "Robert Fook", "Rod McLaren", "Rutika Patel", "Ryan Bernicky","Ryan Young", "Sam Kisser",
   "Samantha Stevenson", "Sandra Quigley", "Sarah Booth", "Sarah Simkin", "Scott Medley ", "Sean Menzel",
@@ -360,7 +360,7 @@ digIds.forEach(val => {
   "Stefanie Cox", "Stephanie Henderson", "Sterling Nimco", "Steven Misumi", "Taylor Hegberg",
   "Theodore Uqhart", "Theressa Bartee", "Thomas Gregory","Tim Mason", "Trent Morrison", "Trent Zevola", "Trevor Dewey",
   "Tristan Vigliotti", "Troy Connett", "Tyler Anderson", "Ty Stokes", "Tyler Brown", "Tyler Lothian", "William (Bill) Erskine",
-  "Wilson Liang", "Wyatt Williams"
+  "Wilson Liang", "Wyatt Williams", "Zack Assif"
 ];
 
   const equipmentList = 
@@ -417,6 +417,7 @@ digIds.forEach(val => {
   { unit: "CT-004", desc: "Craig Erickson - QA/QC Coordinator - crew truck" },
   { unit: "CT-010", desc: "Justin Kato Truck - crew truck" },
   { unit: "CT-028", desc: "Robert Fook Truck" },
+  { unit: "CT-029", desc: "Moe Assif Truck" },
   { unit: "CT-030", desc: "Mike Cobban Truck" },
   { unit: "01-46", desc: "Chevrolet Silverado 3500 - medic truck" },
   { unit: "01-57", desc: "Chevrolet Silverado 3500 - medic truck" },
@@ -1187,7 +1188,7 @@ document.getElementById("saveFormBtn")?.addEventListener("click", () => {
   const data = getFormData();
 
    // ✅ Add version info!
-  data.version = 'v1.0.5';
+  data.version = 'v1.0.7';
 
   // 🔍 Get date from form input
   const formDate = document.getElementById("tmDate")?.value || "unknown-date";

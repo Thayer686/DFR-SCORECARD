@@ -1,4 +1,4 @@
-const CACHE_NAME = 'field-report-v1.0.5'; // 🔁 bump this for every update
+const CACHE_NAME = 'field-report-v1.0.7'; // 🔁 bump this for every update
 
 // 🔧 Debounce helper (🔥 NEW!)
 function debounce(func, wait = 300) {
@@ -687,7 +687,7 @@ reader.readAsDataURL(file);
 // --- Manual Save Function ---
 function saveForm() {
   const formData = {
-     version: 'v1.0.5' // 👈 Add this line!
+     version: 'v1.0.7' // 👈 Add this line!
   };
 
   document.querySelectorAll("input, textarea, select").forEach(el => {
